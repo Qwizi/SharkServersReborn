@@ -4,6 +4,7 @@ import { AppService } from './app.service';
 import {TypeOrmModule} from "@nestjs/typeorm";
 import {ConfigModule} from "@nestjs/config";
 import { PermissionsModule } from './permissions/permissions.module';
+import {Permission} from "./permissions/permission.entity";
 
 @Module({
   imports: [
@@ -17,7 +18,9 @@ import { PermissionsModule } from './permissions/permissions.module';
         username: process.env.DB_USER,
         password: process.env.DB_PASS,
         database: process.env.DB_DATABASE,
-        entities: [],
+        entities: [
+            Permission
+        ],
         synchronize: true,
       }),
       PermissionsModule
