@@ -21,6 +21,8 @@ export class UsersService implements OnModuleInit {
         console.log(user);
         const activatedUser = await this.activate(user);
         console.log(activatedUser);
+        const deactivatedUser = await this.deactivate(user);
+        console.log(deactivatedUser);
     }
 
     async create(createUserDto: CreateUserDto): Promise<User | undefined> {
@@ -42,7 +44,7 @@ export class UsersService implements OnModuleInit {
         user.password = updateUserDto.password || user.password;
         user.email = updateUserDto.email || user.email;
         user.roles = updateUserDto.roles || user.roles;
-        user.is_active = updateUserDto.is_active || user.is_active;
+        user.is_active = updateUserDto.is_active !== undefined ? updateUserDto.is_active : user.is_active;
         await this.usersRepository.save(user);
         return user;
     }
@@ -53,5 +55,9 @@ export class UsersService implements OnModuleInit {
 
     async activate(user: User): Promise<User> {
         return this.update(user, {is_active: true});
+    }
+
+    async deactivate(user: User): Promise<User> {
+        return this.update(user, {is_active: false});
     }
 }
