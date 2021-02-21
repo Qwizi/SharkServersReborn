@@ -9,6 +9,7 @@ import { RolesModule } from './roles/roles.module';
 import {permissionsDefault} from "./permissions/permissions.uitils";
 import {Role} from "./roles/roles.entity";
 import { UsersModule } from './users/users.module';
+import {User} from "./users/users.entity";
 
 @Module({
   imports: [
@@ -24,11 +25,13 @@ import { UsersModule } from './users/users.module';
         database: process.env.DB_DATABASE,
         entities: [
             Permission,
-            Role
+            Role,
+            User
         ],
         synchronize: true,
       }),
       RolesModule,
+      UsersModule,
       PermissionsModule.register({
           modules: [
               {
@@ -38,10 +41,13 @@ import { UsersModule } from './users/users.module';
               {
                   module: RolesModule.name,
                   permissions: permissionsDefault
+              },
+              {
+                  module: UsersModule.name,
+                  permissions: permissionsDefault
               }
           ]
       }),
-      UsersModule
   ],
   controllers: [AppController],
   providers: [AppService],
