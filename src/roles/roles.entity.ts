@@ -17,9 +17,6 @@ export class Role {
     @Column()
     name: string;
 
-    @Column()
-    display_name: string;
-
     @Column({default: 'gray'})
     color: string;
 
