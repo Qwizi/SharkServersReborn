@@ -5,6 +5,9 @@ import {Permission} from "./permissions.entity";
 import {Repository} from "typeorm";
 import {Perms} from "./permissions.enum";
 import {FindManyOptions} from "typeorm/find-options/FindManyOptions";
+import {FindOptions} from "@nestjs/schematics";
+import {ObjectID} from "typeorm/driver/mongodb/typings";
+import {FindOneOptions} from "typeorm/find-options/FindOneOptions";
 
 @Injectable()
 export class PermissionsService implements OnModuleInit {
@@ -17,21 +20,23 @@ export class PermissionsService implements OnModuleInit {
 
     async onModuleInit() {
         this.logger.log("Dziala");
-        console.log(await this.find({where: {module: 'test'}}));
-        if (!await this.permissionRepository.findOne({where: {module: 'test'}})) {
-            const newPerm = await this.create({module: 'test', value: Perms.SERVICE_CREATE});
-        }
-        const perms = await this.find();
-        this.logger.log(`${perms.join(',')}`)
     }
 
-    async create(createPermissionDto: CreatePermissionDto): Promise<Permission> {
+    async create(createPermissionDto: CreatePermissionDto): Promise<Permission | undefined> {
         const newPermission = this.permissionRepository.create(createPermissionDto);
         await this.permissionRepository.save(newPermission);
         return newPermission;
     }
 
-    async find(options?: FindManyOptions): Promise<Permission[]> {
+    async find(options?: FindManyOptions): Promise<Permission[] | []> {
         return this.permissionRepository.find(options);
+    }
+
+    async findOne(options?: FindOneOptions<Permission>): Promise<Permission | undefined> {
+        return this.permissionRepository.findOne(options);
+    }
+
+    async findOneById(id?: string | number | Date | ObjectID): Promise<Permission | undefined> {
+        return this.permissionRepository.findOne(id);
     }
 }
