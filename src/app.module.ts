@@ -5,6 +5,7 @@ import {TypeOrmModule} from "@nestjs/typeorm";
 import {ConfigModule} from "@nestjs/config";
 import { PermissionsModule } from './permissions/permissions.module';
 import {Permission} from "./permissions/permissions.entity";
+import {Perms} from "./permissions/permissions.enum";
 
 @Module({
   imports: [
@@ -23,7 +24,20 @@ import {Permission} from "./permissions/permissions.entity";
         ],
         synchronize: true,
       }),
-      PermissionsModule
+      PermissionsModule.register({
+          modules: [
+              {
+                  module: PermissionsModule.name,
+                  permissions: [
+                      Perms.CREATE,
+                      Perms.FIND,
+                      Perms.FIND_ONE,
+                      Perms.UPDATE,
+                      Perms.DELETE,
+                  ]
+              }
+          ]
+      })
   ],
   controllers: [AppController],
   providers: [AppService],
