@@ -4,6 +4,8 @@ import {User} from "./users.entity";
 import {Repository} from "typeorm";
 import {CreateUserDto} from "./dto/createUser.dto";
 import {FindManyOptions} from "typeorm/find-options/FindManyOptions";
+import {FindOneOptions} from "typeorm/find-options/FindOneOptions";
+import {Role} from "../roles/roles.entity";
 
 @Injectable()
 export class UsersService implements OnModuleInit {
@@ -14,7 +16,7 @@ export class UsersService implements OnModuleInit {
 
     async onModuleInit() {
         this.logger.log('UsersService dziala');
-        console.log(await this.find());
+        console.log(await this.findOne());
     }
 
     async create(createUserDto: CreateUserDto): Promise<User | undefined> {
@@ -25,6 +27,10 @@ export class UsersService implements OnModuleInit {
 
     async find(options?: FindManyOptions): Promise<User[] | []> {
         return this.usersRepository.find(options);
+    }
+
+    async findOne(options?: FindOneOptions<User>): Promise<User | undefined> {
+        return this.usersRepository.findOne(options);
     }
 
 }
