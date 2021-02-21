@@ -30,8 +30,8 @@ import {User} from "./users/users.entity";
         ],
         synchronize: true,
       }),
-      RolesModule,
       UsersModule,
+      RolesModule,
       PermissionsModule.register({
           modules: [
               {
