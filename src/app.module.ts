@@ -8,6 +8,7 @@ import {Permission} from "./permissions/permissions.entity";
 import { RolesModule } from './roles/roles.module';
 import {permissionsDefault} from "./permissions/permissions.uitils";
 import {Role} from "./roles/roles.entity";
+import { UsersModule } from './users/users.module';
 
 @Module({
   imports: [
@@ -39,7 +40,8 @@ import {Role} from "./roles/roles.entity";
                   permissions: permissionsDefault
               }
           ]
-      })
+      }),
+      UsersModule
   ],
   controllers: [AppController],
   providers: [AppService],
