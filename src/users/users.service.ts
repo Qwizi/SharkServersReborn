@@ -5,8 +5,8 @@ import {Repository} from "typeorm";
 import {CreateUserDto} from "./dto/createUser.dto";
 import {FindManyOptions} from "typeorm/find-options/FindManyOptions";
 import {FindOneOptions} from "typeorm/find-options/FindOneOptions";
-import {Role} from "../roles/roles.entity";
 import {RemoveOptions} from "typeorm/browser";
+import {UpdateUserDto} from "./dto/updateUser.dto";
 
 @Injectable()
 export class UsersService implements OnModuleInit {
@@ -31,6 +31,15 @@ export class UsersService implements OnModuleInit {
 
     async findOne(options?: FindOneOptions<User>): Promise<User | undefined> {
         return this.usersRepository.findOne(options);
+    }
+
+    async update(user: User, updateUserDto: UpdateUserDto): Promise<User> {
+        user.username = updateUserDto.username || user.username;
+        user.password = updateUserDto.password || user.password;
+        user.email = updateUserDto.email || user.email;
+        user.roles = updateUserDto.roles || user.roles;
+        await this.usersRepository.save(user);
+        return user;
     }
 
     async remove(entity: User, options?: RemoveOptions): Promise<any> {
