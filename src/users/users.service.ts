@@ -17,6 +17,10 @@ export class UsersService implements OnModuleInit {
 
     async onModuleInit() {
         this.logger.log('UsersService dziala');
+        const user = await this.findOne();
+        console.log(user);
+        const activatedUser = await this.activate(user);
+        console.log(activatedUser);
     }
 
     async create(createUserDto: CreateUserDto): Promise<User | undefined> {
@@ -38,11 +42,16 @@ export class UsersService implements OnModuleInit {
         user.password = updateUserDto.password || user.password;
         user.email = updateUserDto.email || user.email;
         user.roles = updateUserDto.roles || user.roles;
+        user.is_active = updateUserDto.is_active || user.is_active;
         await this.usersRepository.save(user);
         return user;
     }
 
     async remove(entity: User, options?: RemoveOptions): Promise<any> {
         return options ? this.usersRepository.remove(entity, options) : this.usersRepository.remove(entity);
+    }
+
+    async activate(user: User): Promise<User> {
+        return this.update(user, {is_active: true});
     }
 }
