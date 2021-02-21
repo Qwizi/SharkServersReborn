@@ -1,7 +1,7 @@
 export enum Perms {
     SERVICE_CREATE = "service.create",
-    SERVICE_FIND_ALL = "service.find_all",
     SERVICE_FIND = "service.find",
+    SERVICE_FIND_ONE = "service.find_one",
     SERVICE_UPDATE = 'service.update',
     SERVICE_DELETE = 'service.delete',
     CONTROLLER_CREATE = 'controller.create',

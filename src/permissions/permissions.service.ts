@@ -1,7 +1,7 @@
 import {Injectable, Logger, OnModuleInit} from '@nestjs/common';
 import {CreatePermissionDto} from "./dto/createPermission.dto";
 import {InjectRepository} from "@nestjs/typeorm";
-import {Permission} from "./permission.entity";
+import {Permission} from "./permissions.entity";
 import {Repository} from "typeorm";
 import {Perms} from "./permissions.enum";
 
@@ -17,9 +17,9 @@ export class PermissionsService implements  OnModuleInit {
         this.logger.log("Dziala");
     }
 
-    async create(createPermissionDto: CreatePermissionDto) {
-        const permission = this.permissionRepository.create(createPermissionDto);
-        await this.permissionRepository.save(permission);
-        return permission;
+    async create(createPermissionDto: CreatePermissionDto): Promise<Permission> {
+        const newPermission = this.permissionRepository.create(createPermissionDto);
+        await this.permissionRepository.save(newPermission);
+        return newPermission;
     }
 }
