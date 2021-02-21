@@ -1,4 +1,4 @@
-import {Injectable, Logger, OnModuleInit} from '@nestjs/common';
+import {BadRequestException, Injectable, Logger, OnModuleInit} from '@nestjs/common';
 import {InjectRepository} from "@nestjs/typeorm";
 import {User} from "./users.entity";
 import {Repository} from "typeorm";
@@ -7,22 +7,29 @@ import {FindManyOptions} from "typeorm/find-options/FindManyOptions";
 import {FindOneOptions} from "typeorm/find-options/FindOneOptions";
 import {RemoveOptions} from "typeorm/browser";
 import {UpdateUserDto} from "./dto/updateUser.dto";
+import * as bcrypt from 'bcrypt';
+import {RegisterUserDto} from "./dto/registerUser.dto";
+import {RolesService} from "../roles/roles.service";
+import {Role} from "../roles/roles.entity";
 
 @Injectable()
 export class UsersService implements OnModuleInit {
     private logger = new Logger(UsersService.name);
+
     constructor(
-        @InjectRepository(User) private usersRepository: Repository<User>
-    ) {}
+        @InjectRepository(User) private usersRepository: Repository<User>,
+        private rolesService: RolesService
+    ) {
+    }
 
     async onModuleInit() {
         this.logger.log('UsersService dziala');
-        const user = await this.findOne();
-        console.log(user);
-        const activatedUser = await this.activate(user);
-        console.log(activatedUser);
-        const deactivatedUser = await this.deactivate(user);
-        console.log(deactivatedUser);
+        const newUser = await this.register({
+            username: 'TestRegister',
+            password: 'test12345',
+            email: "test@wppp.pl"
+        })
+        console.log(newUser);
     }
 
     async create(createUserDto: CreateUserDto): Promise<User | undefined> {
@@ -59,5 +66,25 @@ export class UsersService implements OnModuleInit {
 
     async deactivate(user: User): Promise<User> {
         return this.update(user, {is_active: false});
+    }
+
+    async register(registerUserDto: RegisterUserDto): Promise<User> {
+        const {username, password, email} = registerUserDto;
+        const userExist = await this.findOne({
+            where: [
+                {username: registerUserDto.username},
+                {email: registerUserDto.email}
+            ]
+        })
+        if (userExist) throw new BadRequestException('User exists');
+
+        const passwordHashed = await bcrypt.hash(password, 10);
+        const userRole = await this.rolesService.findOne({where: {name: 'Uzytkowni'}});
+        return this.create({
+            username: username,
+            password: passwordHashed,
+            email: email,
+            roles: [userRole]
+        })
     }
 }
