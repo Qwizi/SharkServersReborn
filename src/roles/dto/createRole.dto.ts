@@ -12,5 +12,6 @@ export class CreateRoleDto {
     color?: string;
 
     @ValidateNested()
-    permissions: Permission[]
+    @IsOptional()
+    permissions?: Permission[]
 }
