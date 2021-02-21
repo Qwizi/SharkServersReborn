@@ -6,6 +6,7 @@ import {CreateUserDto} from "./dto/createUser.dto";
 import {FindManyOptions} from "typeorm/find-options/FindManyOptions";
 import {FindOneOptions} from "typeorm/find-options/FindOneOptions";
 import {Role} from "../roles/roles.entity";
+import {RemoveOptions} from "typeorm/browser";
 
 @Injectable()
 export class UsersService implements OnModuleInit {
@@ -16,7 +17,6 @@ export class UsersService implements OnModuleInit {
 
     async onModuleInit() {
         this.logger.log('UsersService dziala');
-        console.log(await this.findOne());
     }
 
     async create(createUserDto: CreateUserDto): Promise<User | undefined> {
@@ -33,4 +33,7 @@ export class UsersService implements OnModuleInit {
         return this.usersRepository.findOne(options);
     }
 
+    async remove(entity: User, options?: RemoveOptions): Promise<any> {
+        return options ? this.usersRepository.remove(entity, options) : this.usersRepository.remove(entity);
+    }
 }
