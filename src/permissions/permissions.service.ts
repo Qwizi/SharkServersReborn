@@ -9,6 +9,8 @@ import {ObjectID} from "typeorm/driver/mongodb/typings";
 import {FindOneOptions} from "typeorm/find-options/FindOneOptions";
 import {FindConditions} from "typeorm/find-options/FindConditions";
 import {RemoveOptions} from "typeorm/repository/RemoveOptions";
+import {QueryDeepPartialEntity} from "typeorm/query-builder/QueryPartialEntity";
+import {UpdatePermissionDto} from "./dto/updatePermission.dto";
 
 @Injectable()
 export class PermissionsService implements OnModuleInit {
@@ -21,6 +23,11 @@ export class PermissionsService implements OnModuleInit {
 
     async onModuleInit() {
         this.logger.log("Dziala");
+        if (!await this.findOne({where: {module: 'test'}})) {
+            const testperm = await this.create({module: 'test', value: Perms.SERVICE_CREATE})
+            const updatedPerm = await this.update(testperm, {value: Perms.SERVICE_UPDATE})
+            console.log(updatedPerm);
+        }
     }
 
     async create(createPermissionDto: CreatePermissionDto): Promise<Permission | undefined> {
@@ -39,6 +46,13 @@ export class PermissionsService implements OnModuleInit {
 
     async findOneById(id?: string | number | Date | ObjectID): Promise<Permission | undefined> {
         return this.permissionRepository.findOne(id);
+    }
+
+    async update(permission: Permission, updatePermissionDto: UpdatePermissionDto): Promise<Permission> {
+        permission.module = updatePermissionDto.module || permission.module;
+        permission.value = updatePermissionDto.value || permission.value;
+        await this.permissionRepository.save(permission);
+        return permission;
     }
 
     async remove(entity: Permission, options?: RemoveOptions): Promise<any> {
