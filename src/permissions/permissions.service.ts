@@ -5,9 +5,10 @@ import {Permission} from "./permissions.entity";
 import {Repository} from "typeorm";
 import {Perms} from "./permissions.enum";
 import {FindManyOptions} from "typeorm/find-options/FindManyOptions";
-import {FindOptions} from "@nestjs/schematics";
 import {ObjectID} from "typeorm/driver/mongodb/typings";
 import {FindOneOptions} from "typeorm/find-options/FindOneOptions";
+import {FindConditions} from "typeorm/find-options/FindConditions";
+import {RemoveOptions} from "typeorm/repository/RemoveOptions";
 
 @Injectable()
 export class PermissionsService implements OnModuleInit {
@@ -38,5 +39,9 @@ export class PermissionsService implements OnModuleInit {
 
     async findOneById(id?: string | number | Date | ObjectID): Promise<Permission | undefined> {
         return this.permissionRepository.findOne(id);
+    }
+
+    async remove(entity: Permission, options?: RemoveOptions): Promise<any> {
+        return options ? this.permissionRepository.remove(entity, options) : this.permissionRepository.remove(entity);
     }
 }
