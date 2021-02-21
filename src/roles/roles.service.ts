@@ -50,6 +50,38 @@ export class RolesService implements OnModuleInit {
         return options ? this.rolesRepository.remove(entity, options) : this.rolesRepository.remove(entity);
     }
 
+    async splitPermModule(permModule: string) {
+        try {
+            const permModuleSplit = permModule.split('.')
+            const module = permModuleSplit[0]
+            const value = permModuleSplit[1]
+            return {
+                module: module,
+                value: value
+            }
+        } catch (e) {
+            this.logger.error(e.message)
+        }
+    }
+
+    async hasPerm(role: Role, permModule: string) {
+        try {
+            const permModuleSplit = await this.splitPermModule(permModule);
+            const {module, value} = permModuleSplit;
+            return !!role.permissions.find(perm => (perm.module == module && perm.value == value))
+        } catch (e) {
+            this.logger.error(e.message)
+        }
+    }
+
+    async hasPerms(role: Role, permModule: string[]) {
+        let has = false;
+        for await (const perm of permModule) {
+            has = await this.hasPerm(role, perm);
+        }
+        return has;
+    }
+
     async createDefaultRoles() {
         const adminPermissions = await this.permissionsService.find();
         const adminRole = {
