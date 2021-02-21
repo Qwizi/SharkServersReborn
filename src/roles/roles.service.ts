@@ -8,6 +8,7 @@ import {FindManyOptions} from "typeorm/find-options/FindManyOptions";
 import {FindOneOptions} from "typeorm/find-options/FindOneOptions";
 import {Permission} from "../permissions/permissions.entity";
 import {RemoveOptions} from "typeorm/browser";
+import {UpdateRoleDto} from "./dto/updateRole.dto";
 
 @Injectable()
 export class RolesService implements OnModuleInit {
@@ -17,7 +18,7 @@ export class RolesService implements OnModuleInit {
     ) {}
 
     async onModuleInit() {
-        
+       
     }
 
     async create(createRoleDto: CreateRoleDto): Promise<Role | undefined> {
@@ -32,6 +33,14 @@ export class RolesService implements OnModuleInit {
 
     async findOne(options?: FindOneOptions<Role>): Promise<Role | undefined> {
         return this.rolesRepository.findOne(options);
+    }
+
+    async update(role: Role, updateRoleDto: UpdateRoleDto): Promise<Role> {
+        role.name = updateRoleDto.name || role.name;
+        role.color = updateRoleDto.color || role.color;
+        role.permissions = updateRoleDto.permissions || role.permissions;
+        await this.rolesRepository.save(role);
+        return role;
     }
 
     async remove(entity: Role, options?: RemoveOptions): Promise<any> {
