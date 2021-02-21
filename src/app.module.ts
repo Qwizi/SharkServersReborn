@@ -27,6 +27,7 @@ import {Role} from "./roles/roles.entity";
         ],
         synchronize: true,
       }),
+      RolesModule,
       PermissionsModule.register({
           modules: [
               {
@@ -38,8 +39,7 @@ import {Role} from "./roles/roles.entity";
                   permissions: permissionsDefault
               }
           ]
-      }),
-      RolesModule
+      })
   ],
   controllers: [AppController],
   providers: [AppService],
