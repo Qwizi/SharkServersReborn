@@ -7,6 +7,7 @@ import {PermissionsService} from "../permissions/permissions.service";
 import {FindManyOptions} from "typeorm/find-options/FindManyOptions";
 import {FindOneOptions} from "typeorm/find-options/FindOneOptions";
 import {Permission} from "../permissions/permissions.entity";
+import {RemoveOptions} from "typeorm/browser";
 
 @Injectable()
 export class RolesService implements OnModuleInit {
@@ -16,8 +17,7 @@ export class RolesService implements OnModuleInit {
     ) {}
 
     async onModuleInit() {
-        const role = await this.findOne({where: {id: 1}, relations: ['permissions']});
-        console.log(role);
+        
     }
 
     async create(createRoleDto: CreateRoleDto): Promise<Role | undefined> {
@@ -32,5 +32,9 @@ export class RolesService implements OnModuleInit {
 
     async findOne(options?: FindOneOptions<Role>): Promise<Role | undefined> {
         return this.rolesRepository.findOne(options);
+    }
+
+    async remove(entity: Role, options?: RemoveOptions): Promise<any> {
+        return options ? this.rolesRepository.remove(entity, options) : this.rolesRepository.remove(entity);
     }
 }
