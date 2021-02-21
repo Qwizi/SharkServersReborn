@@ -5,7 +5,9 @@ import {TypeOrmModule} from "@nestjs/typeorm";
 import {ConfigModule} from "@nestjs/config";
 import { PermissionsModule } from './permissions/permissions.module';
 import {Permission} from "./permissions/permissions.entity";
-import {Perms} from "./permissions/permissions.enum";
+import { RolesModule } from './roles/roles.module';
+import {permissionsDefault} from "./permissions/permissions.uitils";
+import {Role} from "./roles/roles.entity";
 
 @Module({
   imports: [
@@ -20,7 +22,8 @@ import {Perms} from "./permissions/permissions.enum";
         password: process.env.DB_PASS,
         database: process.env.DB_DATABASE,
         entities: [
-            Permission
+            Permission,
+            Role
         ],
         synchronize: true,
       }),
@@ -28,16 +31,15 @@ import {Perms} from "./permissions/permissions.enum";
           modules: [
               {
                   module: PermissionsModule.name,
-                  permissions: [
-                      Perms.CREATE,
-                      Perms.FIND,
-                      Perms.FIND_ONE,
-                      Perms.UPDATE,
-                      Perms.DELETE,
-                  ]
+                  permissions: permissionsDefault
+              },
+              {
+                  module: RolesModule.name,
+                  permissions: permissionsDefault
               }
           ]
-      })
+      }),
+      RolesModule
   ],
   controllers: [AppController],
   providers: [AppService],

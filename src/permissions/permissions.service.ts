@@ -82,8 +82,8 @@ export class PermissionsService implements OnModuleInit {
                         this.logger.log(`[${moduleName}] jest juz dodane <${permission}>`);
                     }
                 }
-                this.logger.log('Zakończyłem tworzyć uprawnienia');
             }
+            this.logger.log('Zakończyłem tworzyć uprawnienia');
         } catch (e) {
             this.logger.error(e.message);
         }
