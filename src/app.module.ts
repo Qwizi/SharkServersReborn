@@ -10,6 +10,7 @@ import {permissionsDefault} from "./permissions/permissions.uitils";
 import {Role} from "./roles/roles.entity";
 import { UsersModule } from './users/users.module';
 import {User} from "./users/users.entity";
+import { AuthenticatorModule } from './authenticator/authenticator.module';
 
 @Module({
   imports: [
@@ -48,6 +49,7 @@ import {User} from "./users/users.entity";
               }
           ]
       }),
+      AuthenticatorModule,
   ],
   controllers: [AppController],
   providers: [AppService],
