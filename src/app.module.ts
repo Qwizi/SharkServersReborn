@@ -11,6 +11,7 @@ import {Role} from "./roles/roles.entity";
 import { UsersModule } from './users/users.module';
 import {User} from "./users/users.entity";
 import { AuthenticatorModule } from './authenticator/authenticator.module';
+import {Operation} from "./authenticator/operation.entity";
 
 @Module({
   imports: [
@@ -27,7 +28,8 @@ import { AuthenticatorModule } from './authenticator/authenticator.module';
         entities: [
             Permission,
             Role,
-            User
+            User,
+            Operation
         ],
         synchronize: true,
       }),
