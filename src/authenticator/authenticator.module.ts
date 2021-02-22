@@ -4,12 +4,14 @@ import {Operation} from "./operation.entity";
 import {OperationsService} from "./operations.service";
 import { AuthenticatorService } from './authenticator.service';
 import * as redisStore from 'cache-manager-redis-store';
+import {ConfigModule} from "@nestjs/config";
 @Module({
     imports: [
         TypeOrmModule.forFeature([Operation]),
+        ConfigModule.forRoot(),
         CacheModule.register({
             store: redisStore,
-            host: 'localhost',
+            host: process.env.REDIS_HOST,
             //port: process.env.REDIS_PORT
         })
     ],
