@@ -12,6 +12,7 @@ import {RegisterUserDto} from "./dto/registerUser.dto";
 import {RolesService} from "../roles/roles.service";
 import {AuthenticatorService} from "../authenticator/authenticator.service";
 import {Operations} from "../authenticator/operations.enums";
+import {MailService} from "../mail/mail.service";
 
 @Injectable()
 export class UsersService implements OnModuleInit {
@@ -21,16 +22,12 @@ export class UsersService implements OnModuleInit {
         @InjectRepository(User) private usersRepository: Repository<User>,
         private rolesService: RolesService,
         private authenticatorService: AuthenticatorService,
+        private mailService: MailService
     ) {
     }
 
     async onModuleInit() {
         this.logger.log('UsersService dziala');
-        /*const [newCode, operation] = await this.authenticatorService.createCode({
-            type: Operations.CONFIRM_EMAIL,
-            user: await this.findOne()
-        })
-        console.log(newCode);*/
     }
 
     async create(createUserDto: CreateUserDto): Promise<User | undefined> {

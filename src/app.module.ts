@@ -12,7 +12,7 @@ import { UsersModule } from './users/users.module';
 import {User} from "./users/users.entity";
 import { AuthenticatorModule } from './authenticator/authenticator.module';
 import {Operation} from "./authenticator/operation.entity";
-import { MailerModule } from './mailer/mailer.module';
+import {MailModule} from "./mail/mail.module";
 
 @Module({
   imports: [
@@ -34,8 +34,10 @@ import { MailerModule } from './mailer/mailer.module';
         ],
         synchronize: true,
       }),
-      UsersModule,
       RolesModule,
+      MailModule,
+      AuthenticatorModule,
+      UsersModule,
       PermissionsModule.register({
           modules: [
               {
@@ -52,8 +54,6 @@ import { MailerModule } from './mailer/mailer.module';
               }
           ]
       }),
-      AuthenticatorModule,
-      MailerModule,
   ],
   controllers: [AppController],
   providers: [AppService],

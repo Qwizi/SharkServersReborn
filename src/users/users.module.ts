@@ -4,12 +4,14 @@ import {User} from "./users.entity";
 import { UsersService } from './users.service';
 import {RolesModule} from "../roles/roles.module";
 import {AuthenticatorModule} from "../authenticator/authenticator.module";
+import {MailModule} from "../mail/mail.module";
 
 @Module({
     imports: [
         TypeOrmModule.forFeature([User]),
+        MailModule,
         RolesModule,
-        AuthenticatorModule
+        AuthenticatorModule,
     ],
     providers: [UsersService],
     exports: [UsersService]
