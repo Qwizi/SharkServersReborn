@@ -2,6 +2,7 @@ import {CacheModule, Module} from '@nestjs/common';
 import {TypeOrmModule} from "@nestjs/typeorm";
 import {Operation} from "./operation.entity";
 import {OperationsService} from "./operations.service";
+import { AuthenticatorService } from './authenticator.service';
 import * as redisStore from 'cache-manager-redis-store';
 @Module({
     imports: [
@@ -12,7 +13,7 @@ import * as redisStore from 'cache-manager-redis-store';
             port: process.env.REDIS_PORT
         })
     ],
-    providers: [OperationsService],
+    providers: [OperationsService, AuthenticatorService],
     exports: [OperationsService]
 })
 export class AuthenticatorModule {}
