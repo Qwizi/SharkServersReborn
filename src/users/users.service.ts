@@ -10,7 +10,6 @@ import {UpdateUserDto} from "./dto/updateUser.dto";
 import * as bcrypt from 'bcrypt';
 import {RegisterUserDto} from "./dto/registerUser.dto";
 import {RolesService} from "../roles/roles.service";
-import {Role} from "../roles/roles.entity";
 
 @Injectable()
 export class UsersService implements OnModuleInit {

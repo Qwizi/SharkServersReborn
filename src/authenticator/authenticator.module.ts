@@ -5,6 +5,7 @@ import {OperationsService} from "./operations.service";
 
 @Module({
     imports: [TypeOrmModule.forFeature([Operation])],
-    providers: [OperationsService]
+    providers: [OperationsService],
+    exports: [OperationsService]
 })
 export class AuthenticatorModule {}
