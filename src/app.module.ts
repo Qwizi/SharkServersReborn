@@ -12,6 +12,7 @@ import { UsersModule } from './users/users.module';
 import {User} from "./users/users.entity";
 import { AuthenticatorModule } from './authenticator/authenticator.module';
 import {Operation} from "./authenticator/operation.entity";
+import { MailerModule } from './mailer/mailer.module';
 
 @Module({
   imports: [
@@ -52,6 +53,7 @@ import {Operation} from "./authenticator/operation.entity";
           ]
       }),
       AuthenticatorModule,
+      MailerModule,
   ],
   controllers: [AppController],
   providers: [AppService],
