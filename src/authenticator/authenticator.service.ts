@@ -3,6 +3,7 @@ import {Cache} from 'cache-manager';
 import {OperationsService} from "./operations.service";
 import {CreateCodeDto} from "./dto/createCode.dto";
 import {Operations} from "./operations.enums";
+import {Operation} from "./operation.entity";
 
 @Injectable()
 export class AuthenticatorService implements OnModuleInit {
@@ -13,8 +14,8 @@ export class AuthenticatorService implements OnModuleInit {
     ) {}
 
     async onModuleInit() {
-        const code = 'EGBJII'
-        console.log(await this.cacheManager.get(`code:${code}`));
+        const code = '0BFF0I'
+        console.log(await this.checkCode(code));
     }
 
     async generateCode(length: number = 6): Promise<any> {
@@ -28,7 +29,17 @@ export class AuthenticatorService implements OnModuleInit {
             type: createCodeDto.type,
             user: createCodeDto.user,
         })
-        await this.cacheManager.set(`code:${code}`, operation, {ttl: 1000});
+        await this.cacheManager.set(`code:${code}`, operation, {ttl: 3600});
         return [code, operation];
+    }
+
+    async checkCode(code: string): Promise<[boolean, object | undefined]> {
+        const key = `code:${code}`
+        const operation = await this.cacheManager.get<Operation>(key)
+        if (operation) {
+            await this.cacheManager.del(key);
+            return [true, operation];
+        }
+        return [false, undefined];
     }
 }
