@@ -24,12 +24,6 @@ export class UsersService implements OnModuleInit {
 
     async onModuleInit() {
         this.logger.log('UsersService dziala');
-        const newUser = await this.register({
-            username: 'TestRegister',
-            password: 'test12345',
-            email: "test@wppp.pl"
-        })
-        console.log(newUser);
     }
 
     async create(createUserDto: CreateUserDto): Promise<User | undefined> {

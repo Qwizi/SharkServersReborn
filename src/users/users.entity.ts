@@ -3,11 +3,12 @@ import {
     CreateDateColumn,
     Entity,
     JoinTable,
-    ManyToMany,
+    ManyToMany, OneToMany,
     PrimaryGeneratedColumn,
     UpdateDateColumn
 } from "typeorm";
 import {Role} from "../roles/roles.entity";
+import {Operation} from "../authenticator/operation.entity";
 
 @Entity()
 export class User {
@@ -32,6 +33,9 @@ export class User {
     @ManyToMany(() => Role)
     @JoinTable()
     roles: Role[]
+
+    @OneToMany(() => Operation, operation => operation.user)
+    operations: Operation[];
 
     @CreateDateColumn()
     public created_at: Date;
