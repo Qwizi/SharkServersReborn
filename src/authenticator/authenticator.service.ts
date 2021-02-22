@@ -1,6 +1,8 @@
-import {CACHE_MANAGER, Inject, Injectable, Logger, OnModuleInit } from '@nestjs/common';
+import {CACHE_MANAGER, Inject, Injectable, Logger, OnModuleInit} from '@nestjs/common';
 import {Cache} from 'cache-manager';
 import {OperationsService} from "./operations.service";
+import {CreateCodeDto} from "./dto/createCode.dto";
+import {Operations} from "./operations.enums";
 
 @Injectable()
 export class AuthenticatorService implements OnModuleInit {
@@ -11,10 +13,22 @@ export class AuthenticatorService implements OnModuleInit {
     ) {}
 
     async onModuleInit() {
-        this.logger.log(await this.generateCode());
+        const code = 'EGBJII'
+        console.log(await this.cacheManager.get(`code:${code}`));
     }
 
-    async generateCode(length: number = 6) {
+    async generateCode(length: number = 6): Promise<any> {
         return Math.random().toString(20).substr(2, length).toUpperCase()
+    }
+
+    async createCode(createCodeDto: CreateCodeDto): Promise<any> {
+        const code = await this.generateCode();
+        const operation = await this.operationsService.create({
+            code: code,
+            type: createCodeDto.type,
+            user: createCodeDto.user,
+        })
+        await this.cacheManager.set(`code:${code}`, operation, {ttl: 1000});
+        return [code, operation];
     }
 }

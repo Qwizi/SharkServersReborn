@@ -9,11 +9,11 @@ import * as redisStore from 'cache-manager-redis-store';
         TypeOrmModule.forFeature([Operation]),
         CacheModule.register({
             store: redisStore,
-            host: process.env.REDIS_HOST,
-            port: process.env.REDIS_PORT
+            host: 'localhost',
+            //port: process.env.REDIS_PORT
         })
     ],
     providers: [OperationsService, AuthenticatorService],
-    exports: [OperationsService]
+    exports: [OperationsService, AuthenticatorService]
 })
 export class AuthenticatorModule {}
