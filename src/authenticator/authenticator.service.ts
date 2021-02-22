@@ -14,8 +14,7 @@ export class AuthenticatorService implements OnModuleInit {
     ) {}
 
     async onModuleInit() {
-        const code = '0BFF0I'
-        console.log(await this.checkCode(code));
+       this.logger.log('Authenticator dziiala')
     }
 
     async generateCode(length: number = 6): Promise<any> {
