@@ -6,6 +6,7 @@ import {CreateOperationDto} from "./dto/createOperation.dto";
 import {FindManyOptions} from "typeorm/find-options/FindManyOptions";
 import {FindOneOptions} from "typeorm/find-options/FindOneOptions";
 import {RemoveOptions} from "typeorm/browser";
+import {UpdateOperationDto} from "./dto/updateOperation.dto";
 
 @Injectable()
 export class OperationsService implements OnModuleInit {
@@ -14,9 +15,6 @@ export class OperationsService implements OnModuleInit {
 
     async onModuleInit() {
         this.logger.log('Operacje dzialaja')
-        const op = await this.findOne();
-        await this.remove(op);
-        console.log(await this.find());
     }
 
     async create(createOperationDto: CreateOperationDto): Promise<Operation> {
@@ -31,6 +29,14 @@ export class OperationsService implements OnModuleInit {
 
     async findOne(options?: FindOneOptions<Operation>): Promise<Operation | undefined> {
         return this.operationsService.findOne(options);
+    }
+
+    async update(operation: Operation, updateOperationDto: UpdateOperationDto): Promise<Operation> {
+        operation.code = updateOperationDto.code || operation.code;
+        operation.type = updateOperationDto.type || operation.type;
+        operation.user = updateOperationDto.user || operation.user;
+        await this.operationsService.save(operation);
+        return operation;
     }
 
     async remove(entity: Operation, options?: RemoveOptions): Promise<any> {
