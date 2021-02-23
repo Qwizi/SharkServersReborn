@@ -39,6 +39,7 @@ import { AuthModule } from './auth/auth.module';
       MailModule,
       AuthenticatorModule,
       UsersModule,
+      AuthModule,
       PermissionsModule.register({
           modules: [
               {
@@ -54,8 +55,7 @@ import { AuthModule } from './auth/auth.module';
                   permissions: permissionsDefault
               }
           ]
-      }),
-      AuthModule,
+      })
   ],
   controllers: [AppController],
   providers: [AppService],
