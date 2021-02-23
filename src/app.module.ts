@@ -13,6 +13,7 @@ import {User} from "./users/users.entity";
 import { AuthenticatorModule } from './authenticator/authenticator.module';
 import {Operation} from "./authenticator/operation.entity";
 import {MailModule} from "./mail/mail.module";
+import { AuthModule } from './auth/auth.module';
 
 @Module({
   imports: [
@@ -54,6 +55,7 @@ import {MailModule} from "./mail/mail.module";
               }
           ]
       }),
+      AuthModule,
   ],
   controllers: [AppController],
   providers: [AppService],
