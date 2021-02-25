@@ -13,13 +13,16 @@ export class MailService implements OnModuleInit {
         this.logger.log('Testowy email');
     }
 
-    async sendEmailConfirmEmail(user: User, code: string) {
+    async sendActivateAccountEmail(user: User, code: string, url: string) {
         return this.mailerService.sendMail({
-            to: "qwizi95@protonmail.com",
+            to: user.email,
             from: "500adrian2@gmail.com",
             subject: 'SharkServersReborn - Aktywacja konta',
             template: 'register',
-            context: {code: code}
+            context: {
+                url: url,
+                code: code
+            }
         })
     }
 }
