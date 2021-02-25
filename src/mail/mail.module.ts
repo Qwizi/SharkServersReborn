@@ -3,10 +3,15 @@ import {MailerModule} from "@nestjs-modules/mailer";
 import {PugAdapter} from "@nestjs-modules/mailer/dist/adapters/pug.adapter";
 import {MailService} from './mail.service';
 import {ConfigModule} from "@nestjs/config";
+import {BullModule} from "@nestjs/bull";
+import {MailConsumer} from "./mail.consumer";
 
 @Module({
     imports: [
         ConfigModule.forRoot(),
+        BullModule.registerQueue({
+           name: 'mail'
+        }),
         MailerModule.forRoot({
             transport: {
                 host: process.env.SMTP_HOST,
@@ -27,7 +32,7 @@ import {ConfigModule} from "@nestjs/config";
                 }
             }
         })],
-    providers: [MailService],
+    providers: [MailService, MailConsumer],
     exports: [MailService]
 })
 export class MailModule {}
