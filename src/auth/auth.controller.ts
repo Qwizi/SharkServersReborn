@@ -3,22 +3,24 @@ import {LocalAuthGuard} from "./guards/local-auth.guard";
 import {LoginGuard} from "./guards/login.guard";
 import {RegisterUserDto} from "../users/dto/registerUser.dto";
 import {AuthService} from "./auth.service";
+import {UsersService} from "../users/users.service";
 
 @Controller('auth')
 export class AuthController {
 
     constructor(
-        private authService: AuthService
+        private authService: AuthService,
+        private usersService: UsersService
     ) {}
 
     @Post('register')
     async registerPost(
         @Req() req,
         @Res() res,
-        @Body() body: RegisterUserDto
+        @Body() registerUserDto: RegisterUserDto
     ) {
         if (req.user) res.redirect('/');
-        const newUser = await this.authService.registerUser(body);
+        const newUser = await this.usersService.register(registerUserDto);
         const [code, encryptedCode] = await this.authService.createActivateCode(newUser);
         const url = await this.authService.getAccountActivateUrl(req, encryptedCode);
         await this.authService.sendVerificationEmail(newUser, code, url);

@@ -14,6 +14,7 @@ import { AuthenticatorModule } from './authenticator/authenticator.module';
 import {Operation} from "./authenticator/operation.entity";
 import {MailModule} from "./mail/mail.module";
 import { AuthModule } from './auth/auth.module';
+import {BullModule} from "@nestjs/bull";
 
 @Module({
   imports: [
@@ -34,6 +35,12 @@ import { AuthModule } from './auth/auth.module';
             Operation
         ],
         synchronize: true,
+      }),
+      BullModule.forRoot({
+          redis: {
+              host: process.env.REDIS_HOST,
+              port: parseInt(process.env.REDIS_PORT),
+          },
       }),
       RolesModule,
       MailModule,
