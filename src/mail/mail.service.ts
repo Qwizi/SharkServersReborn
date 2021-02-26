@@ -25,8 +25,7 @@ export class MailService implements OnModuleInit {
         template?: string,
         context?: object
         ) {
-        await job.progress(50);
-        return this.mailerService.sendMail({
+        return await this.mailerService.sendMail({
             to: user.email,
             from: "500adrian2@gmail.com",
             subject: subject,
@@ -47,16 +46,10 @@ export class MailService implements OnModuleInit {
                 code: code
             }
         };
-        return this.mailQueue.add(data)
-        /*return this.mailerService.sendMail({
-            to: user.email,
-            from: "500adrian2@gmail.com",
-            subject: 'SharkServersReborn - Aktywacja konta',
-            template: 'register',
-            context: {
-                url: url,
-                code: code
-            }
-        })*/
+
+        return await this.mailQueue.add(data, {
+            delay: 3000,
+            attempts: 3
+        })
     }
 }

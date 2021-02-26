@@ -37,8 +37,8 @@ export class MailConsumer {
             template,
             context
         );
-        await job.progress(100);
         this.logger.log('Zakonczylem wysylanie emaila');
+        await job.progress(100)
         return {};
     }
 }

@@ -1,30 +1,22 @@
-import {Body, Controller, Get, Post, Req, Request, Res, UseGuards} from '@nestjs/common';
-import {LocalAuthGuard} from "./guards/local-auth.guard";
+import {Body, Controller, Get, HttpCode, Post, Req, Res, UseGuards} from '@nestjs/common';
 import {LoginGuard} from "./guards/login.guard";
 import {RegisterUserDto} from "../users/dto/registerUser.dto";
 import {AuthService} from "./auth.service";
-import {UsersService} from "../users/users.service";
 
 @Controller('auth')
 export class AuthController {
 
     constructor(
-        private authService: AuthService,
-        private usersService: UsersService
+        private authService: AuthService
     ) {}
 
     @Post('register')
+    @HttpCode(200)
     async registerPost(
         @Req() req,
-        @Res() res,
         @Body() registerUserDto: RegisterUserDto
     ) {
-        if (req.user) res.redirect('/');
-        const newUser = await this.usersService.register(registerUserDto);
-        const [code, encryptedCode] = await this.authService.createActivateCode(newUser);
-        const url = await this.authService.getAccountActivateUrl(req, encryptedCode);
-        await this.authService.sendVerificationEmail(newUser, code, url);
-        return newUser;
+        return await this.authService.registerUser(registerUserDto, req);
     }
 
     @Get('register')
