@@ -18,14 +18,13 @@ import {AuthenticatorService} from "./authenticator/authenticator.service";
 import {UsersService} from "./users/users.service";
 import {Operations} from "./authenticator/operations.enums";
 import {ActivateAccountCodeDto} from "./authenticator/dto/activeteAccountCode.dto";
+import {ResendActivateAccountEmailDto} from "./authenticator/dto/resendActivateAccountEmail.dto";
 
 @Controller()
 export class AppController {
   private logger = new Logger(AppController.name);
   constructor(
-      private readonly appService: AppService,
-      private readonly authenticatorService: AuthenticatorService,
-      private readonly usersService: UsersService
+      private readonly appService: AppService
   ) {
 
   }
@@ -57,6 +56,20 @@ export class AppController {
       @Body() activateAccountCodeDto: ActivateAccountCodeDto
   ) {
     return await this.appService.activateAccount(activateAccountCodeDto);
+  }
+
+  @Get('activate-account/resend')
+  async resendActivateAccountEmailGet() {
+    return {msg: 'tutaj bedzie formularz'}
+  }
+
+  @HttpCode(200)
+  @Post('activate-account/resend')
+  async resendActivateAccountEmailPost(
+      @Body() resentActivateAccountEmailDto: ResendActivateAccountEmailDto,
+      @Req() req
+  ) {
+    return this.appService.resendActivateAccountEmail(resentActivateAccountEmailDto, req)
   }
 
   @UseGuards(AuthenticatedGuard)

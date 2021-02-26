@@ -1,4 +1,4 @@
-import {IsEnum, IsOptional, IsString, Length, ValidateNested} from "class-validator";
+import {IsBoolean, IsEnum, IsOptional, IsString, Length, ValidateNested} from "class-validator";
 import {Operations} from "../operations.enums";
 import {User} from "../../users/users.entity";
 
@@ -15,4 +15,8 @@ export class UpdateOperationDto {
     @ValidateNested()
     @IsOptional()
     user?: User
+
+    @IsBoolean()
+    @IsOptional()
+    is_active?: boolean;
 }

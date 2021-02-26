@@ -20,4 +20,7 @@ export class Operation {
 
     @ManyToOne(() => User, (user: User) => user.operations)
     user: User
+
+    @Column({default: true})
+    is_active: boolean;
 }

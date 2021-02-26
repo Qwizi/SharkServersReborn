@@ -16,6 +16,7 @@ import {AuthenticatorModule} from "../authenticator/authenticator.module";
       MailModule
   ],
   providers: [AuthService, LocalStrategy, SessionSerializer],
-  controllers: [AuthController]
+  controllers: [AuthController],
+    exports: [AuthService]
 })
 export class AuthModule {}
