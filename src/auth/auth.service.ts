@@ -17,7 +17,7 @@ export class AuthService {
     ) {}
 
     async validateUser(username: string, password: string): Promise<any> {
-        const user = await this.usersService.findOne({where: {username: username}, relations: ['roles', 'operations']})
+        const user = await this.usersService.findOne({where: {username: username}, relations: ['roles']})
         if (user && await bcrypt.compare(password, user.password) && user.is_active) {
             const {password, ...result} = user;
             return result;
@@ -25,12 +25,13 @@ export class AuthService {
         return null;
     }
 
-    async registerUser(registerUserDto: RegisterUserDto): Promise<User> {
-        return this.usersService.register(registerUserDto);
-    }
-
-    async sendVerificationEmail(user: User, code: string, url: string) {
-        return this.mailService.sendActivateAccountEmail(user, code, url);
+    async registerUser(registerUserDto: RegisterUserDto, req: Request): Promise<any> {
+        const newUser = await this.usersService.register(registerUserDto);
+        const [code, encryptedCode] = await this.createActivateCode(newUser);
+        const url = await this.getAccountActivateUrl(req, encryptedCode);
+        const job = await this.mailService.sendActivateAccountEmail(newUser, code, url);
+        const {password, ...result} = newUser;
+        return result
     }
 
     async createActivateCode(user: User) {
@@ -43,6 +44,6 @@ export class AuthService {
     }
 
     async getAccountActivateUrl(req: Request, encryptedCode: string) {
-        return `${req.protocol}://${req.get('host')}/auth/account-activate/${encryptedCode}`
+        return `${req.protocol}://${req.get('host')}/activate-account/?code=${encryptedCode}`
     }
 }
