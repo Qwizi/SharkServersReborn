@@ -4,6 +4,7 @@ import {OperationsService} from "./operations.service";
 import {CreateCodeDto} from "./dto/createCode.dto";
 import {Operation} from "./operation.entity";
 import * as crypto from 'crypto';
+import {User} from "../users/users.entity";
 
 @Injectable()
 export class AuthenticatorService implements OnModuleInit {
@@ -61,10 +62,20 @@ export class AuthenticatorService implements OnModuleInit {
     async checkCode(code: string): Promise<[boolean, Operation | undefined]> {
         const key = `code:${code}`
         const operation: Operation = await this.cacheManager.get<Operation>(key)
-        if (operation) {
+        if (operation && operation.is_active) {
             await this.cacheManager.del(key);
+            await this.operationsService.deactivate(operation);
             return [true, operation];
         }
         return [false, undefined];
+    }
+
+    async deactivateCodes(user: User) {
+        const operations = await this.operationsService.find({where: {user: user}})
+        for await (const op of operations) {
+            await this.operationsService.deactivate(op);
+            const key = `code:${op.code}`
+            await this.cacheManager.del(key)
+        }
     }
 }

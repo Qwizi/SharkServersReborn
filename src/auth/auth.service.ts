@@ -28,7 +28,7 @@ export class AuthService {
     async registerUser(registerUserDto: RegisterUserDto, req: Request): Promise<any> {
         const newUser = await this.usersService.register(registerUserDto);
         const [code, encryptedCode] = await this.createActivateCode(newUser);
-        const url = await this.getAccountActivateUrl(req, encryptedCode);
+        const url = await this.mailService.getAccountActivateUrl(req, encryptedCode);
         const job = await this.mailService.sendActivateAccountEmail(newUser, code, url);
         const {password, ...result} = newUser;
         return result
@@ -41,9 +41,5 @@ export class AuthService {
         })
         const encryptedCode = await this.authenticatorService.encryptCode(code);
         return [code, encryptedCode]
-    }
-
-    async getAccountActivateUrl(req: Request, encryptedCode: string) {
-        return `${req.protocol}://${req.get('host')}/activate-account/?code=${encryptedCode}`
     }
 }

@@ -35,11 +35,16 @@ export class OperationsService implements OnModuleInit {
         operation.code = updateOperationDto.code || operation.code;
         operation.type = updateOperationDto.type || operation.type;
         operation.user = updateOperationDto.user || operation.user;
+        operation.is_active = updateOperationDto.is_active || operation.is_active;
         await this.operationsService.save(operation);
         return operation;
     }
 
     async remove(entity: Operation, options?: RemoveOptions): Promise<any> {
         return options ? this.operationsService.remove(entity, options) : this.operationsService.remove(entity);
+    }
+
+    async deactivate(operation: Operation) {
+        return this.update(operation, {is_active: false})
     }
 }
