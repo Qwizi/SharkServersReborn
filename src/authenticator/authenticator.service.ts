@@ -49,7 +49,7 @@ export class AuthenticatorService implements OnModuleInit {
         return decrypted.toString();
     }
 
-    async createCode(createCodeDto: CreateCodeDto): Promise<[string, Operation]> {
+    async _createCode(createCodeDto: CreateCodeDto): Promise<[string, Operation]> {
         const code = await this.generateCode();
         const operation = await this.operationsService.create({
             code: code,
@@ -58,6 +58,15 @@ export class AuthenticatorService implements OnModuleInit {
         })
         await this.cacheManager.set(`code:${code}`, operation, {ttl: 3600});
         return [code, operation];
+    }
+
+    async createCode(user: User, type: Operations = Operations.CONFIRM_EMAIL) {
+        const [code, operation] = await this._createCode({
+            user: user,
+            type: type
+        })
+        const encryptedCode = await this.encryptCode(code);
+        return [code, encryptedCode]
     }
 
     async checkCode(code: string, deactivate: boolean = false, type?: Operations): Promise<[boolean, Operation | undefined]> {
@@ -90,14 +99,13 @@ export class AuthenticatorService implements OnModuleInit {
         this.logger.log('Zakonczylem deaktywacje kodow');
     }
 
-    async filterOperations(operations: Operation[], isActive: boolean = false, type: Operations = Operations.CONFIRM_EMAIL) {
+    async filterOperations(operations: Operation[], type: Operations = Operations.CONFIRM_EMAIL, isActive: boolean = false) {
         return operations.filter(op => (op.is_active !== isActive && op.type === type))
     }
 
-    async deactivateEmailConfirmCodes(user: User) {
+    async deactivateConfirmCodes(user: User, type: Operations = Operations.CONFIRM_EMAIL, isActive: boolean = false) {
         const {operations} = user;
-        const filteredOperations = await this.filterOperations(operations);
-        console.log(filteredOperations)
+        const filteredOperations = await this.filterOperations(operations, type, isActive);
         await this.deactivateCodes(filteredOperations);
     }
 

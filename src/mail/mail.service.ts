@@ -8,17 +8,15 @@ import {Request} from "express";
 @Injectable()
 export class MailService implements OnModuleInit {
     private logger = new Logger(MailService.name);
+
     constructor(
         private mailerService: MailerService,
         @InjectQueue('mail') private mailQueue: Queue
-    ) {}
+    ) {
+    }
 
     async onModuleInit() {
         this.logger.log('Testowy email');
-    }
-
-    async getAccountActivateUrl(req: Request, encryptedCode: string) {
-        return `${req.protocol}://${req.get('host')}/activate-account/?code=${encryptedCode}`
     }
 
     async send(
@@ -29,7 +27,7 @@ export class MailService implements OnModuleInit {
         subject?: string,
         template?: string,
         context?: object
-        ) {
+    ) {
         return await this.mailerService.sendMail({
             to: user.email,
             from: "500adrian2@gmail.com",
@@ -39,8 +37,17 @@ export class MailService implements OnModuleInit {
         })
     }
 
+    async addToQueue(data: object, options?: object) {
+        return options
+            ? await this.mailQueue.add(data, options)
+            : await this.mailQueue.add(data, {
+                delay: 3000,
+                attempts: 3
+            })
+    }
+
     async sendActivateAccountEmail(user: User, code: string, url: string) {
-        const data = {
+        return this.addToQueue({
             user: user,
             code: code,
             url: url,
@@ -50,11 +57,31 @@ export class MailService implements OnModuleInit {
                 url: url,
                 code: code
             }
-        };
+        });
+    }
 
-        return await this.mailQueue.add(data, {
-            delay: 3000,
-            attempts: 3
+    async sendResetPasswordEmail(user: User, code: string, url: string) {
+        return this.addToQueue({
+            user: user,
+            url: url,
+            code: code,
+            subject: 'SharkServersReborn - Reset hasła',
+            template: 'reset-password',
+            context: {url: url}
         })
+    }
+
+    async getUrl(req: Request) {
+        return `${req.protocol}://${req.get('host')}`;
+    }
+
+    async getAccountActivateUrl(req: Request, encryptedCode: string) {
+        const url = await this.getUrl(req);
+        return `${url}/activate-account/?code=${encryptedCode}`
+    }
+
+    async getResetPasswordUrl(req: Request, encryptedCode: string) {
+        const url = await this.getUrl(req);
+        return `${url}/reset-password/?code=${encryptedCode}`
     }
 }

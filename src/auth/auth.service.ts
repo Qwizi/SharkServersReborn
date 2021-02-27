@@ -27,19 +27,10 @@ export class AuthService {
 
     async registerUser(registerUserDto: RegisterUserDto, req: Request): Promise<any> {
         const newUser = await this.usersService.register(registerUserDto);
-        const [code, encryptedCode] = await this.createActivateCode(newUser);
+        const [code, encryptedCode] = await this.authenticatorService.createCode(newUser);
         const url = await this.mailService.getAccountActivateUrl(req, encryptedCode);
         const job = await this.mailService.sendActivateAccountEmail(newUser, code, url);
         const {password, ...result} = newUser;
         return result
-    }
-
-    async createActivateCode(user: User) {
-        const [code, operation] = await this.authenticatorService.createCode({
-            user: user,
-            type: Operations.CONFIRM_EMAIL
-        })
-        const encryptedCode = await this.authenticatorService.encryptCode(code);
-        return [code, encryptedCode]
     }
 }

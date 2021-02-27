@@ -7,6 +7,7 @@ import {ResendActivateAccountEmailDto} from "./authenticator/dto/resendActivateA
 import {MailService} from "./mail/mail.service";
 import {AuthService} from "./auth/auth.service";
 import {Request} from "express";
+import {ResetPasswordDto} from "./authenticator/dto/resetPassword.dto";
 
 @Injectable()
 export class AppService {
@@ -40,12 +41,20 @@ export class AppService {
   }
 
   async resendActivateAccountEmail(resendActivateAccountEmail: ResendActivateAccountEmailDto, req: Request) {
-      const user = await this.usersService.findOne({where: {email: resendActivateAccountEmail.email}, relations: ['operations']})
-      console.log(user);
+      const user = await this.usersService.findOne({where: {email: resendActivateAccountEmail.email, is_active: false}, relations: ['operations']})
       if (!user) throw new NotFoundException()
-      await this.authenticatorService.deactivateEmailConfirmCodes(user);
-      const [code, encryptedCode] = await this.authService.createActivateCode(user);
+      await this.authenticatorService.deactivateConfirmCodes(user);
+      const [code, encryptedCode] = await this.authenticatorService.createCode(user);
       const url = await this.mailService.getAccountActivateUrl(req, encryptedCode);
       const job = await this.mailService.sendActivateAccountEmail(user, code, url);
+  }
+
+  async sendResetPasswordEmail(resetPasswordDto: ResetPasswordDto, req: Request) {
+      const user = await this.usersService.findOne({where: {email: resetPasswordDto.email}, relations: ['operations']})
+      if (!user) throw new NotFoundException()
+      await this.authenticatorService.deactivateConfirmCodes(user, Operations.CONFIRM_RESET_PASSWORD);
+      const [code, encryptedCode] = await this.authenticatorService.createCode(user, Operations.CONFIRM_RESET_PASSWORD);
+      const url = await this.mailService.getResetPasswordUrl(req, encryptedCode);
+      const job = await this.mailService.sendResetPasswordEmail(user, code, url);
   }
 }
