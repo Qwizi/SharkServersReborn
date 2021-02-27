@@ -49,7 +49,7 @@ export class AuthenticatorService implements OnModuleInit {
         return decrypted.toString();
     }
 
-    async createCode(createCodeDto: CreateCodeDto): Promise<any> {
+    async createCode(createCodeDto: CreateCodeDto): Promise<[string, Operation]> {
         const code = await this.generateCode();
         const operation = await this.operationsService.create({
             code: code,
@@ -60,42 +60,45 @@ export class AuthenticatorService implements OnModuleInit {
         return [code, operation];
     }
 
-    async checkCode(code: string): Promise<[boolean, Operation | undefined]> {
+    async checkCode(code: string, deactivate: boolean = false, type?: Operations): Promise<[boolean, Operation | undefined]> {
         const key = `code:${code}`
         const operation: Operation = await this.cacheManager.get<Operation>(key)
-        if (operation && operation.is_active) {
-            await this.cacheManager.del(key);
-            await this.operationsService.deactivate(operation);
+        const expression = type ? operation && operation.is_active && operation.type === type : operation && operation.is_active;
+        if (expression) {
+            if (deactivate) await this.deactivateCodes(operation);
             return [true, operation];
         }
         return [false, undefined];
     }
 
-    async deactivateCodes(username: string, operations: Operation[]) {
-        /*this.logger.log(`Rozpoczynam deaktywacje wszystkich kodów ${user.username}`)
-        const operations = await this.operationsService.find({where: {user: user, is_active: true}})
-        for await (const op of operations) {
-            await this.operationsService.deactivate(op);
-            const key = `code:${op.code}`
+    async deactivateCodes(operations: Operation[] | Operation) {
+        if (Array.isArray(operations)) {
+            this.logger.log(`Rozpoczynam deaktywacje wszystkich kodów`)
+            for await (const op of operations) {
+                await this.operationsService.deactivate(op);
+                const key = `code:${op.code}`
+                await this.cacheManager.del(key)
+                this.logger.log(`Kod ${op.code} został deaktywowany`)
+            }
+        } else {
+            this.logger.log(`Rozpoczynam deaktywacje kodu`)
+            await this.operationsService.deactivate(operations);
+            const key = `code:${operations.code}`
             await this.cacheManager.del(key)
-            this.logger.log(`Kod ${op.code} został deaktywowany`)
-        }
-        this.logger.log('Zakonczylem deaktywacje kodow');*/
-        this.logger.log(`Rozpoczynam deaktywacje wszystkich kodów użytkownika ${username}`)
-        for await (const op of operations) {
-            await this.operationsService.deactivate(op);
-            const key = `code:${op.code}`
-            await this.cacheManager.del(key)
-            this.logger.log(`Kod ${op.code} został deaktywowany`)
+            this.logger.log(`Kod ${operations.code} został deaktywowany`)
         }
         this.logger.log('Zakonczylem deaktywacje kodow');
     }
 
+    async filterOperations(operations: Operation[], isActive: boolean = false, type: Operations = Operations.CONFIRM_EMAIL) {
+        return operations.filter(op => (op.is_active !== isActive && op.type === type))
+    }
+
     async deactivateEmailConfirmCodes(user: User) {
         const {operations} = user;
-        const filteredOperations = operations.filter(op => (op.is_active !== false))
+        const filteredOperations = await this.filterOperations(operations);
         console.log(filteredOperations)
-        await this.deactivateCodes(user.username, filteredOperations);
+        await this.deactivateCodes(filteredOperations);
     }
 
 }

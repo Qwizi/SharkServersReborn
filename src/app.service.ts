@@ -1,4 +1,4 @@
-import {BadRequestException, HttpStatus, Injectable, Logger, NotFoundException} from '@nestjs/common';
+import {BadRequestException, Injectable, Logger, NotFoundException} from '@nestjs/common';
 import {AuthenticatorService} from "./authenticator/authenticator.service";
 import {UsersService} from "./users/users.service";
 import {Operations} from "./authenticator/operations.enums";
@@ -24,8 +24,8 @@ export class AppService {
 
   async activateAccount(activateAccountCodeDto: ActivateAccountCodeDto) {
     this.logger.log(`Rozpoczynam aktywacje konta o kodzie ${activateAccountCodeDto.code}`)
-    const [isValidCode, operation] = await this.authenticatorService.checkCode(activateAccountCodeDto.code);
-    if (!isValidCode || !operation || operation.type !== Operations.CONFIRM_EMAIL) throw new NotFoundException();
+    const [isValidCode, operation] = await this.authenticatorService.checkCode(activateAccountCodeDto.code, true, Operations.CONFIRM_EMAIL);
+    if (!isValidCode || !operation) throw new NotFoundException();
     const user = operation.user;
     if (user.is_active) throw new BadRequestException('This users is already activated')
     await this.usersService.activate(user);
