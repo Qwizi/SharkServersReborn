@@ -40,9 +40,10 @@ export class AppService {
   }
 
   async resendActivateAccountEmail(resendActivateAccountEmail: ResendActivateAccountEmailDto, req: Request) {
-      const user = await this.usersService.findOne({where: {email: resendActivateAccountEmail.email}})
+      const user = await this.usersService.findOne({where: {email: resendActivateAccountEmail.email}, relations: ['operations']})
+      console.log(user);
       if (!user) throw new NotFoundException()
-      await this.authenticatorService.deactivateCodes(user);
+      await this.authenticatorService.deactivateEmailConfirmCodes(user);
       const [code, encryptedCode] = await this.authService.createActivateCode(user);
       const url = await this.mailService.getAccountActivateUrl(req, encryptedCode);
       const job = await this.mailService.sendActivateAccountEmail(user, code, url);

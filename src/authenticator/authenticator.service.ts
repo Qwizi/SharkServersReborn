@@ -5,6 +5,7 @@ import {CreateCodeDto} from "./dto/createCode.dto";
 import {Operation} from "./operation.entity";
 import * as crypto from 'crypto';
 import {User} from "../users/users.entity";
+import {Operations} from "./operations.enums";
 
 @Injectable()
 export class AuthenticatorService implements OnModuleInit {
@@ -70,12 +71,31 @@ export class AuthenticatorService implements OnModuleInit {
         return [false, undefined];
     }
 
-    async deactivateCodes(user: User) {
-        const operations = await this.operationsService.find({where: {user: user}})
+    async deactivateCodes(username: string, operations: Operation[]) {
+        /*this.logger.log(`Rozpoczynam deaktywacje wszystkich kodów ${user.username}`)
+        const operations = await this.operationsService.find({where: {user: user, is_active: true}})
         for await (const op of operations) {
             await this.operationsService.deactivate(op);
             const key = `code:${op.code}`
             await this.cacheManager.del(key)
+            this.logger.log(`Kod ${op.code} został deaktywowany`)
         }
+        this.logger.log('Zakonczylem deaktywacje kodow');*/
+        this.logger.log(`Rozpoczynam deaktywacje wszystkich kodów użytkownika ${username}`)
+        for await (const op of operations) {
+            await this.operationsService.deactivate(op);
+            const key = `code:${op.code}`
+            await this.cacheManager.del(key)
+            this.logger.log(`Kod ${op.code} został deaktywowany`)
+        }
+        this.logger.log('Zakonczylem deaktywacje kodow');
     }
+
+    async deactivateEmailConfirmCodes(user: User) {
+        const {operations} = user;
+        const filteredOperations = operations.filter(op => (op.is_active !== false))
+        console.log(filteredOperations)
+        await this.deactivateCodes(user.username, filteredOperations);
+    }
+
 }
