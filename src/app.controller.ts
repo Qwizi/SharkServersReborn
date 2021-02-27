@@ -82,6 +82,22 @@ export class AppController {
     return this.appService.sendResetPasswordEmail(resetPasswordDto, req);
   }
 
+  @Get('reset-password')
+  async resetPasswordGet(
+      @Query('code') encryptedCode: string,
+      @Res() res
+  ) {
+    if (!encryptedCode) return res.redirect('/');
+    try {
+      const isValidCode = await this.appService.checkCode(encryptedCode);
+      if (!isValidCode) return res.redirect('/');
+    } catch (e) {
+      this.logger.error(e.message);
+      return res.redirect('/')
+    }
+    return res.status(200).json({msg: 'tutaj bedzie formularz'})
+  }
+
   @UseGuards(AuthenticatedGuard)
   @Get('profile')
   async profile(@Req() req)  {

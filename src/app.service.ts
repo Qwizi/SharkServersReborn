@@ -8,6 +8,7 @@ import {MailService} from "./mail/mail.service";
 import {AuthService} from "./auth/auth.service";
 import {Request} from "express";
 import {ResetPasswordDto} from "./authenticator/dto/resetPassword.dto";
+import {User} from "./users/users.entity";
 
 @Injectable()
 export class AppService {
@@ -56,5 +57,11 @@ export class AppService {
       const [code, encryptedCode] = await this.authenticatorService.createCode(user, Operations.CONFIRM_RESET_PASSWORD);
       const url = await this.mailService.getResetPasswordUrl(req, encryptedCode);
       const job = await this.mailService.sendResetPasswordEmail(user, code, url);
+  }
+
+  async checkCode(encryptedCode: string): Promise<boolean> {
+      const decryptedCode = await this.authenticatorService.decryptCode(encryptedCode);
+      const [isValidCode, operation] = await this.authenticatorService.checkCode(decryptedCode, false, Operations.CONFIRM_RESET_PASSWORD)
+      return isValidCode
   }
 }
