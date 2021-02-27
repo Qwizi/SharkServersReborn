@@ -69,7 +69,7 @@ export class AuthenticatorService implements OnModuleInit {
         return [code, encryptedCode]
     }
 
-    async checkCode(code: string, deactivate: boolean = false, type?: Operations): Promise<[boolean, Operation | undefined]> {
+    async checkCode(code: string, deactivate: boolean = true, type?: Operations): Promise<[boolean, Operation | undefined]> {
         const key = `code:${code}`
         const operation: Operation = await this.cacheManager.get<Operation>(key)
         const expression = type ? operation && operation.is_active && operation.type === type : operation && operation.is_active;
