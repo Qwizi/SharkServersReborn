@@ -35,7 +35,7 @@ export class OperationsService implements OnModuleInit {
         operation.code = updateOperationDto.code || operation.code;
         operation.type = updateOperationDto.type || operation.type;
         operation.user = updateOperationDto.user || operation.user;
-        operation.is_active = updateOperationDto.is_active || operation.is_active;
+        operation.is_active = updateOperationDto.is_active !== undefined ? updateOperationDto.is_active : updateOperationDto.is_active;
         await this.operationsService.save(operation);
         return operation;
     }
