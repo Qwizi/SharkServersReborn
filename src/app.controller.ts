@@ -19,6 +19,7 @@ import {UsersService} from "./users/users.service";
 import {Operations} from "./authenticator/operations.enums";
 import {ActivateAccountCodeDto} from "./authenticator/dto/activeteAccountCode.dto";
 import {ResendActivateAccountEmailDto} from "./authenticator/dto/resendActivateAccountEmail.dto";
+import {ResetPasswordDto} from "./authenticator/dto/resetPassword.dto";
 
 @Controller()
 export class AppController {
@@ -70,6 +71,15 @@ export class AppController {
       @Req() req
   ) {
     return this.appService.resendActivateAccountEmail(resentActivateAccountEmailDto, req)
+  }
+
+  @HttpCode(200)
+  @Post('reset-password')
+  async sendResetPasswordEmail(
+      @Body() resetPasswordDto: ResetPasswordDto,
+      @Req() req
+  ) {
+    return this.appService.sendResetPasswordEmail(resetPasswordDto, req);
   }
 
   @UseGuards(AuthenticatedGuard)
