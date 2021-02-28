@@ -8,7 +8,7 @@ import {MailService} from "./mail/mail.service";
 import {AuthService} from "./auth/auth.service";
 import {Request} from "express";
 import {ResetPasswordDto} from "./authenticator/dto/resetPassword.dto";
-import {User} from "./users/users.entity";
+import {ResetPasswordPostDto} from "./authenticator/dto/resetPasswordPost.dto";
 
 @Injectable()
 export class AppService {
@@ -63,5 +63,21 @@ export class AppService {
       const decryptedCode = await this.authenticatorService.decryptCode(encryptedCode);
       const [isValidCode, operation] = await this.authenticatorService.checkCode(decryptedCode, false, Operations.CONFIRM_RESET_PASSWORD)
       return isValidCode
+  }
+
+  async resetPassword(resetPasswordPostDto: ResetPasswordPostDto) {
+      try {
+          const {encrypted_code, new_password} = resetPasswordPostDto;
+
+          const decryptedCode = await this.authenticatorService.decryptCode(encrypted_code);
+          const [isValidCode, operation] = await this.authenticatorService.checkCode(decryptedCode, true, Operations.CONFIRM_RESET_PASSWORD);
+          if (isValidCode) {
+              const {user} = operation;
+              const hashedPassword = await this.usersService.createHashedPassword(new_password);
+              await this.usersService.update(user, {password: hashedPassword});
+          }
+      } catch (e) {
+          throw new BadRequestException(e.message);
+      }
   }
 }

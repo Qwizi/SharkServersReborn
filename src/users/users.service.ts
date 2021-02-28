@@ -66,6 +66,10 @@ export class UsersService implements OnModuleInit {
         return this.update(user, {is_active: false});
     }
 
+    async createHashedPassword(password: string) {
+        return bcrypt.hash(password, 10);
+    }
+
     async register(registerUserDto: RegisterUserDto): Promise<User> {
         const {username, password, email} = registerUserDto;
         const userExist = await this.findOne({
@@ -76,7 +80,7 @@ export class UsersService implements OnModuleInit {
         })
         if (userExist) throw new BadRequestException('User exists');
 
-        const passwordHashed = await bcrypt.hash(password, 10);
+        const passwordHashed = await this.createHashedPassword(password);
         const userRole = await this.rolesService.findOne({where: {name: 'Uzytkowni'}});
         return this.create({
             username: username,
