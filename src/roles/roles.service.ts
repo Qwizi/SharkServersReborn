@@ -1,7 +1,7 @@
 import {Injectable, Logger, OnModuleInit} from '@nestjs/common';
 import {InjectRepository} from "@nestjs/typeorm";
 import {Role} from "./roles.entity";
-import { Repository} from "typeorm";
+import {In, Repository} from "typeorm";
 import {CreateRoleDto} from "./dto/createRole.dto";
 import {PermissionsService} from "../permissions/permissions.service";
 import {FindManyOptions} from "typeorm/find-options/FindManyOptions";
@@ -9,6 +9,7 @@ import {FindOneOptions} from "typeorm/find-options/FindOneOptions";
 import {RemoveOptions} from "typeorm/browser";
 import {UpdateRoleDto} from "./dto/updateRole.dto";
 import {DefaultRoles} from "./roles.enums";
+import {Perms} from "../permissions/permissions.enum";
 
 @Injectable()
 export class RolesService implements OnModuleInit {
@@ -84,13 +85,25 @@ export class RolesService implements OnModuleInit {
 
     async createDefaultRoles() {
         const adminPermissions = await this.permissionsService.find();
+        const usersPermissions = await this.permissionsService.find({
+            where: {
+                module: 'profile',
+                value: In([
+                    Perms.SHOW_PROFILE,
+                    Perms.CHANGE_EMAIL,
+                    Perms.CHANGE_USERNAME,
+                    Perms.CHANGE_PASSWORD
+                ])
+            }
+        })
         const adminRole = {
             name: DefaultRoles.Admin,
             color: 'red',
             permissions: adminPermissions
         };
         const userRole = {
-            name: DefaultRoles.User
+            name: DefaultRoles.User,
+            permissions: usersPermissions
         }
 
         const rolesToCreate = [adminRole, userRole];

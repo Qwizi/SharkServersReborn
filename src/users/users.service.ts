@@ -89,4 +89,8 @@ export class UsersService implements OnModuleInit {
             roles: [userRole]
         })
     }
+
+    async comparePassword(password: string, hashedPassword: string, ) {
+        return !!bcrypt.compare(password, hashedPassword);
+    }
 }

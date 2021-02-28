@@ -11,9 +11,6 @@ import {
 } from '@nestjs/common';
 import { AppService } from './app.service';
 import {AuthenticatedGuard} from "./auth/guards/authenticated.guard";
-import {AuthenticatorService} from "./authenticator/authenticator.service";
-import {UsersService} from "./users/users.service";
-import {Operations} from "./authenticator/operations.enums";
 import {ActivateAccountCodeDto} from "./authenticator/dto/activeteAccountCode.dto";
 import {ResendActivateAccountEmailDto} from "./authenticator/dto/resendActivateAccountEmail.dto";
 import {ResetPasswordDto} from "./authenticator/dto/resetPassword.dto";
@@ -31,13 +28,6 @@ export class AppController {
 
   @Get()
   getHello(): string {
-    return this.appService.getHello();
-  }
-
-  @UseGuards(AuthenticatedGuard)
-  @Perms('users.create', 'users.find_one')
-  @Get('hello')
-  getHelloAdmin(): string {
     return this.appService.getHello();
   }
 
@@ -110,11 +100,5 @@ export class AppController {
       @Body() resetPasswordPostDto: ResetPasswordPostDto
   ) {
     return this.appService.resetPassword(resetPasswordPostDto);
-  }
-
-  @UseGuards(AuthenticatedGuard)
-  @Get('profile')
-  async profile(@Req() req)  {
-    return req.user;
   }
 }
