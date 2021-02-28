@@ -15,6 +15,8 @@ import {Operation} from "./authenticator/operation.entity";
 import {MailModule} from "./mail/mail.module";
 import { AuthModule } from './auth/auth.module';
 import {BullModule} from "@nestjs/bull";
+import { ProfileModule } from './profile/profile.module';
+import {Perms} from "./permissions/permissions.enum";
 
 @Module({
   imports: [
@@ -47,6 +49,7 @@ import {BullModule} from "@nestjs/bull";
       AuthenticatorModule,
       UsersModule,
       AuthModule,
+      ProfileModule,
       PermissionsModule.register({
           modules: [
               {
@@ -60,7 +63,16 @@ import {BullModule} from "@nestjs/bull";
               {
                   module: UsersModule.name,
                   permissions: permissionsDefault
-              }
+              },
+              {
+                  module: ProfileModule.name,
+                  permissions: [
+                      Perms.SHOW_PROFILE,
+                      Perms.CHANGE_EMAIL,
+                      Perms.CHANGE_PASSWORD,
+                      Perms.CHANGE_USERNAME
+                  ]
+              },
           ]
       })
   ],

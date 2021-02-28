@@ -3,5 +3,9 @@ export enum Perms {
     FIND = "find",
     FIND_ONE = "find_one",
     UPDATE = 'update',
-    DELETE = 'delete'
+    DELETE = 'delete',
+    SHOW_PROFILE = 'show_profile',
+    CHANGE_PASSWORD = 'change_password',
+    CHANGE_EMAIL = 'change_email',
+    CHANGE_USERNAME = 'change_username'
 }
