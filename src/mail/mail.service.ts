@@ -71,6 +71,17 @@ export class MailService implements OnModuleInit {
         })
     }
 
+    async sendChangeEmail(user: User, code: string, url: string) {
+        return this.addToQueue({
+            user: user,
+            url: url,
+            code: code,
+            subject: 'SharkServersReborn - Zmiana emaila',
+            template: 'change-email',
+            context: {url: url}
+        })
+    }
+
     async getUrl(req: Request) {
         return `${req.protocol}://${req.get('host')}`;
     }
@@ -83,5 +94,10 @@ export class MailService implements OnModuleInit {
     async getResetPasswordUrl(req: Request, encryptedCode: string) {
         const url = await this.getUrl(req);
         return `${url}/reset-password/?code=${encryptedCode}`
+    }
+
+    async getChangeEmailUrl(req: Request, encryptedCode: string, email: string) {
+        const url = await this.getUrl(req);
+        return `${url}/profile/email/?email=${email}&?code=${encryptedCode}`
     }
 }
