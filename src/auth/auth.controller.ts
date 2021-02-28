@@ -39,6 +39,6 @@ export class AuthController {
     @Get('logout')
     logout(@Req() req, @Res() res) {
         req.logout();
-        res.redirect('/')
+        res.redirect('/api/')
     }
 }

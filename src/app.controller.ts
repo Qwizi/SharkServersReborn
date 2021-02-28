@@ -3,12 +3,9 @@ import {
   Controller,
   Get,
   HttpCode,
-  HttpStatus,
   Logger,
-  Param,
   Post, Query,
   Req,
-  Request,
   Res,
   UseGuards
 } from '@nestjs/common';
@@ -21,6 +18,7 @@ import {ActivateAccountCodeDto} from "./authenticator/dto/activeteAccountCode.dt
 import {ResendActivateAccountEmailDto} from "./authenticator/dto/resendActivateAccountEmail.dto";
 import {ResetPasswordDto} from "./authenticator/dto/resetPassword.dto";
 import {ResetPasswordPostDto} from "./authenticator/dto/resetPasswordPost.dto";
+import {Perms} from "./auth/decorators/permissions.decorator";
 
 @Controller()
 export class AppController {
@@ -33,6 +31,13 @@ export class AppController {
 
   @Get()
   getHello(): string {
+    return this.appService.getHello();
+  }
+
+  @UseGuards(AuthenticatedGuard)
+  @Perms('users.create', 'users.find_one')
+  @Get('hello')
+  getHelloAdmin(): string {
     return this.appService.getHello();
   }
 
