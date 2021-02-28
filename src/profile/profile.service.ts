@@ -2,6 +2,7 @@ import {BadRequestException, Injectable} from '@nestjs/common';
 import {UsersService} from "../users/users.service";
 import {User} from "../users/users.entity";
 import {ChangePasswordDto} from "./dto/changePassword.dto";
+import {ChangeUsernameDto} from "./dto/changeUsername.dto";
 
 @Injectable()
 export class ProfileService {
@@ -14,5 +15,12 @@ export class ProfileService {
         if (expression) throw new BadRequestException();
         const newPasswordHashed = await this.usersService.createHashedPassword(new_password);
         await this.usersService.update(user, {password: newPasswordHashed})
+    }
+
+    async changeUsername(user: User, changeUsernameDto: ChangeUsernameDto) {
+        const {username} = changeUsernameDto;
+        const usernameExists = await this.usersService.findOne({where: {username: username}})
+        if (usernameExists) throw new BadRequestException('This username is already taken')
+        await this.usersService.update(user, {username: username})
     }
 }
