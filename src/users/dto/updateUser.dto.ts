@@ -17,7 +17,7 @@ export class UpdateUserDto {
 
     @IsOptional()
     @IsBoolean()
-    is_active: boolean;
+    is_active?: boolean;
 
     @ValidateNested()
     @IsOptional()

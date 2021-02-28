@@ -20,6 +20,7 @@ import {Operations} from "./authenticator/operations.enums";
 import {ActivateAccountCodeDto} from "./authenticator/dto/activeteAccountCode.dto";
 import {ResendActivateAccountEmailDto} from "./authenticator/dto/resendActivateAccountEmail.dto";
 import {ResetPasswordDto} from "./authenticator/dto/resetPassword.dto";
+import {ResetPasswordPostDto} from "./authenticator/dto/resetPasswordPost.dto";
 
 @Controller()
 export class AppController {
@@ -74,7 +75,7 @@ export class AppController {
   }
 
   @HttpCode(200)
-  @Post('reset-password')
+  @Post('reset-password/send')
   async sendResetPasswordEmail(
       @Body() resetPasswordDto: ResetPasswordDto,
       @Req() req
@@ -87,8 +88,8 @@ export class AppController {
       @Query('code') encryptedCode: string,
       @Res() res
   ) {
-    if (!encryptedCode) return res.redirect('/');
     try {
+      if (!encryptedCode) return res.redirect('/');
       const isValidCode = await this.appService.checkCode(encryptedCode);
       if (!isValidCode) return res.redirect('/');
     } catch (e) {
@@ -96,6 +97,14 @@ export class AppController {
       return res.redirect('/')
     }
     return res.status(200).json({msg: 'tutaj bedzie formularz'})
+  }
+
+  @HttpCode(200)
+  @Post('reset-password')
+  async resetPasswordPost(
+      @Body() resetPasswordPostDto: ResetPasswordPostDto
+  ) {
+    return this.appService.resetPassword(resetPasswordPostDto);
   }
 
   @UseGuards(AuthenticatedGuard)
