@@ -104,9 +104,10 @@ export class AuthenticatorService implements OnModuleInit {
     }
 
     async deactivateConfirmCodes(user: User, type: Operations = Operations.CONFIRM_EMAIL, isActive: boolean = false) {
-        const {operations} = user;
-        const filteredOperations = await this.filterOperations(operations, type, isActive);
-        await this.deactivateCodes(filteredOperations);
+        if (user.operations || user.operations.length > 0) {
+            const filteredOperations = await this.filterOperations(user.operations, type, isActive);
+            await this.deactivateCodes(filteredOperations);
+        }
     }
 
 }
