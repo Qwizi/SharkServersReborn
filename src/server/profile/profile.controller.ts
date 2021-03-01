@@ -20,12 +20,6 @@ export class ProfileController {
         return req.user;
     }
 
-    @Perms('profile.change_password')
-    @Get('password')
-    async changePasswordGet() {
-        return {msg: 'Tutaj bedzie formularz do zmiany hasla'}
-    }
-
     @HttpCode(200)
     @Perms('profile.change_password')
     @Post('password')
@@ -34,12 +28,6 @@ export class ProfileController {
         @Req() req
     ) {
         return this.profileService.changePassword(req.user.id, changePasswordDto)
-    }
-
-    @Perms('profile.change_username')
-    @Get('username')
-    async changeUsernameGet() {
-        return {msg: 'Tutaj bedzie formularz do zmiany username'}
     }
 
     @HttpCode(200)
