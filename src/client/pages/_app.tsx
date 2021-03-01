@@ -1,28 +1,30 @@
 import App, {AppProps, AppContext} from 'next/app'
 import Head from 'next/head'
-import { Layout } from 'antd';
-const { Header, Footer, Content } = Layout;
+import '../style.css';
+import {Container, Navbar} from "react-bootstrap";
+import 'bootstrap/dist/css/bootstrap.min.css';
 
 const MyApp = ({Component, pageProps}: AppProps) => {
     return (
         <div>
             <Head>
-                <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/antd/4.13.0/antd.min.css"
-                      integrity="sha512-ZXdNxOkLO3JhY/OLmPI6YjDfdGtBl2wMzt78E7MuAL5X6enqgDdAYGn99rx13hIk21aIU5inTWYV7BoWnde75w=="
-                      crossOrigin="anonymous"/>
-                <script src="https://cdnjs.cloudflare.com/ajax/libs/antd/4.13.0/antd.min.js"
-                        integrity="sha512-fkbwTze2hwdgHtMbHXwiYfYwWm9Pi1sEoEJELt7fw605F6QSTxPdfXmxy1ZByInkuv6Ek6vnJYPNwKoZfmhqrQ=="
-                        crossOrigin="anonymous">
-                </script>
-                <title>SharkServersReborn</title>
+                <script src="https://unpkg.com/react/umd/react.production.min.js"/>
+                <script
+                    src="https://unpkg.com/react-dom/umd/react-dom.production.min.js"/>
+                <script
+                    src="https://unpkg.com/react-bootstrap@next/dist/react-bootstrap.min.js"/>
+                <title>SharkServers - Reborn</title>
             </Head>
-            <Layout className="layout">
-                <Header>header</Header>
-                <Content style={{ padding: '0 50px' }}>
-                    <Component {...pageProps} />
-                </Content>
-                <Footer/>
-            </Layout>
+            <Navbar bg="dark" variant="dark">
+                <Container>
+                    <Navbar.Brand href="#home">
+                        SharkServersReborn
+                    </Navbar.Brand>
+                </Container>
+            </Navbar>
+            <Container style={{padding: '24px 16px 0'}}>
+                <Component {...pageProps} />
+            </Container>
         </div>
     )
 }
