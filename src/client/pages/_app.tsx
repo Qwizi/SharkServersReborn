@@ -1,7 +1,8 @@
 import App, {AppProps, AppContext} from 'next/app'
 import Head from 'next/head'
+import Link from 'next/link'
 import '../style.css';
-import {Container, Navbar} from "react-bootstrap";
+import {Container, Nav, Navbar} from "react-bootstrap";
 import 'bootstrap/dist/css/bootstrap.min.css';
 
 const MyApp = ({Component, pageProps}: AppProps) => {
@@ -17,9 +18,19 @@ const MyApp = ({Component, pageProps}: AppProps) => {
             </Head>
             <Navbar bg="dark" variant="dark">
                 <Container>
-                    <Navbar.Brand href="#home">
-                        SharkServersReborn
-                    </Navbar.Brand>
+                    <Link href={"/"} passHref>
+                        <Navbar.Brand>
+                            SharkServersReborn
+                        </Navbar.Brand>
+                    </Link>
+                    <Navbar.Collapse className="justify-content-end">
+                        <Nav>
+                            <Nav.Link href="#home">Zaloguj</Nav.Link>
+                            <Link href={"/register"} passHref>
+                                <Nav.Link href="#features">Zarejestruj</Nav.Link>
+                            </Link>
+                        </Nav>
+                    </Navbar.Collapse>
                 </Container>
             </Navbar>
             <Container style={{padding: '24px 16px 0'}}>
