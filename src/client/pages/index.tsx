@@ -8,7 +8,7 @@ export const getServerSideProps = async () => {
     return {props: {data}}
 }
 
-const Home: NextPage = ({data}: InferGetServerSidePropsType<typeof getServerSideProps>) => {
+const Home: ({data}: InferGetServerSidePropsType<() => Promise<{ props: { data: any } }>>) => JSX.Element = ({data}: InferGetServerSidePropsType<typeof getServerSideProps>) => {
     return <h1>{data.msg}</h1>
 }
 
