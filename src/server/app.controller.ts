@@ -6,16 +6,13 @@ import {
   Logger,
   Post, Query,
   Req,
-  Res,
-  UseGuards
+  Res
 } from '@nestjs/common';
 import { AppService } from './app.service';
-import {AuthenticatedGuard} from "./auth/guards/authenticated.guard";
 import {ActivateAccountCodeDto} from "./authenticator/dto/activeteAccountCode.dto";
 import {ResendActivateAccountEmailDto} from "./authenticator/dto/resendActivateAccountEmail.dto";
 import {ResetPasswordDto} from "./authenticator/dto/resetPassword.dto";
 import {ResetPasswordPostDto} from "./authenticator/dto/resetPasswordPost.dto";
-import {Perms} from "./auth/decorators/permissions.decorator";
 
 @Controller('api')
 export class AppController {
