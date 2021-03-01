@@ -52,11 +52,6 @@ export class AppController {
     return await this.appService.activateAccount(activateAccountCodeDto);
   }
 
-  @Get('activate-account/resend')
-  async resendActivateAccountEmailGet() {
-    return {msg: 'tutaj bedzie formularz'}
-  }
-
   @HttpCode(200)
   @Post('activate-account/resend')
   async resendActivateAccountEmailPost(

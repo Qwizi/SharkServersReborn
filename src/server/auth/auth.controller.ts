@@ -19,11 +19,6 @@ export class AuthController {
         return await this.authService.registerUser(registerUserDto, req);
     }
 
-    @Get('register')
-    async registerGet() {
-        return;
-    }
-
 
     @UseGuards(LoginGuard)
     @Post('login')
@@ -31,14 +26,9 @@ export class AuthController {
         return req.user;
     }
 
-    @Get('login')
-    async loginGet() {
-        return;
-    }
-
     @Get('logout')
     logout(@Req() req, @Res() res) {
         req.logout();
-        res.redirect('/api/')
+        res.redirect('/')
     }
 }
