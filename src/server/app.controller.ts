@@ -53,6 +53,14 @@ export class AppController {
   }
 
   @HttpCode(200)
+  @Post('activate-account/encrypted')
+  async activateAccountEncryptedCodePost(
+      @Body() activateAccountCodeDto
+  ) {
+      return await this.appService.activateAccountEncryptedCode(activateAccountCodeDto.code);
+  }
+
+  @HttpCode(200)
   @Post('activate-account/resend')
   async resendActivateAccountEmailPost(
       @Body() resentActivateAccountEmailDto: ResendActivateAccountEmailDto,
