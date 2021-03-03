@@ -5,6 +5,7 @@ import {Alert, Button, Col, Form, Row} from "react-bootstrap";
 import {useRouter} from "next/router";
 import axios from "axios";
 import {async} from "rxjs";
+import Link from "next/link";
 
 interface Error {
     statusCode: number;
@@ -108,6 +109,9 @@ const Index: ({data}: InferGetServerSidePropsType<() => Promise<{ props: { data:
                             placeholder="Wpisz kod"
                             onChange={(e) => setCode(e.target.value.toUpperCase())}
                         />
+                        <Form.Text className="text-muted">
+                            <Link href={"/activate-account/resend"}>Wyślij ponownie kod</Link>
+                        </Form.Text>
                     </Form.Group>
                     {btn}
                 </Form>

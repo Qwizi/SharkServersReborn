@@ -9,6 +9,7 @@ import {AuthService} from "./auth/auth.service";
 import {Request} from "express";
 import {ResetPasswordDto} from "./authenticator/dto/resetPassword.dto";
 import {ResetPasswordPostDto} from "./authenticator/dto/resetPasswordPost.dto";
+import {CheckResetPasswordDto} from "./authenticator/dto/checkResetPassword.dto";
 
 @Injectable()
 export class AppService {
@@ -74,10 +75,16 @@ export class AppService {
         const job = await this.mailService.sendResetPasswordEmail(user, code, url);
     }
 
-    async checkCode(encryptedCode: string): Promise<boolean> {
-        const decryptedCode = await this.authenticatorService.decryptCode(encryptedCode);
-        const [isValidCode, operation] = await this.authenticatorService.checkCode(decryptedCode, false, Operations.CONFIRM_RESET_PASSWORD)
-        return isValidCode
+    async checkCode(checkResetPasswordDto: CheckResetPasswordDto): Promise<object> {
+        try {
+            const decryptedCode = await this.authenticatorService.decryptCode(checkResetPasswordDto.encrypted_code);
+            const [isValidCode, operation] = await this.authenticatorService.checkCode(decryptedCode, false, Operations.CONFIRM_RESET_PASSWORD)
+            return {status: isValidCode}
+        } catch (e) {
+            this.logger.error(e.message)
+            return {status: false}
+        }
+
     }
 
     async resetPassword(resetPasswordPostDto: ResetPasswordPostDto) {
