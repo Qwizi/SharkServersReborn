@@ -13,6 +13,7 @@ import {ActivateAccountCodeDto} from "./authenticator/dto/activeteAccountCode.dt
 import {ResendActivateAccountEmailDto} from "./authenticator/dto/resendActivateAccountEmail.dto";
 import {ResetPasswordDto} from "./authenticator/dto/resetPassword.dto";
 import {ResetPasswordPostDto} from "./authenticator/dto/resetPasswordPost.dto";
+import {CheckResetPasswordDto} from "./authenticator/dto/checkResetPassword.dto";
 
 @Controller('api')
 export class AppController {
@@ -78,20 +79,11 @@ export class AppController {
     return this.appService.sendResetPasswordEmail(resetPasswordDto, req);
   }
 
-  @Get('reset-password')
+  @Post('reset-password/check')
   async resetPasswordGet(
-      @Query('code') encryptedCode: string,
-      @Res() res
+      @Body() checkResetPassword: CheckResetPasswordDto
   ) {
-    try {
-      if (!encryptedCode) return res.redirect('/');
-      const isValidCode = await this.appService.checkCode(encryptedCode);
-      if (!isValidCode) return res.redirect('/');
-    } catch (e) {
-      this.logger.error(e.message);
-      return res.redirect('/')
-    }
-    return res.status(200).json({msg: 'tutaj bedzie formularz'})
+    return this.appService.checkCode(checkResetPassword);
   }
 
   @HttpCode(200)

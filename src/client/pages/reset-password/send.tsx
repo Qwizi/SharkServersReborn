@@ -1,10 +1,11 @@
 import React, {useEffect, useState} from 'react'
-import { NextPage} from 'next'
-import { InferGetServerSidePropsType } from 'next'
+import {NextPage} from 'next'
+import {InferGetServerSidePropsType} from 'next'
 import {Alert, Button, Col, Form, Row} from "react-bootstrap";
 import {useRouter} from "next/router";
 import axios from "axios";
 import {async} from "rxjs";
+import Link from "next/link";
 
 interface Error {
     statusCode: number;
@@ -18,7 +19,7 @@ export const getServerSideProps = async () => {
     return {props: {data}}
 }
 
-const Resend: ({data}: InferGetServerSidePropsType<() => Promise<{ props: { data: any } }>>) => JSX.Element = ({data}: InferGetServerSidePropsType<typeof getServerSideProps>) => {
+const ResetPassword: ({data}: InferGetServerSidePropsType<() => Promise<{ props: { data: any } }>>) => JSX.Element = ({data}: InferGetServerSidePropsType<typeof getServerSideProps>) => {
     const [email, setEmail] = useState('');
     const [btnStatus, setBtnStatus] = useState(true);
     const [successAlertStatus, setSuccessAlertStatus] = useState(false);
@@ -27,6 +28,7 @@ const Resend: ({data}: InferGetServerSidePropsType<() => Promise<{ props: { data
     const router = useRouter()
 
     useEffect(() => {
+
         return () => {
             setBtnStatus(true)
             setSuccessAlertStatus(false)
@@ -41,17 +43,17 @@ const Resend: ({data}: InferGetServerSidePropsType<() => Promise<{ props: { data
         return () => setSuccessAlertStatus(false);
     }, [router.query.success])
 
-    const handleFormSubmit = async (e) => {
+    const handleFormSendEmailSubmit = async (e) => {
         try {
             e.preventDefault();
             console.log('Wyslany formularz')
-            const response = await axios.post('/api/activate-account/resend', {
+            const response = await axios.post('/api/reset-password/send', {
                 email: email
             })
             if (response.status === 200) {
                 setBtnStatus(false);
                 setEmail('');
-                await router.push('/activate-account?success=1', undefined, {shallow: true})
+                await router.push('/reset-password/send?success=1', undefined, {shallow: true})
             }
         } catch (e) {
             console.log(e.message);
@@ -61,23 +63,24 @@ const Resend: ({data}: InferGetServerSidePropsType<() => Promise<{ props: { data
     }
 
     let btn;
-    btn = btnStatus ? <Button variant="primary" type="submit"> Aktywuj </Button> : <Button variant="primary" type="submit" disabled> Aktywuj </Button>
+    btn = btnStatus ? <Button variant="primary" type="submit"> Przypomnij </Button> :
+        <Button variant="primary" type="submit" disabled> Przypomnij </Button>
 
     return (
         <Row className="justify-content-md-center">
             <Col lg={6}>
                 {successAlertStatus && (
                     <Alert variant="success">
-                        Pomyślnie aktywowano konto
+                        Wyslano link do formularza zmiany hasla na twoj adres email
                     </Alert>
                 )}
-                <h2 className="text-center">Wyslij ponownie kod aktywacyjny</h2>
+                <h1 className="text-center">Przypomnij haslo</h1>
                 {errors && (
                     <Alert variant="danger">
                         {errors.message}
                     </Alert>
                 )}
-                <Form method={"post"} onSubmit={handleFormSubmit}>
+                <Form method={"post"} onSubmit={handleFormSendEmailSubmit}>
                     <Form.Group controlId="formCode">
                         <Form.Label>Email</Form.Label>
                         <Form.Control
@@ -95,4 +98,4 @@ const Resend: ({data}: InferGetServerSidePropsType<() => Promise<{ props: { data
     )
 }
 
-export default Resend
+export default ResetPassword
