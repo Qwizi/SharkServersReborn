@@ -2,14 +2,15 @@ import React from 'react'
 import { NextPage } from 'next'
 import { InferGetServerSidePropsType } from 'next'
 
-export const getServerSideProps = async () => {
-    const res = await fetch('http://localhost:3000/api')
-    const data = await res.json();
+export const getServerSideProps = async (context) => {
+    const data = {
+        //user: context.req.user || null
+    }
     return {props: {data}}
 }
 
-const Home: ({data}: InferGetServerSidePropsType<() => Promise<{ props: { data: any } }>>) => JSX.Element = ({data}: InferGetServerSidePropsType<typeof getServerSideProps>) => {
-    return <h1>{data.msg}</h1>
+const Index: ({data}: InferGetServerSidePropsType<() => Promise<{ props: { data: any } }>>) => JSX.Element = ({data}: InferGetServerSidePropsType<typeof getServerSideProps>) => {
+    return <h1>{JSON.stringify(data)}</h1>
 }
 
-export default Home
+export default Index

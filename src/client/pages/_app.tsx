@@ -4,8 +4,30 @@ import Link from 'next/link'
 import '../style.css';
 import {Container, Nav, Navbar} from "react-bootstrap";
 import 'bootstrap/dist/css/bootstrap.min.css';
+import {useEffect} from "react";
 
 const MyApp = ({Component, pageProps}: AppProps) => {
+    useEffect(() => {
+        console.log(pageProps);
+    }, []);
+    let navLinks;
+    if (!pageProps.ctx || !pageProps.ctx.req || !pageProps.ctx.req.user) {
+        navLinks  = <Nav>
+            <Nav.Link href="#home">Zaloguj</Nav.Link>
+            <Link href={"/register"} passHref>
+                <Nav.Link href="#features">Zarejestruj</Nav.Link>
+            </Link>
+        </Nav>
+    } else {
+        navLinks  =
+            <Nav>
+                <Link href={"/api/auth/logout"} passHref>
+                    <Nav.Link href="">Wyloguj</Nav.Link>
+                </Link>
+
+            </Nav>
+    }
+
     return (
         <div>
             <Head>
@@ -24,12 +46,7 @@ const MyApp = ({Component, pageProps}: AppProps) => {
                         </Navbar.Brand>
                     </Link>
                     <Navbar.Collapse className="justify-content-end">
-                        <Nav>
-                            <Nav.Link href="#home">Zaloguj</Nav.Link>
-                            <Link href={"/register"} passHref>
-                                <Nav.Link href="#features">Zarejestruj</Nav.Link>
-                            </Link>
-                        </Nav>
+                        {navLinks}
                     </Navbar.Collapse>
                 </Container>
             </Navbar>
@@ -43,7 +60,6 @@ const MyApp = ({Component, pageProps}: AppProps) => {
 // This disables the ability to perform automatic static optimization, causing every page in your app to be server-side rendered.
 MyApp.getInitialProps = async (appContext: AppContext) => {
     const appProps = await App.getInitialProps(appContext)
-
     return {...appProps}
 }
 
