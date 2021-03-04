@@ -27,8 +27,7 @@ export class AuthController {
     }
 
     @Get('logout')
-    logout(@Req() req, @Res() res) {
-        req.logout();
-        res.redirect('/')
+    async logout(@Req() req, @Res() res) {
+        await req.session.destroy()
     }
 }
