@@ -19,6 +19,9 @@ export const NavGuest = (props) => {
 export const NavLogged = (props) => {
     return (
         <Nav>
+            <Link href={"/profile"} passHref>
+                <Nav.Link>Profil</Nav.Link>
+            </Link>
             <Link href={"/auth/logout"} passHref>
                 <Nav.Link>Wyloguj</Nav.Link>
             </Link>

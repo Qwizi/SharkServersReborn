@@ -7,14 +7,15 @@ import {ProfileNav} from "../../components/profileNav.component";
 
 export const getServerSideProps = withAuthServerSideProps();
 
-const ProfileIndex = ({user}: { user: any }) => {
-    const [activeKey, setActiveKey] = useState('/profile');
+const ProfileUsername = ({user}: { user: any }) => {
+    const [activeKey, setActiveKey] = useState('/profile/username');
 
     const router = useRouter()
 
     useEffect(() => {
+        console.log(router.pathname)
         setActiveKey(router.pathname);
-    }, []);
+    }, [router.pathname]);
 
     return (
         <Row style={{marginTop: "50px"}}>
@@ -29,26 +30,11 @@ const ProfileIndex = ({user}: { user: any }) => {
                 <Card>
                     <Card.Body>
                         <Row>
-                            <Col><h1>Główne informacje</h1></Col>
+                            <Col><h1>Zmień nazwe użytkownika</h1></Col>
                         </Row>
                         <Row>
                             <Col>
-                                <p>Nazwa użytkownika: <span style={{color: user.roles[0].color}}>{user.username}</span></p>
-                            </Col>
-                        </Row>
-                        <Row>
-                            <Col>
-                                <p>Email: {user.email}</p>
-                            </Col>
-                        </Row>
-                        <Row>
-                            <Col>
-                                <p>Główna rola: <span style={{color: user.roles[0].color}}>{user.roles[0].name}</span></p>
-                            </Col>
-                        </Row>
-                        <Row>
-                            <Col>
-                                <p>Role: {user.roles.length}</p>
+                               Zmiana nazwy uzykownika
                             </Col>
                         </Row>
                     </Card.Body>
@@ -58,4 +44,4 @@ const ProfileIndex = ({user}: { user: any }) => {
     )
 }
 
-export default withAuthComponent(ProfileIndex);
+export default withAuthComponent(ProfileUsername);
