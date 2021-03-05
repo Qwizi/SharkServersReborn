@@ -7,6 +7,4 @@ const Index = ({user}: {user:any}) => {
     return <h1>{user && (user.username)}</h1>
 }
 
-
-
 export default Index

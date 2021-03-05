@@ -1,7 +1,7 @@
 import React, {useEffect} from 'react'
 import { NextPage } from 'next'
 import { InferGetServerSidePropsType } from 'next'
-import {withAuthServerSideProps} from "../hocs/withAuth";
+import {withAuthServerSideProps} from "../../hocs/withAuth";
 import axios from "axios";
 import {useRouter} from "next/router";
 

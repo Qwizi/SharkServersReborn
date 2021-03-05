@@ -1,16 +1,15 @@
 import React, {useEffect} from 'react';
 import {Container, Nav, Navbar} from "react-bootstrap";
 import Link from "next/link";
-import {useAuth} from "../context/auth.context";
 import {withAuthServerSideProps} from "../hocs/withAuth";
 
 export const NavGuest = (props) => {
     return (
         <Nav>
-            <Link href={"/login"} passHref>
+            <Link href={"/auth/login"} passHref>
                 <Nav.Link href="/login">Zaloguj</Nav.Link>
             </Link>
-            <Link href={"/register"} passHref>
+            <Link href={"/auth/register"} passHref>
                 <Nav.Link href="/register">Zarejestruj</Nav.Link>
             </Link>
         </Nav>
@@ -20,8 +19,8 @@ export const NavGuest = (props) => {
 export const NavLogged = (props) => {
     return (
         <Nav>
-            <Link href={"/logout"} passHref>
-                <Nav.Link href="/logout">Wyloguj</Nav.Link>
+            <Link href={"/auth/logout"} passHref>
+                <Nav.Link>Wyloguj</Nav.Link>
             </Link>
         </Nav>
     )

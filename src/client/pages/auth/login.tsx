@@ -18,8 +18,9 @@ export const getServerSideProps = async (context) => {
     return {props: {data}}
 }
 
+/*const Login: ({data}: InferGetServerSidePropsType<() => Promise<{ props: { data: any } }>>) => JSX.Element = ({data}: InferGetServerSidePropsType<typeof getServerSideProps>) =>  {}*/
 
-const Login: ({data}: InferGetServerSidePropsType<() => Promise<{ props: { data: any } }>>) => JSX.Element = ({data}: InferGetServerSidePropsType<typeof getServerSideProps>) =>  {
+const Login = () =>  {
     const [username, setUsername] = useState('');
     const [password, setPassword] = useState('');
     const [btnStatus, setBtnStatus] = useState(true);
@@ -28,7 +29,6 @@ const Login: ({data}: InferGetServerSidePropsType<() => Promise<{ props: { data:
     const router = useRouter()
 
     useEffect(() => {
-        console.log(data);
         return () => setErrors(null);
     }, [])
 
