@@ -4,6 +4,7 @@ import {withAuthServerSideProps, withAuthComponent} from "../../hocs/withAuth";
 import {Card, Col, Nav, Row} from "react-bootstrap";
 import {useRouter} from "next/router";
 import {ProfileNav} from "../../components/profileNav.component";
+import {ProfileNavBody} from "../../components/profileNavBody.component";
 
 export const getServerSideProps = withAuthServerSideProps();
 
@@ -18,29 +19,16 @@ const ProfileUsername = ({user}: { user: any }) => {
     }, [router.pathname]);
 
     return (
-        <Row style={{marginTop: "50px"}}>
-            <Col lg={3}>
-                <Card>
-                    <Card.Body>
-                        <ProfileNav activeKey={activeKey} />
-                    </Card.Body>
-                </Card>
-            </Col>
-            <Col lg={8}>
-                <Card>
-                    <Card.Body>
-                        <Row>
-                            <Col><h1>Zmień nazwe użytkownika</h1></Col>
-                        </Row>
-                        <Row>
-                            <Col>
-                               Zmiana nazwy uzykownika
-                            </Col>
-                        </Row>
-                    </Card.Body>
-                </Card>
-            </Col>
-        </Row>
+        <ProfileNavBody activeKey={activeKey}>
+            <Row>
+                <Col><h1>Zmień nazwe użytkownika</h1></Col>
+            </Row>
+            <Row>
+                <Col>
+                    Zmiana nazwy uzykownika
+                </Col>
+            </Row>
+        </ProfileNavBody>
     )
 }
 
