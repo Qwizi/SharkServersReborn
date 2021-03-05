@@ -1,16 +1,12 @@
-import React from 'react'
-import { NextPage } from 'next'
-import { InferGetServerSidePropsType } from 'next'
+import React, {useEffect} from 'react'
+import {withAuthServerSideProps} from "../hocs/withAuth";
 
-export const getServerSideProps = async (context) => {
-    const data = {
-        //user: context.req.user || null
-    }
-    return {props: {data}}
+export const getServerSideProps = withAuthServerSideProps();
+
+const Index = ({user}: {user:any}) => {
+    return <h1>{user && (user.username)}</h1>
 }
 
-const Index: ({data}: InferGetServerSidePropsType<() => Promise<{ props: { data: any } }>>) => JSX.Element = ({data}: InferGetServerSidePropsType<typeof getServerSideProps>) => {
-    return <h1>{JSON.stringify(data)}</h1>
-}
+
 
 export default Index

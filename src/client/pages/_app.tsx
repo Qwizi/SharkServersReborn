@@ -1,33 +1,14 @@
 import App, {AppProps, AppContext} from 'next/app'
 import Head from 'next/head'
-import Link from 'next/link'
 import '../style.css';
-import {Container, Nav, Navbar} from "react-bootstrap";
+import {Container} from "react-bootstrap";
 import 'bootstrap/dist/css/bootstrap.min.css';
-import {useEffect} from "react";
+import {NavBar} from "../components/navbar.component";
+import {withAuthServerSideProps} from "../hocs/withAuth";
+
+export const getServerSideProps = withAuthServerSideProps();
 
 const MyApp = ({Component, pageProps}: AppProps) => {
-    useEffect(() => {
-        console.log(pageProps);
-    }, []);
-    let navLinks;
-    if (!pageProps.ctx || !pageProps.ctx.req || !pageProps.ctx.req.user) {
-        navLinks  = <Nav>
-            <Nav.Link href="#home">Zaloguj</Nav.Link>
-            <Link href={"/register"} passHref>
-                <Nav.Link href="#features">Zarejestruj</Nav.Link>
-            </Link>
-        </Nav>
-    } else {
-        navLinks  =
-            <Nav>
-                <Link href={"/api/auth/logout"} passHref>
-                    <Nav.Link href="">Wyloguj</Nav.Link>
-                </Link>
-
-            </Nav>
-    }
-
     return (
         <div>
             <Head>
@@ -38,21 +19,10 @@ const MyApp = ({Component, pageProps}: AppProps) => {
                     src="https://unpkg.com/react-bootstrap@next/dist/react-bootstrap.min.js"/>
                 <title>SharkServers - Reborn</title>
             </Head>
-            <Navbar bg="dark" variant="dark">
-                <Container>
-                    <Link href={"/"} passHref>
-                        <Navbar.Brand>
-                            SharkServersReborn
-                        </Navbar.Brand>
-                    </Link>
-                    <Navbar.Collapse className="justify-content-end">
-                        {navLinks}
-                    </Navbar.Collapse>
+                <NavBar user={pageProps.user}/>
+                <Container style={{padding: '24px 16px 0'}}>
+                    <Component {...pageProps} />
                 </Container>
-            </Navbar>
-            <Container style={{padding: '24px 16px 0'}}>
-                <Component {...pageProps} />
-            </Container>
         </div>
     )
 }

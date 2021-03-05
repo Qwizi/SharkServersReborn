@@ -2,6 +2,7 @@ import {Body, Controller, Get, HttpCode, Post, Req, Res, UseGuards} from '@nestj
 import {LoginGuard} from "./guards/login.guard";
 import {RegisterUserDto} from "../users/dto/registerUser.dto";
 import {AuthService} from "./auth.service";
+import {AuthenticatedGuard} from "./guards/authenticated.guard";
 
 @Controller('api/auth')
 export class AuthController {
@@ -26,8 +27,9 @@ export class AuthController {
         return req.user;
     }
 
-    @Get('logout')
-    async logout(@Req() req, @Res() res) {
-        await req.session.destroy()
+    @UseGuards(AuthenticatedGuard)
+    @Post('logout')
+    async logout(@Req() req) {
+        req.logout();
     }
 }
