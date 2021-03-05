@@ -4,6 +4,7 @@ import { InferGetServerSidePropsType } from 'next'
 import {Alert, Button, Col, Form, Row} from "react-bootstrap";
 import {useRouter} from "next/router";
 import axios from "axios";
+import App, {AppContext} from "next/app";
 
 interface Error {
     statusCode: number;
@@ -11,22 +12,23 @@ interface Error {
     error: string
 }
 
-/*export const getServerSideProps = async () => {
+export const getServerSideProps = async (context) => {
     const res = await fetch('http://localhost:3000/api')
     const data = await res.json();
     return {props: {data}}
-}*/
+}
 
-const Login: ({data}: InferGetServerSidePropsType<() => Promise<{ props: { data: any } }>>) => JSX.Element = () => {
+
+const Login: ({data}: InferGetServerSidePropsType<() => Promise<{ props: { data: any } }>>) => JSX.Element = ({data}: InferGetServerSidePropsType<typeof getServerSideProps>) =>  {
     const [username, setUsername] = useState('');
     const [password, setPassword] = useState('');
     const [btnStatus, setBtnStatus] = useState(true);
     const [successAlertStatus, setSuccessAlertStatus] = useState(false);
     const [errors, setErrors] = useState<Error | null>(null);
-
     const router = useRouter()
 
     useEffect(() => {
+        console.log(data);
         return () => setErrors(null);
     }, [])
 
@@ -45,24 +47,29 @@ const Login: ({data}: InferGetServerSidePropsType<() => Promise<{ props: { data:
                 username: username,
                 password: password
             })
-            if (response.status === 200) {
+            if (response.status === 201) {
                 setBtnStatus(false);
                 setUsername('');
                 setPassword('')
                 setTimeout(() => {
                     setBtnStatus(true)
                 }, 5000)
+                console.log(response.data);
+                //setUser(response.data);
                 await router.push('/', undefined,  {shallow: true})
             }
         } catch (e) {
             console.log(e.message)
-            console.log(e.response.data);
-            setErrors(e.response.data);
+            if (e.response) {
+                console.log(e.response.data);
+                setErrors(e.response.data);
+            }
+
         }
     }
 
     let btn;
-    btn = btnStatus ? <Button variant="primary" type="submit"> Zarejestruj </Button> : <Button variant="primary" type="submit" disabled> Zarejestruj </Button>
+    btn = btnStatus ? <Button variant="primary" type="submit"> Zaloguj </Button> : <Button variant="primary" type="submit" disabled> Zaloguj </Button>
 
     return (
         <Row className="justify-content-md-center">
