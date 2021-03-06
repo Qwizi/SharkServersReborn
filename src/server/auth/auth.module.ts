@@ -9,16 +9,20 @@ import {MailModule} from "../mail/mail.module";
 import {AuthenticatorModule} from "../authenticator/authenticator.module";
 import {APP_GUARD} from "@nestjs/core";
 import {PermissionsGuard} from "./guards/permissions.guard";
+import {SteamProfileModule} from "../steamprofile/steamProfile.module";
+import {SteamStrategy} from "./strategies/steam.strategy";
 
 @Module({
     imports: [
         UsersModule,
         PassportModule.register({session: true}),
         AuthenticatorModule,
-        MailModule
+        MailModule,
+        SteamProfileModule
     ],
     providers: [
         AuthService,
+        SteamStrategy,
         LocalStrategy,
         SessionSerializer,
         {

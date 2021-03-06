@@ -3,12 +3,14 @@ import {
     CreateDateColumn,
     Entity,
     JoinTable,
-    ManyToMany, OneToMany,
+    ManyToMany, OneToMany, OneToOne,
     PrimaryGeneratedColumn,
-    UpdateDateColumn
+    UpdateDateColumn,
+    JoinColumn
 } from "typeorm";
 import {Role} from "../roles/roles.entity";
 import {Operation} from "../authenticator/operation.entity";
+import {SteamProfile} from "../steamprofile/steamProfile.entity";
 
 @Entity()
 export class User {
@@ -44,6 +46,10 @@ export class User {
 
     @OneToMany(() => Operation, operation => operation.user)
     operations: Operation[];
+
+    @OneToOne(() => SteamProfile, steamProfile => steamProfile.user)
+    @JoinColumn()
+    steam_profile: SteamProfile
 
     @CreateDateColumn()
     public created_at: Date;

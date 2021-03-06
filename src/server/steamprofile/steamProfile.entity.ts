@@ -1,4 +1,5 @@
-import {Column, CreateDateColumn, Entity, PrimaryGeneratedColumn, UpdateDateColumn} from "typeorm";
+import {Column, CreateDateColumn, Entity, OneToOne, PrimaryGeneratedColumn, UpdateDateColumn} from "typeorm";
+import {User} from "../users/users.entity";
 
 @Entity()
 export class SteamProfile {
@@ -29,6 +30,9 @@ export class SteamProfile {
 
     @Column()
     url: string
+
+    @OneToOne(() => User, user => user.steam_profile)
+    user: User
 
     @CreateDateColumn()
     public created_at: Date;
