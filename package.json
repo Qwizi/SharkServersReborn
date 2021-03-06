@@ -18,7 +18,8 @@
     "test:watch": "jest --watch",
     "test:cov": "jest --coverage",
     "test:debug": "node --inspect-brk -r tsconfig-paths/register -r ts-node/register node_modules/.bin/jest --runInBand",
-    "test:e2e": "jest --config ./test/jest-e2e.json"
+    "test:e2e": "jest --config ./test/jest-e2e.json",
+    "build:client": "next build src/client/"
   },
   "dependencies": {
     "@nestjs-modules/mailer": "^1.5.1",
@@ -29,6 +30,7 @@
     "@nestjs/jwt": "^7.2.0",
     "@nestjs/passport": "^7.1.5",
     "@nestjs/platform-express": "^7.5.1",
+    "@nestjs/swagger": "^4.7.15",
     "@nestjs/typeorm": "^7.1.5",
     "antd": "^4.13.0",
     "axios": "^0.21.1",
@@ -55,6 +57,7 @@
     "reflect-metadata": "^0.1.13",
     "rimraf": "^3.0.2",
     "rxjs": "^6.6.3",
+    "swagger-ui-express": "^4.1.6",
     "typeorm": "^0.2.31"
   },
   "devDependencies": {
