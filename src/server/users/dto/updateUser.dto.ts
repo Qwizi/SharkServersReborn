@@ -7,6 +7,14 @@ export class UpdateUserDto {
     @IsOptional()
     username?: string;
 
+    @Length(6, 30)
+    @IsAlphanumeric()
+    @IsOptional()
+    display_name?: string;
+
+    @IsOptional()
+    avatar?: string;
+
     @Length(8, 40)
     @IsOptional()
     password?: string;

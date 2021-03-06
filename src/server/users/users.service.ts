@@ -46,6 +46,8 @@ export class UsersService implements OnModuleInit {
 
     async update(user: User, updateUserDto: UpdateUserDto): Promise<User> {
         user.username = updateUserDto.username || user.username;
+        user.display_name = updateUserDto.display_name || user.display_name;
+        user.avatar = updateUserDto.avatar || user.avatar;
         user.password = updateUserDto.password || user.password;
         user.email = updateUserDto.email || user.email;
         user.roles = updateUserDto.roles || user.roles;
@@ -84,6 +86,7 @@ export class UsersService implements OnModuleInit {
         const userRole = await this.rolesService.findOne({where: {name: 'Uzytkowni'}});
         return this.create({
             username: username,
+            display_name: username,
             password: passwordHashed,
             email: email,
             roles: [userRole]

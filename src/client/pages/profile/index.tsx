@@ -5,7 +5,7 @@ import {Card, Col, Nav, Row} from "react-bootstrap";
 import {useRouter} from "next/router";
 import {ProfileNav} from "../../components/profileNav.component";
 import {ProfileNavBody} from "../../components/profileNavBody.component";
-
+import Image from 'next/image'
 export const getServerSideProps = withAuthServerSideProps();
 
 const ProfileIndex = ({user}: { user: any }) => {
@@ -24,7 +24,12 @@ const ProfileIndex = ({user}: { user: any }) => {
             </Row>
             <Row>
                 <Col>
-                    <p>Nazwa użytkownika: <span style={{color: user.roles[0].color}}>{user.username}</span></p>
+                    <Image src={`/avatars/${user.avatar}`} alt="me" width="64" height="64" />
+                </Col>
+            </Row>
+            <Row>
+                <Col>
+                    <p>Nazwa wyświetlana: <span style={{color: user.roles[0].color}}>{user.display_name}</span></p>
                 </Col>
             </Row>
             <Row>

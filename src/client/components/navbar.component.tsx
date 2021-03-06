@@ -1,7 +1,8 @@
 import React, {useEffect} from 'react';
-import {Container, Nav, Navbar} from "react-bootstrap";
+import {Container, Nav, Navbar, NavDropdown} from "react-bootstrap";
 import Link from "next/link";
 import {withAuthServerSideProps} from "../hocs/withAuth";
+import Image from 'next/image'
 
 export const NavGuest = (props) => {
     return (
@@ -16,15 +17,18 @@ export const NavGuest = (props) => {
     )
 }
 
-export const NavLogged = (props) => {
+export const NavLogged = ({username, avatar}) => {
     return (
         <Nav>
-            <Link href={"/profile"} passHref>
-                <Nav.Link>Profil</Nav.Link>
-            </Link>
-            <Link href={"/auth/logout"} passHref>
-                <Nav.Link>Wyloguj</Nav.Link>
-            </Link>
+            <NavDropdown title={username} id="basic-nav-dropdown">
+                <Link href={"/profile"} passHref>
+                    <NavDropdown.Item href="#action/3.1">Profil</NavDropdown.Item>
+                </Link>
+                <NavDropdown.Divider />
+                <Link href={"/auth/logout"} passHref>
+                    <NavDropdown.Item href="#action/3.2">Wyloguj</NavDropdown.Item>
+                </Link>
+            </NavDropdown>
         </Nav>
     )
 }
@@ -36,17 +40,18 @@ export const NavBar = ({user}: {user: any}) => {
     }, [])
 
     let navLinks;
-    navLinks = user == null ? <NavGuest /> : <NavLogged />;
+    navLinks = user == null ? <NavGuest /> : <NavLogged username={user.display_name} avatar={user.avatar}/>;
 
     return (
-        <Navbar bg="dark" variant="dark">
+        <Navbar collapseOnSelect expand={"lg"} bg="dark" variant="dark">
             <Container>
                 <Link href={"/"} passHref>
                     <Navbar.Brand>
                         SharkServersReborn
                     </Navbar.Brand>
                 </Link>
-                <Navbar.Collapse className="justify-content-end">
+                <Navbar.Toggle aria-controls="responsive-navbar-nav" />
+                <Navbar.Collapse id="responsive-navbar-nav" className="justify-content-end">
                     {navLinks}
                 </Navbar.Collapse>
             </Container>

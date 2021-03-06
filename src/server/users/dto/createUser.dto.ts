@@ -6,6 +6,10 @@ export class CreateUserDto {
     @IsAlphanumeric()
     username: string;
 
+    @Length(6, 30)
+    @IsAlphanumeric()
+    display_name: string;
+
     @Length(8, 40)
     password: string;
 

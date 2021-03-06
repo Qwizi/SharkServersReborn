@@ -29,9 +29,9 @@ export class ProfileService {
 
     async changeUsername(user: User, changeUsernameDto: ChangeUsernameDto) {
         const {username} = changeUsernameDto;
-        const usernameExists = await this.usersService.findOne({where: {username: username}})
+        const usernameExists = await this.usersService.findOne({where: {display_name: username}})
         if (usernameExists) throw new BadRequestException('This username is already taken')
-        await this.usersService.update(user, {username: username})
+        await this.usersService.update(user, {display_name: username})
     }
 
     async sendChangeEmail(userId: number, req: Request, changeEmailDto: ChangeEmailDto) {

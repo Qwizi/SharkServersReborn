@@ -19,6 +19,14 @@ export class User {
     username: string;
 
     @Column()
+    display_name: string;
+
+    @Column(({
+        default: 'default_avatar.png'
+    }))
+    avatar: string;
+
+    @Column()
     email: string;
 
     @Column()
