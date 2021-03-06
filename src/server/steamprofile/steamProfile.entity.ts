@@ -8,10 +8,14 @@ export class SteamProfile {
     @Column()
     nickname: string;
 
-    @Column()
+    @Column({
+        unique: true
+    })
     steamid64: string;
 
-    @Column()
+    @Column({
+        unique: true
+    })
     steamid32: string;
 
     @Column()
@@ -22,6 +26,9 @@ export class SteamProfile {
 
     @Column()
     avatar_full: string;
+
+    @Column()
+    url: string
 
     @CreateDateColumn()
     public created_at: Date;
