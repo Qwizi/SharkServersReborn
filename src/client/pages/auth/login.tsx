@@ -5,6 +5,7 @@ import {Alert, Button, Col, Form, Row} from "react-bootstrap";
 import {useRouter} from "next/router";
 import axios from "axios";
 import App, {AppContext} from "next/app";
+import Link from 'next/link';
 
 interface Error {
     statusCode: number;
@@ -104,6 +105,11 @@ const Login = () =>  {
                             placeholder="Hasło"
                             onChange={(e) => setPassword(e.target.value)}
                         />
+                    </Form.Group>
+                    <Form.Group>
+                        <Form.Text className="text-muted">
+                            <Link href={"/reset-password/send"}> Zapomniałem hasła</Link>
+                        </Form.Text>
                     </Form.Group>
                     {btn}
                 </Form>
