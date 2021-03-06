@@ -40,6 +40,6 @@ export class AuthController {
         @Req() req,
         @Res() res
     ) {
-        res.redirect('/')
+        res.redirect('/profile/connectedAccounts')
     }
 }
