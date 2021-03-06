@@ -19,6 +19,7 @@ import { ProfileModule } from './profile/profile.module';
 import {Perms} from "./permissions/permissions.enum";
 import { ViewModule } from './view/view.module';
 import { SteamprofileModule } from './steamprofile/steamprofile.module';
+import {SteamProfile} from "./steamprofile/steamprofile.entity";
 
 @Module({
   imports: [
@@ -36,7 +37,8 @@ import { SteamprofileModule } from './steamprofile/steamprofile.module';
             Permission,
             Role,
             User,
-            Operation
+            Operation,
+            SteamProfile
         ],
         synchronize: true,
       }),
