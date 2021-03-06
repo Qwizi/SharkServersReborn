@@ -4,8 +4,6 @@ export const getServerSideProps = withAuthServerSideProps();
 import redirect from 'nextjs-redirect';
 import {useRouter} from "next/router";
 
-const Redirect = redirect(``)
-
 const ConnectAccountSteam = ({user}: { user: any }) => {
     const router = useRouter()
 

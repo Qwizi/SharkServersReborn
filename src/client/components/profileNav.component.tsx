@@ -25,6 +25,11 @@ export const ProfileNav = ({activeKey}) => {
                     <Nav.Link href="/profile/password" className="text-center">Hasło</Nav.Link>
                 </Link>
             </Nav.Item>
+            <Nav.Item>
+                <Link href={"/profile/connectedAccounts"} passHref>
+                    <Nav.Link href="/profile/connectedAccounts" className="text-center">Połaczone konta</Nav.Link>
+                </Link>
+            </Nav.Item>
         </Nav>
     )
 }
