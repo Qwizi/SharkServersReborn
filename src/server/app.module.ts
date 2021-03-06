@@ -18,6 +18,7 @@ import {BullModule} from "@nestjs/bull";
 import { ProfileModule } from './profile/profile.module';
 import {Perms} from "./permissions/permissions.enum";
 import { ViewModule } from './view/view.module';
+import { SteamprofileModule } from './steamprofile/steamprofile.module';
 
 @Module({
   imports: [
@@ -52,6 +53,7 @@ import { ViewModule } from './view/view.module';
       AuthModule,
       ProfileModule,
       ViewModule,
+      SteamprofileModule,
       PermissionsModule.register({
           modules: [
               {
