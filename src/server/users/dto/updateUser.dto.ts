@@ -1,5 +1,6 @@
 import {IsAlphanumeric, IsBoolean, IsEmail, IsOptional, Length, ValidateNested} from "class-validator";
 import {Role} from "../../roles/roles.entity";
+import {SteamProfile} from "../../steamprofile/steamProfile.entity";
 
 export class UpdateUserDto {
     @Length(6, 30)
@@ -30,4 +31,8 @@ export class UpdateUserDto {
     @ValidateNested()
     @IsOptional()
     roles?: Role[]
+
+    @ValidateNested()
+    @IsOptional()
+    steam_profile?: SteamProfile
 }

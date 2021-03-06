@@ -8,9 +8,7 @@ import * as SteamApi from 'steamapi';
 import * as SteamID from 'steamid';
 import {FindManyOptions} from "typeorm/find-options/FindManyOptions";
 import {FindOneOptions} from "typeorm/find-options/FindOneOptions";
-import {User} from "../users/users.entity";
 import {RemoveOptions} from "typeorm/browser";
-import {UpdateUserDto} from "../users/dto/updateUser.dto";
 import {UpdateSteamProfileDto} from "./dto/updateSteamProfile.dto";
 
 
@@ -23,7 +21,7 @@ export class SteamProfileService implements OnModuleInit {
     }
 
     async onModuleInit() {
-        console.log(await this.findOne());
+
     }
 
     async _create(createSteamProfileDto: CreateSteamProfileDto): Promise<SteamProfile> {

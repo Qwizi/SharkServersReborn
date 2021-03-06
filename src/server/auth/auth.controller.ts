@@ -3,6 +3,7 @@ import {LoginGuard} from "./guards/login.guard";
 import {RegisterUserDto} from "../users/dto/registerUser.dto";
 import {AuthService} from "./auth.service";
 import {AuthenticatedGuard} from "./guards/authenticated.guard";
+import { AuthGuard } from '@nestjs/passport';
 
 @Controller('api/auth')
 export class AuthController {
@@ -31,5 +32,14 @@ export class AuthController {
     @Post('logout')
     async logout(@Req() req) {
         req.logout();
+    }
+
+    @UseGuards(AuthenticatedGuard, AuthGuard('steam'))
+    @Get('connect-account/steam')
+    async connectSteamAccount(
+        @Req() req,
+        @Res() res
+    ) {
+        res.redirect('/')
     }
 }
