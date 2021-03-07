@@ -6,6 +6,8 @@ import {MailService} from "../mail/mail.service";
 import {AuthenticatorService} from "../authenticator/authenticator.service";
 import {Request} from "express";
 import {SteamProfileService} from "../steamprofile/steamProfile.service";
+import {User} from "../users/users.entity";
+import {DisconnectAccountDto} from "./dto/disconnectAccount.dto";
 @Injectable()
 export class AuthService {
     constructor(
@@ -57,5 +59,16 @@ export class AuthService {
             await this.usersService.update(user, {steam_profile: newSteamProfile})
         }
         return user;
+    }
+
+    async disconnectAccount(user: User, disconnectAccountDto: DisconnectAccountDto) {
+        const {account} = disconnectAccountDto;
+        console.log(account);
+        switch (account) {
+            case 'steam':
+                console.log(user);
+                await this.usersService.update(user, {steam_profile: null})
+                break;
+        }
     }
 }

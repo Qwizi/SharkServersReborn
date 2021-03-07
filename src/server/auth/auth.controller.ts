@@ -4,6 +4,7 @@ import {RegisterUserDto} from "../users/dto/registerUser.dto";
 import {AuthService} from "./auth.service";
 import {AuthenticatedGuard} from "./guards/authenticated.guard";
 import { AuthGuard } from '@nestjs/passport';
+import {DisconnectAccountDto} from "./dto/disconnectAccount.dto";
 
 @Controller('api/auth')
 export class AuthController {
@@ -14,7 +15,7 @@ export class AuthController {
 
     @Post('register')
     @HttpCode(200)
-    async registerPost(
+    async register(
         @Req() req,
         @Body() registerUserDto: RegisterUserDto
     ) {
@@ -24,7 +25,7 @@ export class AuthController {
 
     @UseGuards(LoginGuard)
     @Post('login')
-    async loginPost(@Req() req) {
+    async login(@Req() req) {
         return req.user;
     }
 
@@ -41,5 +42,15 @@ export class AuthController {
         @Res() res
     ) {
         res.redirect('/profile/connectedAccounts')
+    }
+
+    @UseGuards(AuthenticatedGuard)
+    @HttpCode(200)
+    @Post('disconnect-account')
+    async disconnectAccount(
+        @Req() req,
+        @Body() disconnectAccountDto: DisconnectAccountDto
+    ) {
+        return this.authService.disconnectAccount(req.user, disconnectAccountDto);
     }
 }

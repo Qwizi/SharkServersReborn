@@ -1,11 +1,10 @@
 import React, {useEffect, useState} from 'react'
-import Link from "next/link";
-import {withAuthServerSideProps, withAuthComponent} from "../../hocs/withAuth";
-import {Badge, Button, Card, Col, ListGroup, Nav, Row, Table} from "react-bootstrap";
+import {withAuthComponent, withAuthServerSideProps} from "../../hocs/withAuth";
+import {Badge, Button, Col, ListGroup, Row} from "react-bootstrap";
 import {useRouter} from "next/router";
-import {ProfileNav} from "../../components/profileNav.component";
 import {ProfileNavBody} from "../../components/profileNavBody.component";
-import Image from 'next/image'
+import api, {AccountTypes} from "../../uitils/api";
+
 export const getServerSideProps = withAuthServerSideProps();
 
 const ProfileIndex = ({user}: { user: any }) => {
@@ -19,11 +18,30 @@ const ProfileIndex = ({user}: { user: any }) => {
         setSteamConnected(!!user.steam_profile)
     }, []);
 
-    let steamProfileConnectedStatus;
-    steamProfileConnectedStatus = steamConnected ? <Badge variant="success">Połączono</Badge> : <Badge variant="secondary">Nie połaczono</Badge>
+    const disconnectAccount = async (account: AccountTypes) => {
+        try {
+            const response = await api.disconnectAccount(AccountTypes.STEAM);
+            if (response.status === 200) {
+                await router.push('/profile/connectedAccounts', undefined, {shallow: true})
+                setSteamConnected(false);
+            }
+        } catch (e) {
+            console.log(e);
+            if (e.response) {
+                console.log(e.response.data);
+            }
+        }
+    }
 
-    let btn;
-    btn = !steamConnected ? <Button variant="primary" onClick={() => router.push('/auth/connect-account/steam')}>Polacz</Button> : <Button variant="danger">Rozłącz</Button>
+    let steamProfileConnectedStatus;
+    steamProfileConnectedStatus = steamConnected
+        ? <Badge variant="success">Połączono</Badge>
+        : <Badge variant="secondary">Nie połaczono</Badge>
+
+    let steamConnectedBtn;
+    steamConnectedBtn = !steamConnected
+        ? <Button variant="primary" onClick={() => router.push('/auth/connect-account/steam')}>Polacz</Button>
+        : <Button variant="danger" onClick={() => disconnectAccount(AccountTypes.STEAM)}>Rozłącz</Button>
 
     return (
         <ProfileNavBody activeKey={activeKey}>
@@ -39,7 +57,7 @@ const ProfileIndex = ({user}: { user: any }) => {
                                     Steam {steamProfileConnectedStatus}
                                 </Col>
                                 <Col>
-                                    {btn}
+                                    {steamConnectedBtn}
                                 </Col>
                             </Row>
                         </ListGroup.Item>
