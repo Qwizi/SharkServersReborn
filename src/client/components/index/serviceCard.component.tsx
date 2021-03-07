@@ -15,7 +15,7 @@ export const ServiceCard = ({title, days, items}) => {
                 )}
             </ListGroup>
             <Card.Footer>
-                <Button variant={"primary"}>Kupuje</Button>
+
             </Card.Footer>
         </Card>
     )
