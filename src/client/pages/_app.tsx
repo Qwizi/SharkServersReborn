@@ -20,9 +20,23 @@ const MyApp = ({Component, pageProps}: AppProps) => {
                 <title>SharkServers - Reborn</title>
             </Head>
                 <NavBar user={pageProps.user}/>
-                <Container style={{padding: '24px 16px 0'}}>
-                    <Component {...pageProps} />
-                </Container>
+                <div className="header" style={{
+                    minHeight: '25vh',
+                    background: '#007bff'
+                }}/>
+                <div className="main" style={{
+                    margin: '-60px 30px 0px',
+                    borderRadius: '6px',
+                    boxShadow: '0 16px 24px 2px rgb(0 0 0 / 14%), 0 6px 30px 5px rgb(0 0 0 / 12%), 0 8px 10px -5px rgb(0 0 0 / 20%)',
+                    zIndex: 3,
+                    position: 'relative',
+                    paddingBottom: '150px',
+                    background: '#ffffff'
+                }}>
+                    <Container style={{padding: '24px 16px 0', background: '#ffffff'}}>
+                        <Component {...pageProps} />
+                    </Container>
+                </div>
         </div>
     )
 }
