@@ -51,7 +51,7 @@ export class UsersService implements OnModuleInit {
         user.password = updateUserDto.password || user.password;
         user.email = updateUserDto.email || user.email;
         user.roles = updateUserDto.roles || user.roles;
-        user.steam_profile = updateUserDto.steam_profile || user.steam_profile;
+        user.steam_profile = updateUserDto.steam_profile !== undefined ? updateUserDto.steam_profile : user.steam_profile;
         user.is_active = updateUserDto.is_active !== undefined ? updateUserDto.is_active : user.is_active;
         await this.usersRepository.save(user);
         return user;

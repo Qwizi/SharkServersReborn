@@ -1,9 +1,6 @@
 import React, {useEffect} from 'react';
 import {Container, Nav, Navbar, NavDropdown} from "react-bootstrap";
 import Link from "next/link";
-import {withAuthServerSideProps} from "../hocs/withAuth";
-import Image from 'next/image'
-
 export const NavGuest = (props) => {
     return (
         <Nav>

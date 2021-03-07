@@ -29,6 +29,11 @@ const ProfileIndex = ({user}: { user: any }) => {
             </Row>
             <Row>
                 <Col>
+                    <p>Nazwa konta: <span style={{color: user.roles[0].color}}>{user.username}</span></p>
+                </Col>
+            </Row>
+            <Row>
+                <Col>
                     <p>Nazwa wyświetlana: <span style={{color: user.roles[0].color}}>{user.display_name}</span></p>
                 </Col>
             </Row>
