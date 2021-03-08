@@ -57,6 +57,7 @@ import { NewsModule } from './news/news.module';
       ProfileModule,
       ViewModule,
       SteamProfileModule,
+      NewsModule,
       PermissionsModule.register({
           modules: [
               {
@@ -72,6 +73,10 @@ import { NewsModule } from './news/news.module';
                   permissions: permissionsDefault
               },
               {
+                  module: NewsModule.name,
+                  permissions: permissionsDefault
+              },
+              {
                   module: ProfileModule.name,
                   permissions: [
                       Perms.SHOW_PROFILE,
@@ -82,7 +87,6 @@ import { NewsModule } from './news/news.module';
               },
           ]
       }),
-      NewsModule
   ],
   controllers: [AppController],
   providers: [AppService],
