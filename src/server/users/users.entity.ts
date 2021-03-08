@@ -11,6 +11,7 @@ import {
 import {Role} from "../roles/roles.entity";
 import {Operation} from "../authenticator/operation.entity";
 import {SteamProfile} from "../steamprofile/steamProfile.entity";
+import {News} from "../news/news.entity";
 
 @Entity()
 export class User {
@@ -50,6 +51,9 @@ export class User {
     @OneToOne(() => SteamProfile, steamProfile => steamProfile.user)
     @JoinColumn()
     steam_profile: SteamProfile
+
+    @OneToMany(() => News, news => news.owner)
+    news: News[]
 
     @CreateDateColumn()
     public created_at: Date;

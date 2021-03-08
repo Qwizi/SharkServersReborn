@@ -21,6 +21,7 @@ import { ViewModule } from './view/view.module';
 import { SteamProfileModule } from './steamprofile/steamProfile.module';
 import {SteamProfile} from "./steamprofile/steamProfile.entity";
 import { NewsModule } from './news/news.module';
+import {News} from "./news/news.entity";
 
 @Module({
   imports: [
@@ -39,7 +40,8 @@ import { NewsModule } from './news/news.module';
             Role,
             User,
             Operation,
-            SteamProfile
+            SteamProfile,
+            News
         ],
         synchronize: true,
       }),
