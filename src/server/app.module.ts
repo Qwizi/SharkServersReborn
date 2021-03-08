@@ -20,6 +20,7 @@ import {Perms} from "./permissions/permissions.enum";
 import { ViewModule } from './view/view.module';
 import { SteamProfileModule } from './steamprofile/steamProfile.module';
 import {SteamProfile} from "./steamprofile/steamProfile.entity";
+import { NewsModule } from './news/news.module';
 
 @Module({
   imports: [
@@ -80,7 +81,8 @@ import {SteamProfile} from "./steamprofile/steamProfile.entity";
                   ]
               },
           ]
-      })
+      }),
+      NewsModule
   ],
   controllers: [AppController],
   providers: [AppService],
