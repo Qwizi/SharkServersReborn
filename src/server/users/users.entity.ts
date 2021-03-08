@@ -52,7 +52,7 @@ export class User {
     @JoinColumn()
     steam_profile: SteamProfile
 
-    @OneToMany(() => News, news => news.owner)
+    @OneToMany(() => News, news => news.author)
     news: News[]
 
     @CreateDateColumn()

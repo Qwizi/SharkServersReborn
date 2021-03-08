@@ -16,7 +16,7 @@ export class News {
     content: string;
 
     @ManyToOne(() => User, user => user.news)
-    owner: User;
+    author: User;
 
     @CreateDateColumn()
     public created_at: Date;
