@@ -5,10 +5,13 @@ import {Col, Container, Row} from "react-bootstrap";
 import 'bootstrap/dist/css/bootstrap.min.css';
 import {NavBar} from "../components/navbar.component";
 import {withAuthServerSideProps} from "../hocs/withAuth";
+import { Breadcrumbs } from 'nextjs-breadcrumbs'
 
 export const getServerSideProps = withAuthServerSideProps();
 
 const MyApp = ({Component, pageProps}: AppProps) => {
+    const breadcrumbs = Breadcrumbs()
+
     return (
         <div>
             <Head>
@@ -30,6 +33,13 @@ const MyApp = ({Component, pageProps}: AppProps) => {
               }
               .list-group-item {
                 background-color: #28282B;
+              }
+              .breadcrumb {
+                background-color: #28282B;
+                color: #ffff;
+              }
+              .breadcrumb li {
+                margin-left: 5px;
               }
             `}
             </style>
@@ -62,6 +72,7 @@ const MyApp = ({Component, pageProps}: AppProps) => {
                 background: '#28282B'
             }}>
                 <Container style={{padding: '24px 16px 0'}}>
+                    {breadcrumbs}
                     <Component {...pageProps} />
                 </Container>
             </div>
