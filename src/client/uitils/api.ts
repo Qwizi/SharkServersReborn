@@ -8,7 +8,9 @@ class Api {
     private axios;
 
     constructor() {
-        this.axios = axios.create()
+        this.axios = axios.create({
+            baseURL: 'http://localhost:3000'
+        })
     }
 
     async login(username: string, password: string) {
@@ -85,6 +87,10 @@ class Api {
         return this.axios.post('/api/profile/email', {
             email: email,
         })
+    }
+
+    async getNews(slug?: string | string[]) {
+        return slug ? this.axios.get(`/api/news/${slug}`) : this.axios.get(`/api/news`);
     }
 }
 

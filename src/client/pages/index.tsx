@@ -4,14 +4,27 @@ import {Badge, Card, Col, ListGroup, ProgressBar, Row} from "react-bootstrap";
 import {Servers} from "../components/index/servers.component";
 import {ShopServices} from "../components/index/shopServices";
 import {News} from "../components/index/news.component";
-export const getServerSideProps = withAuthServerSideProps();
+import axios from "axios";
+import api from "../uitils/api";
 
-const Index = ({user}: {user:any}) => {
+
+export const getServerSideProps = withAuthServerSideProps(async (context) => {
+    try {
+        const newsResponse = await api.getNews();
+        const news = newsResponse.data;
+        return {news: news}
+    } catch (e) {
+        console.log(e);
+        return {props: {news: null}}
+    }
+});
+
+const Index = ({user, data}) => {
     return (
         <Row>
             <Col lg={4}>
                <Servers />
-               <ShopServices/>
+               {/*<ShopServices/>
                 <Row>
                     <Col>
                         <Row>
@@ -31,11 +44,11 @@ const Index = ({user}: {user:any}) => {
                             </Col>
                         </Row>
                     </Col>
-                </Row>
+                </Row>*/}
             </Col>
             <Col lg={{offset: 1 }}>
-                <News />
-                <br/>
+                <News data={data.news}/>
+                {/*<br/>
                 <Row>
                     <Col>
                         <Row>
@@ -82,7 +95,7 @@ const Index = ({user}: {user:any}) => {
                             </Col>
                         </Row>
                     </Col>
-                </Row>
+                </Row>*/}
             </Col>
         </Row>
     )
