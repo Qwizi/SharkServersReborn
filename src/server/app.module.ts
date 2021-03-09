@@ -57,9 +57,9 @@ import {News} from "./news/news.entity";
       UsersModule,
       AuthModule,
       ProfileModule,
-      ViewModule,
       SteamProfileModule,
       NewsModule,
+      ViewModule,
       PermissionsModule.register({
           modules: [
               {
