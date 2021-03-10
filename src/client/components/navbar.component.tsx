@@ -40,7 +40,7 @@ export const NavBar = ({user}: {user: any}) => {
     navLinks = user == null ? <NavGuest /> : <NavLogged username={user.display_name} avatar={user.avatar}/>;
 
     return (
-        <Navbar collapseOnSelect expand={"lg"}  variant="dark" style={{backgroundColor: '#28282B'}}>
+        <Navbar collapseOnSelect expand={"lg"}  variant="dark" style={{backgroundColor: 'rgba(255,255,255,0.05)'}}>
             <Container>
                 <Link href={"/"} passHref>
                     <Navbar.Brand>
@@ -69,6 +69,11 @@ export const NavBar = ({user}: {user: any}) => {
                 </Nav>
                 <Navbar.Toggle aria-controls="responsive-navbar-nav" />
                 <Navbar.Collapse id="responsive-navbar-nav" className="justify-content-end">
+                    <Nav className="mr-auto">
+                        <Link href={"/news"} passHref>
+                            <Nav.Link href="#home">Aktualności</Nav.Link>
+                        </Link>
+                    </Nav>
                     {navLinks}
                 </Navbar.Collapse>
             </Container>
