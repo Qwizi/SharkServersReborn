@@ -40,7 +40,7 @@ export const NavBar = ({user}: {user: any}) => {
     navLinks = user == null ? <NavGuest /> : <NavLogged username={user.display_name} avatar={user.avatar}/>;
 
     return (
-        <Navbar collapseOnSelect expand={"lg"} bg="dark" variant="dark" style={{backgroundColor: '#28282B'}}>
+        <Navbar collapseOnSelect expand={"lg"}  variant="dark" style={{backgroundColor: '#28282B'}}>
             <Container>
                 <Link href={"/"} passHref>
                     <Navbar.Brand>
