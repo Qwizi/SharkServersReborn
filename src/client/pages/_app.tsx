@@ -24,13 +24,26 @@ const MyApp = ({Component, pageProps}: AppProps) => {
             </Head>
             <style jsx global>{`
               body {
-                background-color: #28282B;
-                color: #ffff;
+                background-color: #002650;
+                color: rgba(255,255,255,0.8);
               }
+              
+              body:after {
+                content : "";
+                display: block;
+                position: absolute;
+                top: 0;
+                left: 0;
+                background-image: url("http://localhost:3000/bg3.jpg");
+                background-position: center;
+                width: 100%;
+                height: 100%;
+                opacity : 0.8;
+                z-index: -1;
+            }
 
               .card {
-                background-color: #28282B;
-                border: 1px solid #28282B;
+                background-color: rgba(255,255,255,0.05);
               }
 
               .list-group-item {
@@ -38,7 +51,7 @@ const MyApp = ({Component, pageProps}: AppProps) => {
               }
 
               .breadcrumb {
-                background-color: #28282B;
+                background-color: rgba(255,255,255,0.05);
                 color: #ffff;
               }
 

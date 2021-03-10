@@ -1,7 +1,8 @@
 import {Button, Card, Col, Media, Row} from "react-bootstrap";
 import React, {useEffect} from "react";
 import {NewsCard} from "./newsCard.component";
-import axios from "axios";
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import { faNewspaper } from '@fortawesome/free-solid-svg-icons'
 
 export const News = ({data}) => {
 
@@ -10,7 +11,7 @@ export const News = ({data}) => {
             <Col>
                 <Row>
                     <Col>
-                        <h4>Aktualnosci</h4>
+                        <h4> <FontAwesomeIcon icon={faNewspaper}/> Aktualnosci</h4>
                     </Col>
                 </Row>
                 {data && data.map(item =>
