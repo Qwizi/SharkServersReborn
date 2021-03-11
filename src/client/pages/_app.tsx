@@ -26,6 +26,8 @@ const MyApp = ({Component, pageProps}: AppProps) => {
               body {
                 background-color: #002650;
                 color: rgba(255,255,255,0.8);
+                //background-image: url(https://wallpapercave.com/wp/ucgl8Qx.jpg);
+                background-attachment: fixed;
               }
               
               body:after {
@@ -34,8 +36,11 @@ const MyApp = ({Component, pageProps}: AppProps) => {
                 position: absolute;
                 top: 0;
                 left: 0;
-                background-image: url("http://localhost:3000/bg3.jpg");
+                /*background-image: url("http://localhost:3000/bg.jpg");*/
+                //background-image: url("https://d212vo0owly06i.cloudfront.net/en/sc2/plugins/discourse-blizzard-themes/images/backgrounds/sc2/top.jpg");
+                background: url('https://d212vo0owly06i.cloudfront.net/en/sc2/plugins/discourse-blizzard-themes/images/backgrounds/sc2/top.jpg') center -100px no-repeat,url('https://d212vo0owly06i.cloudfront.net/en/sc2/plugins/discourse-blizzard-themes/images/backgrounds/sc2/repeat.jpg') center -100px repeat-y;
                 background-position: center;
+                background-attachment: fixed;
                 width: 100%;
                 height: 100%;
                 opacity : 0.8;

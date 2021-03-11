@@ -22,6 +22,7 @@ import { SteamProfileModule } from './steamprofile/steamProfile.module';
 import {SteamProfile} from "./steamprofile/steamProfile.entity";
 import { NewsModule } from './news/news.module';
 import {News} from "./news/news.entity";
+import { RecruitmentModule } from './recruitment/recruitment.module';
 
 @Module({
   imports: [
@@ -89,6 +90,7 @@ import {News} from "./news/news.entity";
               },
           ]
       }),
+      RecruitmentModule,
   ],
   controllers: [AppController],
   providers: [AppService],
