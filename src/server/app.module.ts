@@ -23,6 +23,8 @@ import {SteamProfile} from "./steamprofile/steamProfile.entity";
 import { NewsModule } from './news/news.module';
 import {News} from "./news/news.entity";
 import { RecruitmentModule } from './recruitment/recruitment.module';
+import {RecruitmentApplication} from "./recruitment/entity/recruitmentApplication.entity";
+import {RecruitmentPosition} from "./recruitment/entity/recruitmentPosition.entity";
 
 @Module({
   imports: [
@@ -42,7 +44,9 @@ import { RecruitmentModule } from './recruitment/recruitment.module';
             User,
             Operation,
             SteamProfile,
-            News
+            News,
+            RecruitmentApplication,
+            RecruitmentPosition
         ],
         synchronize: true,
       }),
@@ -60,6 +64,7 @@ import { RecruitmentModule } from './recruitment/recruitment.module';
       ProfileModule,
       SteamProfileModule,
       NewsModule,
+      RecruitmentModule,
       ViewModule,
       PermissionsModule.register({
           modules: [
@@ -88,9 +93,12 @@ import { RecruitmentModule } from './recruitment/recruitment.module';
                       Perms.CHANGE_USERNAME
                   ]
               },
+              {
+                  module: RecruitmentModule.name,
+                  permissions: permissionsDefault
+              },
           ]
-      }),
-      RecruitmentModule,
+      })
   ],
   controllers: [AppController],
   providers: [AppService],

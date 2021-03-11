@@ -3,11 +3,12 @@ import {
     CreateDateColumn,
     Entity,
     JoinTable,
-    ManyToMany,
+    ManyToMany, OneToOne,
     PrimaryGeneratedColumn,
     UpdateDateColumn
 } from "typeorm";
 import {Permission} from "../permissions/permissions.entity";
+import {RecruitmentPosition} from "../recruitment/entity/recruitmentPosition.entity";
 
 @Entity()
 export class Role {
@@ -23,6 +24,9 @@ export class Role {
     @ManyToMany(() => Permission)
     @JoinTable()
     permissions: Permission[];
+
+    @OneToOne(() => RecruitmentPosition, recruitmentPosition => recruitmentPosition.role)
+    recruitment_position: RecruitmentPosition;
 
     @CreateDateColumn()
     public created_at: Date;
