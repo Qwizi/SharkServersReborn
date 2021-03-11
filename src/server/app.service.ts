@@ -60,6 +60,7 @@ export class AppService {
         await this.authenticatorService.deactivateConfirmCodes(user);
         const [code, encryptedCode] = await this.authenticatorService.createCode(user);
         const url = await this.mailService.getAccountActivateUrl(req, encryptedCode);
+        console.log(url);
         const job = await this.mailService.sendActivateAccountEmail(user, code, url);
     }
 
