@@ -50,7 +50,7 @@ export class AppController {
   async activateAccountPost(
       @Body() activateAccountCodeDto: ActivateAccountCodeDto
   ) {
-    return await this.appService.activateAccount(activateAccountCodeDto);
+    return this.appService.activateAccount(activateAccountCodeDto);
   }
 
   @HttpCode(200)
@@ -67,7 +67,7 @@ export class AppController {
       @Body() resentActivateAccountEmailDto: ResendActivateAccountEmailDto,
       @Req() req
   ) {
-    return this.appService.resendActivateAccountEmail(resentActivateAccountEmailDto, req)
+    return this.appService.resendActivateAccountEmail(resentActivateAccountEmailDto, req);
   }
 
   @HttpCode(200)
