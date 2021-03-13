@@ -29,6 +29,9 @@ const MyApp = ({Component, pageProps}: AppProps) => {
                 //background-image: url(https://wallpapercave.com/wp/ucgl8Qx.jpg);
                 background-attachment: fixed;
               }
+              .table {
+                color: rgba(255,255,255,0.8);
+              }
               
               body:after {
                 content : "";

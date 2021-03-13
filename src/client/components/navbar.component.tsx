@@ -47,31 +47,14 @@ export const NavBar = ({user}: {user: any}) => {
                         SharkServersReborn
                     </Navbar.Brand>
                 </Link>
-                <Nav>
-                   {/* <Link href={"/shop"} passHref>
-                        <Nav.Link href="/login">Sklep</Nav.Link>
-                    </Link>
-                    <Link href={"/applications"} passHref>
-                        <Nav.Link href="/register">Rekrutacja</Nav.Link>
-                    </Link>
-                    <Link href={"/applications"} passHref>
-                        <Nav.Link href="/register">Bany</Nav.Link>
-                    </Link>
-                    <Link href={"/applications"} passHref>
-                        <Nav.Link href="/register">Statystyki</Nav.Link>
-                    </Link>
-                    <Link href={"/applications"} passHref>
-                        <Nav.Link href="/register">Regulaminy</Nav.Link>
-                    </Link>
-                    <Link href={"/applications"} passHref>
-                        <Nav.Link href="/register">Lista użytkowników</Nav.Link>
-                    </Link>*/}
-                </Nav>
                 <Navbar.Toggle aria-controls="responsive-navbar-nav" />
                 <Navbar.Collapse id="responsive-navbar-nav" className="justify-content-end">
                     <Nav className="mr-auto">
                         <Link href={"/news"} passHref>
                             <Nav.Link href="#home">Aktualności</Nav.Link>
+                        </Link>
+                        <Link href={"/recruitment"} passHref>
+                            <Nav.Link href="#home">Rekrutacja</Nav.Link>
                         </Link>
                     </Nav>
                     {navLinks}
