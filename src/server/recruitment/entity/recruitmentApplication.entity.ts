@@ -5,7 +5,7 @@ import {RecruitmentPosition} from "./recruitmentPosition.entity";
 
 @Entity()
 export class RecruitmentApplication {
-    @PrimaryGeneratedColumn()
+    @PrimaryGeneratedColumn("uuid")
     id: number;
 
     @ManyToOne(() => User, user => user.recruitment_applications)

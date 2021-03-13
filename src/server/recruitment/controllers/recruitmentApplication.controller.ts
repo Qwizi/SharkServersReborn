@@ -10,8 +10,29 @@ import {RecruitmentApplicationService} from "../services/recruitmentApplication.
     routes: {
         only: ["getOneBase", "getManyBase"]
     },
+    params: {
+        id: {
+            field: 'id',
+            type: "uuid",
+            primary: true
+        },
+    },
     query: {
-        alwaysPaginate: true
+        alwaysPaginate: true,
+        join: {
+            position: {
+                eager: true
+            },
+            'position.role': {
+                eager: true
+            },
+            author: {
+                eager: true
+            },
+            'author.steam_profile': {
+                eager: true
+            }
+        }
     }
 })
 @Controller("api/recruitment/application")

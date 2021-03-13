@@ -1,0 +1,15 @@
+version: "3"
+
+services:
+  redis:
+    image: "redis:alpine"
+    hostname: redis
+    ports:
+      - "6379:6379"
+  mysql:
+    image: mariadb
+    environment:
+      MYSQL_ALLOW_EMPTY_PASSWORD: "yes"
+      MYSQL_DATABASE: sharkservers_reborn
+    ports:
+      - "3306:3306"

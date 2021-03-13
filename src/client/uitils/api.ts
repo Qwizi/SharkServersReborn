@@ -92,6 +92,18 @@ class Api {
     async getNews(slug?: string | string[]) {
         return slug ? this.axios.get(`/api/news/${slug}`) : this.axios.get(`/api/news`);
     }
+
+    async getRecruitmentPositions(id?: number) {
+        return id ? this.axios.get(`/api/recruitment/position/${id}`) : this.axios.get(`/api/recruitment/position`) ;
+    }
+
+    async getRecruitmentApplications(s?: object) {
+        return s != undefined ? this.axios.get(`/api/recruitment/application?s=${JSON.stringify(s)}`) : this.axios.get(`/api/recruitment/application`)
+    }
+
+    async getRecruitmentApplication(uuid: string) {
+        return this.axios.get(`/api/recruitment/application/${uuid}`)
+    }
 }
 
 const api = new Api();

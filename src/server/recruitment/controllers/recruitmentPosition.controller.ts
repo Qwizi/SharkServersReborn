@@ -1,5 +1,5 @@
 import { Controller } from "@nestjs/common";
-import { Crud, CrudController } from "@nestjsx/crud";
+import { Crud, CrudController, JoinOptions } from "@nestjsx/crud";
 import {RecruitmentPosition} from "../entity/recruitmentPosition.entity";
 import {RecruitmentPositionService} from "../services/recruitmentPosition.service";
 
@@ -15,9 +15,11 @@ import {RecruitmentPositionService} from "../services/recruitmentPosition.servic
         join: {
             role: {
                 eager: true
-            },
-            applications: {
-                eager: true
+            }
+        },
+        filter: {
+            free_space: {
+                $gt: 0
             }
         }
     }
