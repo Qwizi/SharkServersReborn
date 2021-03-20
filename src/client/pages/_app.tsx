@@ -77,6 +77,9 @@ const MyApp = ({Component, pageProps}: AppProps) => {
                 color: #ffff;
                 content: "/";
               }
+              .table-hover {
+                cursor: pointer;
+              }
             `}
             </style>
             <NavBar user={pageProps.user}/>

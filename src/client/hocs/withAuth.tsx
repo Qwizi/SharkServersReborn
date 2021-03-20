@@ -15,7 +15,7 @@ export function withAuthComponent(Component: any){
     return ({user, data}:{user: any, data: any}) => {
         const router = useRouter();
         useEffect(() => {
-            if (!user) router.push('/auth/auth');
+            if (!user) router.push('/auth/login');
         }, []);
 
         if(!user){
