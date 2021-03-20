@@ -19,13 +19,19 @@ export class SteamProfile {
     })
     steamid32: string;
 
-    @Column()
+    @Column( {
+        nullable: true
+    })
     avatar: string;
 
-    @Column()
+    @Column({
+        nullable: true
+    })
     avatar_medium: string;
 
-    @Column()
+    @Column({
+        nullable: true
+    })
     avatar_full: string;
 
     @Column()

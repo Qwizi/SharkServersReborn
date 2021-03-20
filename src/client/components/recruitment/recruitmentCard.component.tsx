@@ -7,6 +7,9 @@ export const RecruitmentCard = ({positions, activeKey, children}) => {
     useEffect(() => {
         console.log(activeKey)
     }, [])
+
+    if (!positions.data) return <div/>
+
     return (
         <Row>
             <Col>
@@ -23,12 +26,17 @@ export const RecruitmentCard = ({positions, activeKey, children}) => {
                                 <br/>
                                 {positions.data && positions.data.length > 0 ? (
                                     <Nav fill variant="tabs" defaultActiveKey={activeKey}>
-                                        {positions.data && positions.data.map(position =>
-                                            <Nav.Item>
-                                                <Link href={`/recruitment/${position.role.name}`} passHref>
-                                                    <Nav.Link href={`/recruitment/${position.role.name}`}>{position.role.name} <Badge variant={"success"}>{position.free_space}</Badge></Nav.Link>
-                                                </Link>
-                                            </Nav.Item>
+                                        {positions.data && positions.data.map(position => {
+                                            if (position.role) {
+                                                return (
+                                                    <Nav.Item>
+                                                        <Link href={`/recruitment/${position.role.name || ''}`} passHref>
+                                                            <Nav.Link href={`/recruitment/${position.role.name}`}>{position.role.name} <Badge variant={"success"}>{position.free_space}</Badge></Nav.Link>
+                                                        </Link>
+                                                    </Nav.Item>
+                                                )
+                                            }
+                                        }
                                         )}
                                     </Nav>
                                 ) : (<div>Aktualnie nie prowadzimy rekrutacji</div>)}

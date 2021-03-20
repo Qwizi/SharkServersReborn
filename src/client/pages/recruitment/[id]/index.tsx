@@ -1,7 +1,7 @@
 
 import React, {useEffect, useState} from 'react'
 import {withAuthServerSideProps} from "../../../hocs/withAuth";
-import {Badge, Card, Col, ListGroup, Nav, ProgressBar, Row, Table} from "react-bootstrap";
+import {Badge, Button, Card, Col, ListGroup, Nav, ProgressBar, Row, Table} from "react-bootstrap";
 import api from "../../../uitils/api";
 import {useRouter} from "next/router";
 import {News} from "../../../components/index/news.component";
@@ -41,7 +41,6 @@ const RecruitmentApplications = ({user, data}) => {
             ) : (
                 <Row><Col><Card><Card.Body><Card.Title>Podania</Card.Title>Brak</Card.Body></Card></Col></Row>
             )}
-
         </RecruitmentCard>
     )
 }

@@ -2,6 +2,7 @@ import {Column, CreateDateColumn, Entity, ManyToOne, PrimaryGeneratedColumn, Upd
 import {User} from "../../users/users.entity";
 import {ApplicationStatus} from "../recruitment.enum";
 import {RecruitmentPosition} from "./recruitmentPosition.entity";
+import {SteamProfile} from "../../steamprofile/steamProfile.entity";
 
 @Entity()
 export class RecruitmentApplication {
@@ -10,6 +11,9 @@ export class RecruitmentApplication {
 
     @ManyToOne(() => User, user => user.recruitment_applications)
     author: User
+
+    @ManyToOne(() => SteamProfile)
+    steam_profile: SteamProfile;
 
     @ManyToOne(() => RecruitmentPosition, recruitmentPosition => recruitmentPosition.applications)
     position: RecruitmentPosition;

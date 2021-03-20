@@ -93,16 +93,25 @@ class Api {
         return slug ? this.axios.get(`/api/news/${slug}`) : this.axios.get(`/api/news`);
     }
 
-    async getRecruitmentPositions(id?: number) {
-        return id ? this.axios.get(`/api/recruitment/position/${id}`) : this.axios.get(`/api/recruitment/position`) ;
+    async getRecruitmentPositions(s?: object) {
+        return s != undefined ? this.axios.get(`/api/recruitment/position/?s=${JSON.stringify(s)}&sort=created_at,DESC`) : this.axios.get(`/api/recruitment/position`) ;
     }
 
     async getRecruitmentApplications(s?: object) {
-        return s != undefined ? this.axios.get(`/api/recruitment/application?s=${JSON.stringify(s)}`) : this.axios.get(`/api/recruitment/application`)
+        return s != undefined ? this.axios.get(`/api/recruitment/application?s=${JSON.stringify(s)}&sort=created_at,DESC`) : this.axios.get(`/api/recruitment/application`)
     }
 
     async getRecruitmentApplication(uuid: string) {
         return this.axios.get(`/api/recruitment/application/${uuid}`)
+    }
+
+    async sendRecruitmentApplication({position, experience, description, age}) {
+        return this.axios.post('/api/recruitment/application', {
+            position: position,
+            experience: experience,
+            description: description,
+            age: age
+        })
     }
 }
 

@@ -29,37 +29,12 @@ const RecruitmentPositionIndex = ({user, data}) => {
         setActiveKey(router.pathname)
     }, [])
 
+    if (!data || !data.positions) return <div/>
+
     return (
         <RecruitmentCard positions={data.positions} activeKey={activeKey}>
             <div/>
         </RecruitmentCard>
-        /*<Row>
-            <Col>
-                <Card>
-                    <Card.Body>
-                        <Card.Title>
-                            <h1>Rekrutacja</h1>
-                        </Card.Title>
-                        <Card.Subtitle>
-                            Wybierz na jakie stanowisko chcesz wyslac podanie
-                        </Card.Subtitle>
-                        <br/>
-                        {data && data.positions.data && data.positions.data.length > 0 ? (
-                            <Nav fill variant="tabs" defaultActiveKey={`/recruitment/${data.positions.data[0].role.name}`}>
-                                {data.positions.data && data.positions.data.map(position =>
-                                    <Nav.Item>
-                                        <Link href={`/recruitment/${position.role.name}`} passHref>
-                                            <Nav.Link href={`/recruitment/${position.role.name}`}>{position.role.name} <Badge variant={"success"}>{position.free_space}</Badge></Nav.Link>
-                                        </Link>
-                                    </Nav.Item>
-                                )}
-                            </Nav>
-                        ) : (<div>Aktualnie nie prowadzimy rekrutacji</div>)}
-
-                    </Card.Body>
-                </Card>
-            </Col>
-        </Row>*/
     )
 }
 
