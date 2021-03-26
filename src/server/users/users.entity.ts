@@ -12,7 +12,8 @@ import {Role} from "../roles/roles.entity";
 import {Operation} from "../authenticator/operation.entity";
 import {SteamProfile} from "../steamprofile/steamProfile.entity";
 import {News} from "../news/news.entity";
-import {RecruitmentApplication} from "../recruitment/entity/recruitmentApplication.entity";
+import {Comment} from "../recruitment/entity/comment.entity";
+import {Application} from "../recruitment/entity/application.entity";
 
 @Entity()
 export class User {
@@ -56,8 +57,12 @@ export class User {
     @OneToMany(() => News, news => news.author)
     news: News[]
 
-    @OneToMany(() => RecruitmentApplication, recruitmentApplication => recruitmentApplication.author)
-    recruitment_applications: RecruitmentApplication[]
+
+    @OneToMany(() => Comment, recruitmentComment => recruitmentComment.author)
+    recruitment_comments: Comment[]
+
+    @OneToMany(() => Application, application => application.author)
+    applications: Application[]
 
     @CreateDateColumn()
     public created_at: Date;

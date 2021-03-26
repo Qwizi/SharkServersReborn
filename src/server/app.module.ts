@@ -23,8 +23,11 @@ import {SteamProfile} from "./steamprofile/steamProfile.entity";
 import { NewsModule } from './news/news.module';
 import {News} from "./news/news.entity";
 import { RecruitmentModule } from './recruitment/recruitment.module';
-import {RecruitmentApplication} from "./recruitment/entity/recruitmentApplication.entity";
-import {RecruitmentPosition} from "./recruitment/entity/recruitmentPosition.entity";
+import {Position} from "./recruitment/entity/position.entity";
+import {Comment} from "./recruitment/entity/comment.entity";
+import {Question} from "./recruitment/entity/question.entity";
+import {PositionQuestionAnswer} from "./recruitment/entity/positionQuestionAnswer.entity";
+import {Application} from "./recruitment/entity/application.entity";
 
 @Module({
   imports: [
@@ -45,8 +48,11 @@ import {RecruitmentPosition} from "./recruitment/entity/recruitmentPosition.enti
             Operation,
             SteamProfile,
             News,
-            RecruitmentApplication,
-            RecruitmentPosition
+            Position,
+            Application,
+            Comment,
+            Question,
+            PositionQuestionAnswer
         ],
         synchronize: true,
       }),

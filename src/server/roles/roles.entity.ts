@@ -8,7 +8,7 @@ import {
     UpdateDateColumn
 } from "typeorm";
 import {Permission} from "../permissions/permissions.entity";
-import {RecruitmentPosition} from "../recruitment/entity/recruitmentPosition.entity";
+import {Position} from "../recruitment/entity/position.entity";
 
 @Entity()
 export class Role {
@@ -25,8 +25,8 @@ export class Role {
     @JoinTable()
     permissions: Permission[];
 
-    @OneToOne(() => RecruitmentPosition, recruitmentPosition => recruitmentPosition.role)
-    recruitment_position: RecruitmentPosition;
+    @OneToOne(() => Position, recruitmentPosition => recruitmentPosition.role)
+    recruitment_position: Position;
 
     @CreateDateColumn()
     public created_at: Date;

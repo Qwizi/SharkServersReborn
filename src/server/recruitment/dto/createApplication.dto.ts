@@ -1,20 +1,11 @@
-import {RecruitmentPosition} from "../entity/recruitmentPosition.entity";
-import {IsNotEmpty, IsNumber, IsString, ValidateNested} from "class-validator";
+import {IsArray, IsNotEmpty, IsNumber, IsObject} from "class-validator";
 
 export class CreateApplicationDto {
 	@IsNotEmpty()
 	@IsNumber()
-	position: number
+	positionId: number;
 
 	@IsNotEmpty()
-	@IsNumber()
-	age: number;
-
-	@IsNotEmpty()
-	@IsString()
-	experience: string;
-
-	@IsNotEmpty()
-	@IsString()
-	description: string;
+	@IsArray()
+	answers: object[]
 }
