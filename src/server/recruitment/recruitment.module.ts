@@ -1,4 +1,4 @@
-import { Module } from '@nestjs/common';
+import {Module} from '@nestjs/common';
 import {TypeOrmModule} from "@nestjs/typeorm";
 import {Position} from "./entity/position.entity";
 import {PositionService} from "./services/position.service";
@@ -11,35 +11,40 @@ import {Question} from "./entity/question.entity";
 import {PositionQuestionAnswerController} from "./controllers/positionQuestionAnswer.controller";
 import {QuestionController} from "./controllers/question.controller";
 import {RolesModule} from "../roles/roles.module";
-import {PositionAdminController} from "./controllers/position.admin.controller";
-import {QuestionAdminController} from "./controllers/questions.admin.controller";
+import {PositionAdminController} from "./controllers/admin/position.admin.controller";
+import {QuestionAdminController} from "./controllers/admin/questions.admin.controller";
 import {Application} from "./entity/application.entity";
 import {ApplicationService} from "./services/application.service";
-import {ApplicationAdminController} from "./controllers/application.admin.controller";
+import {ApplicationAdminController} from "./controllers/admin/application.admin.controller";
+import {CommentController} from "./controllers/comment.controller";
+import {CommentsService} from "./services/comment.service";
 
 @Module({
-    imports: [TypeOrmModule.forFeature([
-        Position,
-        Application,
-        Question,
-        PositionQuestionAnswer,
-        Comment,
-    ]),
-    RolesModule
-    ],
-    providers: [
-        PositionService,
-        QuestionService,
-        PositionQuestionAnswerService,
-        ApplicationService
-    ],
-    controllers: [
-        PositionController,
-        PositionAdminController,
-        PositionQuestionAnswerController,
-        QuestionController,
-        QuestionAdminController,
-        ApplicationAdminController
-    ]
+	imports: [TypeOrmModule.forFeature([
+		Position,
+		Application,
+		Question,
+		PositionQuestionAnswer,
+		Comment,
+	]),
+		RolesModule
+	],
+	providers: [
+		PositionService,
+		QuestionService,
+		PositionQuestionAnswerService,
+		ApplicationService,
+		CommentsService
+	],
+	controllers: [
+		PositionController,
+		PositionAdminController,
+		PositionQuestionAnswerController,
+		QuestionController,
+		QuestionAdminController,
+		ApplicationAdminController,
+		CommentController
+	]
 })
-export class RecruitmentModule {}
+export class RecruitmentModule {
+}

@@ -8,7 +8,7 @@ import {QuestionService} from "../services/question.service";
 		type: Question,
 	},
 	routes: {
-		only: ["getOneBase", "getManyBase", "createOneBase"]
+		only: ["getOneBase", "getManyBase"]
 	},
 	query: {
 		alwaysPaginate: true,

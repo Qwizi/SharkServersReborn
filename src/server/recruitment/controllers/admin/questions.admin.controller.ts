@@ -1,7 +1,7 @@
 import {BadRequestException, Controller, Req, UseGuards} from "@nestjs/common";
 import {Crud, CrudController} from "@nestjsx/crud";
-import {Question} from "../entity/question.entity";
-import {QuestionService} from "../services/question.service";
+import {Question} from "../../entity/question.entity";
+import {QuestionService} from "../../services/question.service";
 
 @Crud({
 	model: {

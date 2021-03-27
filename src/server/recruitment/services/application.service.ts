@@ -45,7 +45,8 @@ export class ApplicationService extends TypeOrmCrudService<Application> implemen
 
 		const questionsFromDb = await this.questionsService.find({
 			where: {
-				id: In(questionsId)
+				id: In(questionsId),
+				position: positionId
 			}
 		})
 

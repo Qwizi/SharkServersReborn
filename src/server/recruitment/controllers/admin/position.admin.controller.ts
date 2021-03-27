@@ -9,10 +9,10 @@ import {
 	ParsedBody,
 	ParsedRequest
 } from "@nestjsx/crud";
-import {Position} from "../entity/position.entity";
-import {PositionService} from "../services/position.service";
-import {CreatePositionDto} from "../dto/createPosition.dto";
-import {Perms} from "../../auth/decorators/permissions.decorator";
+import {Position} from "../../entity/position.entity";
+import {PositionService} from "../../services/position.service";
+import {CreatePositionDto} from "../../dto/createPosition.dto";
+import {Perms} from "../../../auth/decorators/permissions.decorator";
 
 @Crud({
 	model: {

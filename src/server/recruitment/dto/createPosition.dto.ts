@@ -8,4 +8,7 @@ export class CreatePositionDto {
 	@IsNotEmpty()
 	@IsArray()
 	questions: number[]
+
+	@IsNumber()
+	free_space: number;
 }
