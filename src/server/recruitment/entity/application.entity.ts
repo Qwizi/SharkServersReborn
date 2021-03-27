@@ -5,11 +5,13 @@ import {User} from "../../users/users.entity";
 import {SteamProfile} from "../../steamprofile/steamProfile.entity";
 import {IsNotEmpty, IsString} from "class-validator";
 import {PositionQuestionAnswer} from "./positionQuestionAnswer.entity";
+import {Comment} from "./comment.entity";
+import {ApplicationStatus, PositionType} from "../recruitment.enum";
 
 @Entity()
 export class Application {
 	@PrimaryGeneratedColumn("uuid")
-	id: number;
+	id: string;
 
 	@ManyToOne(() => User, user => user.applications)
 	author: User
@@ -22,4 +24,14 @@ export class Application {
 
 	@OneToMany(() => PositionQuestionAnswer, positionQuestionAnswer => positionQuestionAnswer.application)
 	questions_answers: PositionQuestionAnswer[]
+
+	@OneToMany(() => Comment, comment => comment.application)
+	comments: Comment[]
+
+	@Column({
+		type: "enum",
+		enum: ApplicationStatus,
+		default: ApplicationStatus.OPEN
+	})
+	status: string;
 }

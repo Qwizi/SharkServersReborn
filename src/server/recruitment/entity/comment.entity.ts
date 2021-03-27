@@ -1,5 +1,6 @@
 import {Column, CreateDateColumn, Entity, ManyToOne, PrimaryGeneratedColumn, UpdateDateColumn} from "typeorm";
 import {User} from "../../users/users.entity";
+import {Application} from "./application.entity";
 
 @Entity()
 export class Comment {
@@ -8,6 +9,9 @@ export class Comment {
 
 	@ManyToOne(() => User, user => user.recruitment_comments)
 	author: User
+
+	@ManyToOne(() => Application, application => application.comments)
+	application: Application
 
 	@Column({
 		type: 'text'

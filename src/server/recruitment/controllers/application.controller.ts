@@ -1,24 +1,29 @@
-import {BadRequestException, Controller, Req, UseGuards} from "@nestjs/common";
+import {Controller, Req, UseGuards} from "@nestjs/common";
 import {
 	Crud,
-	CrudAuth,
 	CrudController,
 	CrudRequest,
-	JoinOptions,
 	Override,
 	ParsedBody,
 	ParsedRequest
 } from "@nestjsx/crud";
-import {CreatePositionDto} from "../dto/createPosition.dto";
 import {Application} from "../entity/application.entity";
-import {ApplicationService} from "../services/application.service";
 import {AuthenticatedGuard} from "../../auth/guards/authenticated.guard";
 import {SteamGuard} from "../../auth/guards/steam.guard";
+import {ApplicationService} from "../services/application.service";
 import {CreateApplicationDto} from "../dto/createApplication.dto";
 
 @Crud({
 	model: {
 		type: Application,
+	},
+	routes: {
+		only: ["getOneBase", "getManyBase", "createOneBase"]
+	},
+	params: {
+		id: {
+			type: 'uuid'
+		}
 	},
 	query: {
 		alwaysPaginate: true,
@@ -41,11 +46,14 @@ import {CreateApplicationDto} from "../dto/createApplication.dto";
 			},
 			"questions_answers.question": {
 				eager: true
-			}
+			},
+			comments: {
+				eager: true
+			},
 		}
 	}
 })
-@Controller("api/admin/recruitment/application")
+@Controller("api/recruitment/application")
 export class ApplicationAdminController implements CrudController<Application> {
 	constructor(
 		public service: ApplicationService) {}

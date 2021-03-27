@@ -1,15 +1,13 @@
-import {BadRequestException, Controller, Req, UseGuards} from "@nestjs/common";
-import {Crud, CrudController, CrudRequest, JoinOptions, Override, ParsedBody, ParsedRequest} from "@nestjsx/crud";
-import {Position} from "../entity/position.entity";
-import {PositionService} from "../services/position.service";
+import {Controller, Req, UseGuards} from "@nestjs/common";
+import {Crud, CrudController, CrudRequest, Override, ParsedBody, ParsedRequest} from "@nestjsx/crud";
 import {CommentsService} from "../services/comment.service";
 import {Comment} from "../entity/comment.entity";
 import {AuthenticatedGuard} from "../../auth/guards/authenticated.guard";
-import {SteamGuard} from "../../auth/guards/steam.guard";
+import {CreateCommentDto} from "../dto/createComment.dto";
 
 @Crud({
 	model: {
-		type: Position,
+		type: Comment,
 	},
 	routes: {
 		only: ["getOneBase", "getManyBase", "createOneBase"]
@@ -19,18 +17,21 @@ import {SteamGuard} from "../../auth/guards/steam.guard";
 		join: {
 			author: {
 				eager: true
-			}
-		},
-		filter: {
-			free_space: {
-				$gt: 0
-			}
+			},
+			application: {}
 		}
 	}
 })
-@Controller("api/recruitment/position")
+@Controller("api/recruitment/comment")
 export class CommentController implements CrudController<Comment> {
 	constructor(
 		public service: CommentsService,
 	) {}
+
+	@Override("createOneBase")
+	@UseGuards(AuthenticatedGuard)
+	async createOne(@Req() req, @ParsedRequest() crudRequest: CrudRequest, @ParsedBody() dto: CreateCommentDto) 	{
+		const {user} = req;
+		return this.service.create(crudRequest, user, dto);
+	}
 }
