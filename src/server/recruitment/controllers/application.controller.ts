@@ -33,27 +33,20 @@ import {Perms} from "../../auth/decorators/permissions.decorator";
 	query: {
 		alwaysPaginate: true,
 		join: {
-			position: {
-				eager: true
-			},
+			position: {},
+			'position.role': {},
 			author: {
-				eager: true,
 				exclude: ["password"]
 			},
-			'author.role': {
-				eager: true
+			'author.roles': {
 			},
 			steam_profile: {
-				eager: true
 			},
 			questions_answers: {
-				eager: true
 			},
 			"questions_answers.question": {
-				eager: true
 			},
 			comments: {
-				eager: true
 			},
 		}
 	}

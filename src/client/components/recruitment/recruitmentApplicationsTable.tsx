@@ -1,34 +1,55 @@
 import {Button, Card, Col, Row, Table} from "react-bootstrap";
 import {useRouter} from "next/router";
 import Head from 'next/head'
+import Image from 'next/image';
 
-export const RecruitmentApplicationsTable = ({applications}) => {
+export const RecruitmentApplicationsTable = ({roleName, applications}) => {
 	const router = useRouter();
-	if (!applications || !applications.data) return <div/>
+
 	return (
 		<Row>
 			<Col>
 				<Card>
+					<Card.Header>Podania - {roleName}</Card.Header>
 					<Card.Body>
 						<Row>
 							<Col>
-								<Card.Title>Podania</Card.Title>
-								<Table responsive className={"table-hover"}>
+								<Table responsive className={"table-hover text-center"}>
 									<thead>
-									<th>Nick</th>
-									<th>SteamID32</th>
-									<th>Wiek</th>
-									<th>Status</th>
+										<th>Użytkownik</th>
+										<th>Komentarze</th>
+										<th>Ostatni komentarz</th>
+										<th>Status</th>
 									</thead>
 									<tbody>
-									{applications.data.map(application =>
-										<tr onClick={() => router.push(`/recruitment/${router.query.id}/${application.id}`)}>
-											<td>{application.author.username}</td>
-											<td>{application.steam_profile.steamid32}</td>
-											<td>{application.age}</td>
-											<td>{application.status}</td>
-										</tr>
-									)}
+									{applications.count > 0
+										? (
+											(applications.data.map(application =>
+												<tr onClick={() => router.push(`/recruitment/position-${roleName}/application-${application.id}`)}>
+													<td>
+														<Row>
+															<Col>
+																<Image src={`/avatars/${application.author.avatar}`} alt={application.author.display_name} height={64} width={64}/>
+															</Col>
+														</Row>
+														<Row>
+															<Col>
+																<span style={{color: application.author.roles[0].color}}><span dangerouslySetInnerHTML={{__html: application.author.display_name}}/></span>
+															</Col>
+														</Row>
+														</td>
+													<td>0</td>
+													<td>Brak</td>
+													<td>{application.status}</td>
+												</tr>
+											))
+										) : (
+											<tr>
+												<td colSpan={4}>Brak</td>
+											</tr>
+										)
+
+									}
 									</tbody>
 								</Table>
 							</Col>

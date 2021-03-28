@@ -13,21 +13,14 @@ import {PositionService} from "../services/position.service";
 	query: {
 		alwaysPaginate: true,
 		join: {
-			role: {
-				eager: true
-			},
-			questions: {
-				eager: true
-			},
-			answers: {
-				eager: true
-			}
+			role: {},
+			questions: {}
 		},
-		filter: {
+/*		filter: {
 			free_space: {
 				$gt: 0
 			}
-		}
+		}*/
 	}
 })
 @Controller("api/recruitment/position")

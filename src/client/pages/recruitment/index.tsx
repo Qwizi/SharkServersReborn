@@ -8,34 +8,37 @@ import {News} from "../../components/index/news.component";
 import {NewsCard} from "../../components/index/newsCard.component";
 import Link from "next/link";
 import {RecruitmentCard} from "../../components/recruitment/recruitmentCard.component";
+import { RequestQueryBuilder } from "@nestjsx/crud-request";
 
-
-export const getServerSideProps = withAuthServerSideProps(async (context) => {
+const getPositions = async () => {
     try {
-        const positionsResponse = await api.getRecruitmentPositions();
-        console.log(positionsResponse.data)
-        const positions = positionsResponse.data;
-        return {positions: positions}
+        const qb = RequestQueryBuilder.create();
+        qb.select(["id", "free_space"])
+        qb.setJoin({field: 'role', select: ["id", "name"]})
+        qb.setFilter({field: 'free_space', operator: "$gt", value: 0})
+        const response = await api.getPositions(qb.query())
+        if (response.status !== 200) return {positions: {}}
+        console.log(response.data);
+        return {positions: response.data}
     } catch (e) {
         console.log(e);
-        return {positions: null}
+        return {positions: {}}
     }
-});
-
-const RecruitmentPositionIndex = ({user, data}) => {
-    const [activeKey, setActiveKey] = useState('');
-    const router = useRouter()
-    useEffect(() => {
-        setActiveKey(router.pathname)
-    }, [])
-
-    if (!data || !data.positions) return <div/>
-
-    return (
-        <RecruitmentCard positions={data.positions} activeKey={activeKey}>
-            <div/>
-        </RecruitmentCard>
-    )
 }
 
+const RecruitmentPositionIndex = ({user, data}) => {
+    const router = useRouter()
+
+    if (!data || !data.positions || Object.keys(data.positions).length === 0) {
+        return <div>Wystąpił problem z pobraniem aktualnych stanowisk</div>
+    }
+
+    return (
+        <RecruitmentCard positions={data.positions} />
+       /* <RecruitmentCard positions={data.positions} activeKey={activeKey}>
+            <div/>
+        </RecruitmentCard>*/
+    )
+}
+export const getServerSideProps = withAuthServerSideProps(async (context) => getPositions());
 export default RecruitmentPositionIndex
