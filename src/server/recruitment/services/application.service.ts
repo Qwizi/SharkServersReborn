@@ -37,6 +37,7 @@ export class ApplicationService extends TypeOrmCrudService<Application> implemen
 			where: {id: positionId}
 		})
 		if (!position) throw new BadRequestException("Position not found")
+		if (position.free_space === 0) throw new BadRequestException("Position free space is equal 0")
 
 		let questionsId = [];
 		for (const item of answers) {
@@ -98,7 +99,6 @@ export class ApplicationService extends TypeOrmCrudService<Application> implemen
 		if (!application) throw new BadRequestException('Application is invalid');
 		if (application.status === status) throw new BadRequestException(`Application is already ${status}`)
 		application.status = status
-		await this.repo.save(application)
 
 		if (application.status === ApplicationStatus.ACCEPTED) {
 			const applicationPositionRole = application.position.role;
@@ -106,7 +106,10 @@ export class ApplicationService extends TypeOrmCrudService<Application> implemen
 			if (!applicationAuthorRoles.find(role => role.id === applicationPositionRole.id)) {
 				await this.usersService.update(application.author, {roles: [...application.author.roles, applicationPositionRole]})
 			}
+			application.position.free_space--;
+			await this.positionsService.repo.save(application.position)
 		}
+		await this.repo.save(application)
 		return application
 	}
 }

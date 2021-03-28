@@ -11,7 +11,7 @@ import {CrudRequest} from "@nestjsx/crud";
 @Injectable()
 export class PositionService extends TypeOrmCrudService<Position> implements OnModuleInit{
     constructor(
-        @InjectRepository(Position) repo,
+        @InjectRepository(Position) public repo,
         private rolesService: RolesService,
         private questionsService: QuestionService
     ) {
