@@ -4,7 +4,7 @@ import NextServer from 'next/dist/next-server/server/next-server';
 @Injectable()
 export class ViewService implements OnModuleInit {
     private logger = new Logger(ViewService.name);
-    private server: NextServer
+    private server: any
 
     async onModuleInit(): Promise<void> {
         try {

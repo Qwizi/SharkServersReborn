@@ -78,8 +78,6 @@ export class PermissionsService implements OnModuleInit {
                     if (!await this.findOne({where: {module: moduleName, value: permission}})) {
                         const newPerm = await this.create({module: moduleName, value: permission});
                         this.logger.log(`[${moduleName}] dodano uprawnienie <${newPerm.value}>`);
-                    } else {
-                        this.logger.log(`[${moduleName}] jest juz dodane <${permission}>`);
                     }
                 }
             }

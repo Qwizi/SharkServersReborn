@@ -101,7 +101,14 @@ import {Application} from "./recruitment/entity/application.entity";
               },
               {
                   module: RecruitmentModule.name,
-                  permissions: permissionsDefault
+                  permissions: [
+                      Perms.CREATE_APPLICATION,
+                      Perms.CREATE_POSITION,
+                      Perms.CREATE_COMMENT,
+                      Perms.ACCEPT_APPLICATION,
+                      Perms.OPEN_APPLICATION,
+                      Perms.REJECT_APPLICATION
+                  ]
               },
           ]
       })

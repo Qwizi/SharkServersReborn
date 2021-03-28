@@ -14,6 +14,7 @@ import {SteamGuard} from "../../auth/guards/steam.guard";
 import {ApplicationService} from "../services/application.service";
 import {CreateApplicationDto} from "../dto/createApplication.dto";
 import {ApplicationStatus} from "../recruitment.enum";
+import {Perms} from "../../auth/decorators/permissions.decorator";
 
 @Crud({
 	model: {
@@ -64,6 +65,7 @@ export class ApplicationController implements CrudController<Application> {
 
 	@Override("createOneBase")
 	@UseGuards(AuthenticatedGuard, SteamGuard)
+	@Perms('recruitment.create_application')
 	async createOne(@Req() req, @ParsedRequest() crudRequest: CrudRequest, @ParsedBody() dto: CreateApplicationDto) 	{
 		const {user} = req;
 		const {steam_profile} = user;
@@ -72,6 +74,7 @@ export class ApplicationController implements CrudController<Application> {
 
 	@Put(":id/accept")
 	@UseInterceptors(CrudRequestInterceptor)
+	@Perms('recruitment.accept_application')
 	async accept(
 		@ParsedRequest() crudRequest: CrudRequest,
 		@Param('id') id: string
@@ -81,6 +84,7 @@ export class ApplicationController implements CrudController<Application> {
 
 	@Put(":id/open")
 	@UseInterceptors(CrudRequestInterceptor)
+	@Perms('recruitment.open_application')
 	async open(
 		@ParsedRequest() crudRequest: CrudRequest,
 		@Param('id') id: string
@@ -90,6 +94,7 @@ export class ApplicationController implements CrudController<Application> {
 
 	@Put(":id/reject")
 	@UseInterceptors(CrudRequestInterceptor)
+	@Perms('recruitment.reject_application')
 	async reject(
 		@ParsedRequest() crudRequest: CrudRequest,
 		@Param('id') id: string
