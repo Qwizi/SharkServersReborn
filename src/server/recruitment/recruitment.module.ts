@@ -18,6 +18,8 @@ import {ApplicationService} from "./services/application.service";
 import {ApplicationAdminController} from "./controllers/admin/application.admin.controller";
 import {CommentController} from "./controllers/comment.controller";
 import {CommentsService} from "./services/comment.service";
+import {ApplicationController} from "./controllers/application.controller";
+import {UsersModule} from "../users/users.module";
 
 @Module({
 	imports: [TypeOrmModule.forFeature([
@@ -27,6 +29,7 @@ import {CommentsService} from "./services/comment.service";
 		PositionQuestionAnswer,
 		Comment,
 	]),
+		UsersModule,
 		RolesModule
 	],
 	providers: [
@@ -39,9 +42,9 @@ import {CommentsService} from "./services/comment.service";
 	controllers: [
 		PositionController,
 		PositionAdminController,
-		PositionQuestionAnswerController,
 		QuestionController,
 		QuestionAdminController,
+		ApplicationController,
 		ApplicationAdminController,
 		CommentController
 	]

@@ -1,17 +1,19 @@
-import {Controller, Req, UseGuards} from "@nestjs/common";
+import {Controller, Param, Put, Req, UseGuards, UseInterceptors} from "@nestjs/common";
 import {
 	Crud,
 	CrudController,
 	CrudRequest,
+	CrudRequestInterceptor,
 	Override,
 	ParsedBody,
-	ParsedRequest
+	ParsedRequest,
 } from "@nestjsx/crud";
 import {Application} from "../entity/application.entity";
 import {AuthenticatedGuard} from "../../auth/guards/authenticated.guard";
 import {SteamGuard} from "../../auth/guards/steam.guard";
 import {ApplicationService} from "../services/application.service";
 import {CreateApplicationDto} from "../dto/createApplication.dto";
+import {ApplicationStatus} from "../recruitment.enum";
 
 @Crud({
 	model: {
@@ -22,8 +24,10 @@ import {CreateApplicationDto} from "../dto/createApplication.dto";
 	},
 	params: {
 		id: {
-			type: 'uuid'
-		}
+			field: 'id',
+			type: 'uuid',
+			primary: true,
+		},
 	},
 	query: {
 		alwaysPaginate: true,
@@ -54,7 +58,7 @@ import {CreateApplicationDto} from "../dto/createApplication.dto";
 	}
 })
 @Controller("api/recruitment/application")
-export class ApplicationAdminController implements CrudController<Application> {
+export class ApplicationController implements CrudController<Application> {
 	constructor(
 		public service: ApplicationService) {}
 
@@ -66,4 +70,30 @@ export class ApplicationAdminController implements CrudController<Application> {
 		return this.service.create(crudRequest, user, steam_profile, dto);
 	}
 
+	@Put(":id/accept")
+	@UseInterceptors(CrudRequestInterceptor)
+	async accept(
+		@ParsedRequest() crudRequest: CrudRequest,
+		@Param('id') id: string
+	) {
+		return this.service.runAction(crudRequest, id, ApplicationStatus.ACCEPTED);
+	}
+
+	@Put(":id/open")
+	@UseInterceptors(CrudRequestInterceptor)
+	async open(
+		@ParsedRequest() crudRequest: CrudRequest,
+		@Param('id') id: string
+	) {
+		return this.service.runAction(crudRequest, id, ApplicationStatus.OPEN);
+	}
+
+	@Put(":id/reject")
+	@UseInterceptors(CrudRequestInterceptor)
+	async reject(
+		@ParsedRequest() crudRequest: CrudRequest,
+		@Param('id') id: string
+	) {
+		return this.service.runAction(crudRequest, id, ApplicationStatus.REJECTED);
+	}
 }

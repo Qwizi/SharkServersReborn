@@ -11,14 +11,18 @@ import {In} from "typeorm";
 import {PositionService} from "./position.service";
 import {QuestionService} from "./question.service";
 import {PositionQuestionAnswerService} from "./positionQuestionAnswer.service";
+import {ApplicationStatus} from "../recruitment.enum";
+import {RolesService} from "../../roles/roles.service";
+import {UsersService} from "../../users/users.service";
 
 @Injectable()
-export class ApplicationService extends TypeOrmCrudService<Application> implements OnModuleInit{
+export class ApplicationService extends TypeOrmCrudService<Application> implements OnModuleInit {
 	constructor(
 		@InjectRepository(Application) repo,
 		private positionsService: PositionService,
 		private questionsService: QuestionService,
-		public positionQuestionAnswerService: PositionQuestionAnswerService
+		public positionQuestionAnswerService: PositionQuestionAnswerService,
+		private usersService: UsersService,
 	) {
 		super(repo);
 	}
@@ -81,6 +85,28 @@ export class ApplicationService extends TypeOrmCrudService<Application> implemen
 
 		application.questions_answers = questionAnswers;
 		await this.repo.save(application)
+		return application
+	}
+
+	async runAction(crudReq: CrudRequest, applicationId: string, status: ApplicationStatus) {
+		const application = await this.findOne({
+			where: {
+				id: applicationId
+			},
+			relations: ["position", "position.role", "author", "author.roles"]
+		})
+		if (!application) throw new BadRequestException('Application is invalid');
+		if (application.status === status) throw new BadRequestException(`Application is already ${status}`)
+		application.status = status
+		await this.repo.save(application)
+
+		if (application.status === ApplicationStatus.ACCEPTED) {
+			const applicationPositionRole = application.position.role;
+			const applicationAuthorRoles = application.author.roles;
+			if (!applicationAuthorRoles.find(role => role.id === applicationPositionRole.id)) {
+				await this.usersService.update(application.author, {roles: [...application.author.roles, applicationPositionRole]})
+			}
+		}
 		return application
 	}
 }
