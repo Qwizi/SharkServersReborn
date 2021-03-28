@@ -1,4 +1,5 @@
 import axios from 'axios';
+import {RequestQueryBuilder} from "@nestjsx/crud-request";
 
 export enum AccountTypes {
     STEAM = 'steam'
@@ -91,6 +92,22 @@ class Api {
 
     async getNews(slug?: string | string[]) {
         return slug ? this.axios.get(`/api/news/${slug}`) : this.axios.get(`/api/news`);
+    }
+
+    async getPositions(q?: string) {
+        return q != undefined ? this.axios.get(`/api/recruitment/position?${q}`) : this.axios.get(`/api/recruitment/position`)
+    }
+
+    async getApplications(q?: string) {
+        return q != undefined ? this.axios.get(`/api/recruitment/application?${q}`) : this.axios.get(`/api/recruitment/application`)
+    }
+
+    async getApplication(id: string, q?: string) {
+        return q != undefined ? this.axios.get(`/api/recruitment/application/${id}?${q}`) : this.axios.get(`/api/recruitment/application/${id}`)
+    }
+
+    async getApplicationComments(q?: string) {
+        return q != undefined ? this.axios.get(`/api/recruitment/comment?${q}`) : this.axios.get(`/api/recruitment/comment`)
     }
 
     async getRecruitmentPositions(s?: object) {

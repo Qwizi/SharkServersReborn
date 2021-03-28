@@ -15,9 +15,7 @@ import {CreateCommentDto} from "../dto/createComment.dto";
 	query: {
 		alwaysPaginate: true,
 		join: {
-			author: {
-				eager: true
-			},
+			author: {},
 			application: {}
 		}
 	}

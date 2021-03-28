@@ -1,51 +1,53 @@
-import {Badge, Card, Col, Nav, Row} from "react-bootstrap";
+import {Badge, Card, Col, Nav, Row, Table} from "react-bootstrap";
 import Link from "next/link";
 import React, {useEffect, useState} from "react";
 import {useRouter} from "next/router";
+import {RecruitmentPositionsEmpty} from "./recruitmentPostionsEmptyCard.component";
 
-export const RecruitmentCard = ({positions, activeKey, children}) => {
-    useEffect(() => {
-        console.log(activeKey)
-    }, [])
+export const RecruitmentCard = ({positions}) => {
+	const router = useRouter()
 
-    if (!positions.data) return <div/>
+	if (positions.count === 0) return <RecruitmentPositionsEmpty/>;
 
-    return (
-        <Row>
-            <Col>
-                <Row>
-                    <Col>
-                        <Card>
-                            <Card.Body>
-                                <Card.Title>
-                                    <h1>Rekrutacja</h1>
-                                </Card.Title>
-                                <Card.Subtitle>
-                                    Wybierz na jakie stanowisko chcesz wyslac podanie
-                                </Card.Subtitle>
-                                <br/>
-                                {positions.data && positions.data.length > 0 ? (
-                                    <Nav fill variant="tabs" defaultActiveKey={activeKey}>
-                                        {positions.data && positions.data.map(position => {
-                                            if (position.role) {
-                                                return (
-                                                    <Nav.Item>
-                                                        <Link href={`/recruitment/${position.role.name || ''}`} passHref>
-                                                            <Nav.Link href={`/recruitment/${position.role.name}`}>{position.role.name} <Badge variant={"success"}>{position.free_space}</Badge></Nav.Link>
-                                                        </Link>
-                                                    </Nav.Item>
-                                                )
-                                            }
-                                        }
-                                        )}
-                                    </Nav>
-                                ) : (<div>Aktualnie nie prowadzimy rekrutacji</div>)}
-                            </Card.Body>
-                        </Card>
-                    </Col>
-                </Row>
-                {children}
-            </Col>
-        </Row>
-    )
+	return (
+		<Row>
+			<Col>
+				<Card>
+					<Card.Header>Rekrutacja</Card.Header>
+					<Card.Body>
+						<Table responsive className={"table-hover text-center"}>
+							<thead>
+								<th>Stanowisko</th>
+								<th>Wolnych miejsc</th>
+								<th>Razem</th>
+								<th>Otwarte</th>
+								<th>Przyjęte</th>
+								<th>Odrzucone</th>
+							</thead>
+							<tbody>
+								{positions.data && positions.data.map(position =>
+									<tr key={position.id} onClick={() => router.push(`/recruitment/position-${position.role.name}`)}>
+										<td>{position.role.name}</td>
+										<td>{position.free_space}</td>
+										<td>
+											3
+										</td>
+										<td>
+											<Badge variant={"secondary"}>1</Badge>
+										</td>
+										<td>
+											<Badge variant={"success"}>1</Badge>
+										</td>
+										<td>
+											<Badge variant={"danger"}>1</Badge>
+										</td>
+									</tr>
+								)}
+							</tbody>
+						</Table>
+					</Card.Body>
+				</Card>
+			</Col>
+		</Row>
+	)
 }
