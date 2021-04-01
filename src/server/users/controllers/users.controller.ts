@@ -14,7 +14,12 @@ import {UsersService} from "../services/users.service";
 		only: ["getOneBase", "getManyBase"]
 	},
 	query: {
+		exclude: ["password"],
 		alwaysPaginate: true,
+		join: {
+			steam_profile: {},
+			roles: {}
+		}
 	}
 })
 @Controller("api/users")

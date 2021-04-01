@@ -5,17 +5,19 @@ import {User} from "../entity/users.entity";
 import {RegisterUserDto} from "../dto/registerUser.dto";
 import * as bcrypt from 'bcrypt';
 import {RolesService} from "../../roles/roles.service";
-import {ChangePasswordDto} from "../../profile/dto/changePassword.dto";
-import {ChangeUsernameDto} from "../../profile/dto/changeUsername.dto";
+import {ChangePasswordDto} from "../dto/changePassword.dto";
+import {ChangeUsernameDto} from "../dto/changeUsername.dto";
 import {Request} from "express";
-import {ChangeEmailDto} from "../../profile/dto/changeEmail.dto";
+import {SendChangeEmailEmailDto} from "../dto/sendChangeEmailEmail.dto";
 import {Operations} from "../../authenticator/operations.enums";
 import {AuthenticatorService} from "../../authenticator/authenticator.service";
 import {MailService} from "../../mail/mail.service";
+import {ChangeEmailDto} from "../dto/changeEmail.dto";
 
 @Injectable()
 export class UsersService extends TypeOrmCrudService<User> {
 	private logger = new Logger(UsersService.name);
+
 	constructor(
 		@InjectRepository(User) repo,
 		private rolesService: RolesService,
@@ -60,7 +62,7 @@ export class UsersService extends TypeOrmCrudService<User> {
 		return user
 	}
 
-	async comparePassword(password: string, hashedPassword: string, ) {
+	async comparePassword(password: string, hashedPassword: string,) {
 		return !!bcrypt.compare(password, hashedPassword);
 	}
 
@@ -80,31 +82,34 @@ export class UsersService extends TypeOrmCrudService<User> {
 		const {username} = changeUsernameDto;
 		const usernameExists = await this.repo.findOne({where: {display_name: username}})
 		if (usernameExists) throw new BadRequestException('This username is already taken')
-		await this.repo.update(user.id, {display_name: username})
+		user.display_name = username
 		await this.repo.save(user);
+		return user;
 	}
 
-	async sendChangeEmail(userId: number, req: Request, changeEmailDto: ChangeEmailDto) {
-		try {
-			const user = await this.repo.findOne({where: {id: userId}, relations: ['operations']})
-			const {email} = changeEmailDto;
-			const emailIsTaken = await this.repo.findOne({where: {email: email}})
-			if (emailIsTaken) throw new BadRequestException('Email is taken')
-			await this.authenticatorService.deactivateConfirmCodes(user, Operations.CONFIRM_CHANGE_EMAIL);
-			const [code, encryptedCode] = await this.authenticatorService.createCode(user, Operations.CONFIRM_CHANGE_EMAIL);
-			const url = await this.mailService.getChangeEmailUrl(req, encryptedCode, email);
-			const job = await this.mailService.sendChangeEmail(user, code, url);
-		} catch (e) {this.logger.error(e.message)}
+	async sendChangeEmail(userId: number, req: Request, changeEmailDto: SendChangeEmailEmailDto) {
+		const user = await this.repo.findOne({where: {id: userId}, relations: ['operations']})
+		const {email} = changeEmailDto;
+		const emailIsTaken = await this.repo.findOne({where: {email: email}})
+		if (emailIsTaken) throw new BadRequestException('Email is taken')
+		await this.authenticatorService.deactivateConfirmCodes(user, Operations.CONFIRM_CHANGE_EMAIL);
+		const [code, encryptedCode] = await this.authenticatorService.createCode(user, Operations.CONFIRM_CHANGE_EMAIL);
+		const url = await this.mailService.getChangeEmailUrl(req, encryptedCode, email);
+		const job = await this.mailService.sendChangeEmail(user, code, url);
+		return {
+			user: user,
+			job: job
+		}
 	}
 
-	async changeEmail(user: User, email: string, encryptedCode: string) {
-		try {
-			const decryptedCode = await this.authenticatorService.decryptCode(encryptedCode);
-			const [isValidCode, operation] = await this.authenticatorService.checkCode(decryptedCode, true, Operations.CONFIRM_CHANGE_EMAIL)
-			if (!isValidCode) throw new BadRequestException('Not validated code')
-			await this.repo.update(user.id, {email: email})
-			await this.repo.save(user)
-			return user;
-		} catch (e) {this.logger.error(e.message)}
+	async changeEmail(user: User, dto: ChangeEmailDto) {
+		const {encrypted_code, email} = dto;
+		const decryptedCode = await this.authenticatorService.decryptCode(encrypted_code);
+		if (!decryptedCode) throw new BadRequestException("Bad encrypted code");
+		const [isValidCode, operation] = await this.authenticatorService.checkCode(decryptedCode, true, Operations.CONFIRM_CHANGE_EMAIL)
+		if (!isValidCode) throw new BadRequestException('Not validated code')
+		user.email = email
+		await this.repo.save(user)
+		return user;
 	}
 }

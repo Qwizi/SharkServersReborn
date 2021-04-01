@@ -32,21 +32,31 @@ export class AuthenticatorService implements OnModuleInit {
     }
 
     async encryptCode(code: string) {
-        let cipher = crypto.createCipheriv('aes-256-cbc', Buffer.from(this.key), this.iv);
-        let encrypted = cipher.update(code);
-        encrypted = Buffer.concat([encrypted, cipher.final()]);
-        return encrypted.toString('hex');
+        try {
+            let cipher = crypto.createCipheriv('aes-256-cbc', Buffer.from(this.key), this.iv);
+            let encrypted = cipher.update(code);
+            encrypted = Buffer.concat([encrypted, cipher.final()]);
+            return encrypted.toString('hex');
+        } catch (e) {
+            this.logger.error(e.message)
+            return null;
+        }
     }
 
     async decryptCode(code: string) {
-        // @ts-ignore
-        let iv = Buffer.from(this.iv, 'hex');
-        // @ts-ignore
-        let encryptedText = Buffer.from(code, 'hex');
-        let decipher = crypto.createDecipheriv('aes-256-cbc', Buffer.from(this.key), iv);
-        let decrypted = decipher.update(encryptedText);
-        decrypted = Buffer.concat([decrypted, decipher.final()]);
-        return decrypted.toString();
+        try {
+            // @ts-ignore
+            let iv = Buffer.from(this.iv, 'hex');
+            // @ts-ignore
+            let encryptedText = Buffer.from(code, 'hex');
+            let decipher = crypto.createDecipheriv('aes-256-cbc', Buffer.from(this.key), iv);
+            let decrypted = decipher.update(encryptedText);
+            decrypted = Buffer.concat([decrypted, decipher.final()]);
+            return decrypted.toString();
+        } catch (e) {
+            this.logger.error(e.message)
+            return null;
+        }
     }
 
     async _createCode(createCodeDto: CreateCodeDto): Promise<[string, Operation]> {

@@ -4,7 +4,7 @@ import {User} from "./entity/users.entity";
 import {RolesModule} from "../roles/roles.module";
 import {AuthenticatorModule} from "../authenticator/authenticator.module";
 import {MailModule} from "../mail/mail.module";
-import { UsersController } from './users.controller';
+import { UsersController } from './controllers/users.controller';
 import {UsersService} from "./services/users.service";
 import {ProfileController} from "./controllers/profile.controller";
 
