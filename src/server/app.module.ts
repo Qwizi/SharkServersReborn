@@ -15,7 +15,6 @@ import {Operation} from "./authenticator/operation.entity";
 import {MailModule} from "./mail/mail.module";
 import { AuthModule } from './auth/auth.module';
 import {BullModule} from "@nestjs/bull";
-import { ProfileModule } from './profile/profile.module';
 import {Perms} from "./permissions/permissions.enum";
 import { ViewModule } from './view/view.module';
 import { SteamProfileModule } from './steamprofile/steamProfile.module';
@@ -67,7 +66,6 @@ import {Application} from "./recruitment/entity/application.entity";
       AuthenticatorModule,
       UsersModule,
       AuthModule,
-      ProfileModule,
       SteamProfileModule,
       NewsModule,
       RecruitmentModule,
@@ -84,20 +82,17 @@ import {Application} from "./recruitment/entity/application.entity";
               },
               {
                   module: UsersModule.name,
-                  permissions: permissionsDefault
-              },
-              {
-                  module: NewsModule.name,
-                  permissions: permissionsDefault
-              },
-              {
-                  module: ProfileModule.name,
                   permissions: [
+                      ...permissionsDefault,
                       Perms.SHOW_PROFILE,
                       Perms.CHANGE_EMAIL,
                       Perms.CHANGE_PASSWORD,
                       Perms.CHANGE_USERNAME
                   ]
+              },
+              {
+                  module: NewsModule.name,
+                  permissions: permissionsDefault
               },
               {
                   module: RecruitmentModule.name,
