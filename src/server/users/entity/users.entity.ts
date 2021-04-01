@@ -8,12 +8,12 @@ import {
     UpdateDateColumn,
     JoinColumn
 } from "typeorm";
-import {Role} from "../roles/roles.entity";
-import {Operation} from "../authenticator/operation.entity";
-import {SteamProfile} from "../steamprofile/steamProfile.entity";
-import {News} from "../news/news.entity";
-import {Comment} from "../recruitment/entity/comment.entity";
-import {Application} from "../recruitment/entity/application.entity";
+import {Role} from "../../roles/roles.entity";
+import {Operation} from "../../authenticator/operation.entity";
+import {SteamProfile} from "../../steamprofile/steamProfile.entity";
+import {News} from "../../news/news.entity";
+import {Comment} from "../../recruitment/entity/comment.entity";
+import {Application} from "../../recruitment/entity/application.entity";
 
 @Entity()
 export class User {

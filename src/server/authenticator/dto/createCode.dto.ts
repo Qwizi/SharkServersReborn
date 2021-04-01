@@ -1,6 +1,6 @@
 import {Operations} from "../operations.enums";
 import {IsEnum, IsNotEmpty, ValidateNested} from "class-validator";
-import {User} from "../../users/users.entity";
+import {User} from "../../users/entity/users.entity";
 
 export class CreateCodeDto {
     @IsEnum(Operations)

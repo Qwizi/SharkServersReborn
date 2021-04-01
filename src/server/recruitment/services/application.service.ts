@@ -4,7 +4,7 @@ import {InjectRepository} from "@nestjs/typeorm";
 import {CreatePositionDto} from "../dto/createPosition.dto";
 import {Application} from "../entity/application.entity";
 import {CrudRequest} from "@nestjsx/crud";
-import {User} from "../../users/users.entity";
+import {User} from "../../users/entity/users.entity";
 import {SteamProfile} from "../../steamprofile/steamProfile.entity";
 import {CreateApplicationDto} from "../dto/createApplication.dto";
 import {In} from "typeorm";

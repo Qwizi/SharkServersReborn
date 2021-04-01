@@ -9,7 +9,7 @@ import { RolesModule } from './roles/roles.module';
 import {permissionsDefault} from "./permissions/permissions.uitils";
 import {Role} from "./roles/roles.entity";
 import { UsersModule } from './users/users.module';
-import {User} from "./users/users.entity";
+import {User} from "./users/entity/users.entity";
 import { AuthenticatorModule } from './authenticator/authenticator.module';
 import {Operation} from "./authenticator/operation.entity";
 import {MailModule} from "./mail/mail.module";

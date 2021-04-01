@@ -1,6 +1,6 @@
 import {BadRequestException, Injectable, Logger, OnModuleInit} from '@nestjs/common';
 import {InjectRepository} from "@nestjs/typeorm";
-import {User} from "./users.entity";
+import {User} from "./entity/users.entity";
 import {Repository} from "typeorm";
 import {CreateUserDto} from "./dto/createUser.dto";
 import {FindManyOptions} from "typeorm/find-options/FindManyOptions";

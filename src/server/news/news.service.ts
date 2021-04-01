@@ -6,7 +6,7 @@ import {FindManyOptions} from "typeorm/find-options/FindManyOptions";
 import {FindOneOptions} from "typeorm/find-options/FindOneOptions";
 import {CreateNewsDto} from "./dto/createNews.dto";
 import slugify from "slugify";
-import {User} from "../users/users.entity";
+import {User} from "../users/entity/users.entity";
 import {UsersService} from "../users/users.service";
 import {RemoveOptions} from "typeorm/browser";
 import {UpdateNewsDto} from "./dto/updateNews.dto";
