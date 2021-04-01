@@ -3,7 +3,7 @@ import {TypeOrmCrudService} from "@nestjsx/crud-typeorm";
 import {InjectRepository} from "@nestjs/typeorm";
 import {Comment} from "../entity/comment.entity";
 import {CrudRequest} from "@nestjsx/crud";
-import {User} from "../../users/users.entity";
+import {User} from "../../users/entity/users.entity";
 import {CreateCommentDto} from "../dto/createComment.dto";
 import {ApplicationService} from "./application.service";
 import {ApplicationStatus} from "../recruitment.enum";

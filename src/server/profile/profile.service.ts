@@ -1,6 +1,6 @@
 import {BadRequestException, Injectable, Logger} from '@nestjs/common';
 import {UsersService} from "../users/users.service";
-import {User} from "../users/users.entity";
+import {User} from "../users/entity/users.entity";
 import {ChangePasswordDto} from "./dto/changePassword.dto";
 import {ChangeUsernameDto} from "./dto/changeUsername.dto";
 import {Operations} from "../authenticator/operations.enums";

@@ -6,7 +6,7 @@ import {MailService} from "../mail/mail.service";
 import {AuthenticatorService} from "../authenticator/authenticator.service";
 import {Request} from "express";
 import {SteamProfileService} from "../steamprofile/steamProfile.service";
-import {User} from "../users/users.entity";
+import {User} from "../users/entity/users.entity";
 import {DisconnectAccountDto} from "./dto/disconnectAccount.dto";
 @Injectable()
 export class AuthService {

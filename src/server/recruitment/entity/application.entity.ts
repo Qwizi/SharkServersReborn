@@ -1,7 +1,7 @@
 import {Column, Entity, JoinColumn, JoinTable, ManyToOne, OneToMany, PrimaryGeneratedColumn} from "typeorm";
 import {Position} from "./position.entity";
 import {Question} from "./question.entity";
-import {User} from "../../users/users.entity";
+import {User} from "../../users/entity/users.entity";
 import {SteamProfile} from "../../steamprofile/steamProfile.entity";
 import {IsNotEmpty, IsString} from "class-validator";
 import {PositionQuestionAnswer} from "./positionQuestionAnswer.entity";

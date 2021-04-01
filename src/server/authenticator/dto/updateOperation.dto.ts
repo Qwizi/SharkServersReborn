@@ -1,6 +1,6 @@
 import {IsBoolean, IsEnum, IsOptional, IsString, Length, ValidateNested} from "class-validator";
 import {Operations} from "../operations.enums";
-import {User} from "../../users/users.entity";
+import {User} from "../../users/entity/users.entity";
 
 export class UpdateOperationDto {
     @Length(6, 6)

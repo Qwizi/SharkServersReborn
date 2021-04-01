@@ -8,7 +8,7 @@ import {
     PrimaryGeneratedColumn,
     UpdateDateColumn
 } from "typeorm";
-import {User} from "../../users/users.entity";
+import {User} from "../../users/entity/users.entity";
 import {ApplicationStatus, PositionType} from "../recruitment.enum";
 import {Role} from "../../roles/roles.entity";
 import {IsNotEmpty, IsNumber} from "class-validator";

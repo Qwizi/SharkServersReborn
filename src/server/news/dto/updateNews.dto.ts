@@ -1,5 +1,5 @@
 import {IsOptional, IsString, Length, ValidateNested} from "class-validator";
-import {User} from "../../users/users.entity";
+import {User} from "../../users/entity/users.entity";
 
 export class UpdateNewsDto {
     @IsString()

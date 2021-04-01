@@ -4,7 +4,7 @@ import {OperationsService} from "./operations.service";
 import {CreateCodeDto} from "./dto/createCode.dto";
 import {Operation} from "./operation.entity";
 import * as crypto from 'crypto';
-import {User} from "../users/users.entity";
+import {User} from "../users/entity/users.entity";
 import {Operations} from "./operations.enums";
 
 @Injectable()

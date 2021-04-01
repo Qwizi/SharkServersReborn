@@ -3,7 +3,7 @@ import {TypeOrmCrudService} from "@nestjsx/crud-typeorm";
 import {InjectRepository} from "@nestjs/typeorm";
 import {PositionQuestionAnswer} from "../entity/positionQuestionAnswer.entity";
 import {CrudRequest} from "@nestjsx/crud";
-import {User} from "../../users/users.entity";
+import {User} from "../../users/entity/users.entity";
 import {SteamProfile} from "../../steamprofile/steamProfile.entity";
 import {CreateApplicationDto} from "../dto/createApplication.dto";
 import {PositionService} from "./position.service";
