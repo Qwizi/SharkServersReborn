@@ -5,14 +5,19 @@ import {NestExpressApplication} from "@nestjs/platform-express";
 import * as session from "express-session";
 import * as passport from "passport";
 import {DocumentBuilder, SwaggerModule} from "@nestjs/swagger";
+const redis = require('redis')
 
 async function bootstrap() {
     const app = await NestFactory.create<NestExpressApplication>(AppModule);
 
     app.useGlobalPipes(new ValidationPipe())
     //app.setGlobalPrefix('api')
+    let RedisStore = require('connect-redis')(session)
+    let redisClient = redis.createClient()
+
     app.use(
         session({
+            store: new RedisStore({client: redisClient}),
             secret: 'nest cats',
             resave: false,
             saveUninitialized: false,
