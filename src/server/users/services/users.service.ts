@@ -39,7 +39,7 @@ export class UsersService extends TypeOrmCrudService<User> {
 		return bcrypt.hash(password, 10);
 	}
 
-	async register(registerUserDto: RegisterUserDto): Promise<User> {
+	async register(registerUserDto: RegisterUserDto, isActive?: boolean, isAdmin?: boolean): Promise<User> {
 		const {username, password, email} = registerUserDto;
 		const userExist = await this.findOne({
 			where: [
@@ -51,6 +51,7 @@ export class UsersService extends TypeOrmCrudService<User> {
 
 		const passwordHashed = await this.createHashedPassword(password);
 		const userRole = await this.rolesService.findOne({where: {name: 'Uzytkowni'}});
+		const adminRole = await this.rolesService.findOne({where: {name: 'Admin'}})
 		const user = await this.repo.create({
 			username: username,
 			display_name: username,
@@ -58,6 +59,11 @@ export class UsersService extends TypeOrmCrudService<User> {
 			email: email,
 			roles: [userRole]
 		})
+		if (isActive) user.is_active = true;
+		if (isAdmin) {
+			user.is_admin = true
+			user.roles = [...user.roles, adminRole]
+		}
 		await this.repo.save(user);
 		return user
 	}

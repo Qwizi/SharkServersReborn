@@ -27,7 +27,7 @@ import {Comment} from "./recruitment/entity/comment.entity";
 import {Question} from "./recruitment/entity/question.entity";
 import {PositionQuestionAnswer} from "./recruitment/entity/positionQuestionAnswer.entity";
 import {Application} from "./recruitment/entity/application.entity";
-
+import { CommandModule } from 'nestjs-command';
 @Module({
   imports: [
       ConfigModule.forRoot({
@@ -70,6 +70,7 @@ import {Application} from "./recruitment/entity/application.entity";
       NewsModule,
       RecruitmentModule,
       ViewModule,
+      CommandModule,
       PermissionsModule.register({
           modules: [
               {
