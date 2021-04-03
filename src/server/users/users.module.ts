@@ -7,6 +7,7 @@ import {MailModule} from "../mail/mail.module";
 import { UsersController } from './controllers/users.controller';
 import {UsersService} from "./services/users.service";
 import {ProfileController} from "./controllers/profile.controller";
+import {CreateUserCommand} from "./commands/createUser.command";
 
 @Module({
     imports: [
@@ -15,7 +16,7 @@ import {ProfileController} from "./controllers/profile.controller";
         RolesModule,
         AuthenticatorModule,
     ],
-    providers: [UsersService],
+    providers: [UsersService, CreateUserCommand],
     exports: [UsersService],
     controllers: [UsersController, ProfileController]
 })
