@@ -28,6 +28,8 @@ import {Question} from "./recruitment/entity/question.entity";
 import {PositionQuestionAnswer} from "./recruitment/entity/positionQuestionAnswer.entity";
 import {Application} from "./recruitment/entity/application.entity";
 import { CommandModule } from 'nestjs-command';
+import { ServersModule } from './servers/servers.module';
+import {Server} from "./servers/entity/server.entity";
 @Module({
   imports: [
       ConfigModule.forRoot({
@@ -51,7 +53,8 @@ import { CommandModule } from 'nestjs-command';
             Application,
             Comment,
             Question,
-            PositionQuestionAnswer
+            PositionQuestionAnswer,
+            Server
         ],
         synchronize: true,
       }),
@@ -69,8 +72,9 @@ import { CommandModule } from 'nestjs-command';
       SteamProfileModule,
       NewsModule,
       RecruitmentModule,
-      ViewModule,
       CommandModule,
+      ServersModule,
+      ViewModule,
       PermissionsModule.register({
           modules: [
               {
