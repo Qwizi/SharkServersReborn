@@ -30,6 +30,8 @@ import {Application} from "./recruitment/entity/application.entity";
 import { CommandModule } from 'nestjs-command';
 import { ServersModule } from './servers/servers.module';
 import {Server} from "./servers/entity/server.entity";
+import {Player} from "./servers/entity/player.entity";
+import {PlayerStats} from "./servers/entity/playerStats.entity";
 @Module({
   imports: [
       ConfigModule.forRoot({
@@ -54,7 +56,9 @@ import {Server} from "./servers/entity/server.entity";
             Comment,
             Question,
             PositionQuestionAnswer,
-            Server
+            Server,
+            Player,
+            PlayerStats
         ],
         synchronize: true,
       }),
