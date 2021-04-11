@@ -23,4 +23,5 @@ export class ServersController implements CrudController<Server> {
 	constructor(
 		public service: ServersService,
 	) {}
+
 }

@@ -5,6 +5,7 @@ import {Player} from "../entity/player.entity";
 import {ServersService} from "./servers.service";
 import {SteamProfileService} from "../../steamprofile/steamProfile.service";
 import {CreatePlayerDto} from "../dto/createPlayer.dto";
+import {CrudRequest} from "@nestjsx/crud";
 
 @Injectable()
 export class PlayersService extends TypeOrmCrudService<Player> {
