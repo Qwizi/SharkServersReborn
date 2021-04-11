@@ -44,8 +44,6 @@ export class PositionService extends TypeOrmCrudService<Position> implements OnM
         const position = await this.repo.create({role: role, questions: questionsFromDb})
         if (dto.free_space) position.free_space = dto.free_space;
         await this.repo.save(position);
-       /* position.questions = questionsFromDb;
-        await this.updateOne(req, {questions: questionsFromDb})*/
         return position
     }
 }
