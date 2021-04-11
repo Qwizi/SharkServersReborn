@@ -12,6 +12,7 @@ import {PlayersService} from "./services/players.service";
 import {SteamProfileModule} from "../steamprofile/steamProfile.module";
 import {PlayersStatsService} from "./services/playersStats.service";
 import {PlayersController} from "./controllers/players.controller";
+import {ServersGateway} from "./gateway/servers.gateway";
 
 @Module({
 	imports: [
@@ -32,7 +33,8 @@ import {PlayersController} from "./controllers/players.controller";
 	providers: [
 		ServersService,
 		PlayersService,
-		PlayersStatsService
+		PlayersStatsService,
+		ServersGateway
 	],
 	exports: [ServersService]
 })

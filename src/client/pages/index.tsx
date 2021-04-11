@@ -6,7 +6,7 @@ import {ShopServices} from "../components/index/shopServices";
 import {News} from "../components/index/news.component";
 import axios from "axios";
 import api from "../uitils/api";
-
+import io from 'socket.io-client'
 
 export const getServerSideProps = withAuthServerSideProps(async (context) => {
     try {
@@ -20,6 +20,18 @@ export const getServerSideProps = withAuthServerSideProps(async (context) => {
 });
 
 const Index = ({user, data}) => {
+
+    useEffect(() => {
+        const socket = io("http://localhost:5000/webclient");
+        socket.on("connect", () => {
+            console.log('Connected');
+        })
+        socket.emit('jd', {
+            msg: 'Jebac disa'
+        })
+
+    }, [])
+
     return (
         <Row>
             <Col lg={4}>
