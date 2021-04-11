@@ -5,6 +5,8 @@ import {NestExpressApplication} from "@nestjs/platform-express";
 import * as session from "express-session";
 import * as passport from "passport";
 import {DocumentBuilder, SwaggerModule} from "@nestjs/swagger";
+import {SocketIoAdapter} from "./adapters/socket-io.adapter";
+import {RedisIoAdapter} from "./adapters/redis-io.adapter";
 const redis = require('redis')
 
 async function bootstrap() {
@@ -37,6 +39,8 @@ async function bootstrap() {
     const document = SwaggerModule.createDocument(app, config);
     SwaggerModule.setup('api/swagger', app, document);
 
+    app.useWebSocketAdapter(new SocketIoAdapter(app))
+    app.useWebSocketAdapter(new RedisIoAdapter())
     await app.listen(3000);
 }
 
