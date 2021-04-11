@@ -1,5 +1,6 @@
-import {Column, Entity, JoinColumn, OneToOne, PrimaryGeneratedColumn} from "typeorm";
+import {Column, Entity, JoinColumn, OneToMany, OneToOne, PrimaryGeneratedColumn} from "typeorm";
 import {Role} from "../../roles/roles.entity";
+import {Player} from "./player.entity";
 
 @Entity()
 export class Server {
@@ -23,4 +24,6 @@ export class Server {
 	@JoinColumn()
 	maintainer_role: Role
 
+	@OneToMany(() => Player, player => player.server)
+	players: Player[]
 }
