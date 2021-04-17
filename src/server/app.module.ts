@@ -32,6 +32,7 @@ import { ServersModule } from './servers/servers.module';
 import {Server} from "./servers/entity/server.entity";
 import {Player} from "./servers/entity/player.entity";
 import {PlayerStats} from "./servers/entity/playerStats.entity";
+import { SocketModule } from './socket/socket.module';
 @Module({
   imports: [
       ConfigModule.forRoot({
@@ -78,6 +79,7 @@ import {PlayerStats} from "./servers/entity/playerStats.entity";
       RecruitmentModule,
       CommandModule,
       ServersModule,
+      SocketModule,
       ViewModule,
       PermissionsModule.register({
           modules: [

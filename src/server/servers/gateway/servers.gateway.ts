@@ -4,35 +4,58 @@ import {
 	WebSocketGateway,
 	WebSocketServer,
 	WsResponse,
+	OnGatewayInit,
 	OnGatewayConnection,
-	OnGatewayDisconnect
+	OnGatewayDisconnect, ConnectedSocket
 } from '@nestjs/websockets';
-import { from, Observable } from 'rxjs';
-import { map } from 'rxjs/operators';
 import {Server, Socket} from 'socket.io';
-import {Logger} from "@nestjs/common";
+import {CACHE_MANAGER, Inject, Logger} from "@nestjs/common";
+import {PlayersService} from "../services/players.service";
+import {SocketService} from "../../socket/socket.service";
+import {Observable} from "rxjs";
+import {Cache} from "cache-manager";
+import {ServerData} from "../dto/serverData.dto";
 
 @WebSocketGateway(5000, {namespace: 'servers'})
-export class ServersGateway implements OnGatewayConnection, OnGatewayDisconnect {
+export class ServersGateway implements OnGatewayInit, OnGatewayConnection, OnGatewayDisconnect {
 	private logger: Logger = new Logger('ServersGateway');
 	@WebSocketServer()
 	server: Server;
 
-	@SubscribeMessage('events')
-	findAll(@MessageBody() data: any): Observable<WsResponse<number>> {
-		return from([1, 2, 3]).pipe(map(item => ({ event: 'events', data: item })));
+	constructor(
+		private socketService: SocketService,
+		@Inject(CACHE_MANAGER) private cacheManager: Cache
+	) {
 	}
 
-	@SubscribeMessage('identity')
-	async identity(@MessageBody() data: number): Promise<number> {
-		return data;
+	afterInit(server: Server) {
+		this.socketService.socket = server;
 	}
 
-	handleConnection(client: Socket, ...args: any[]) {
-		this.logger.log(`Client ${client.id} connected`)
+	async handleConnection(client: Socket, ...args: any[]) {
+		this.logger.log(`Server client ${client.id} connected`)
 	}
 
 	handleDisconnect(client: Socket) {
-		this.logger.log(`Client disconnected: ${client.id}`);
+		this.logger.log(`Server client disconnected: ${client.id}`);
+	}
+
+	@SubscribeMessage('get_server_data')
+	async getData(@MessageBody() data: any, @ConnectedSocket() client: Socket,): Promise<Observable<WsResponse<any>> | any> {
+		console.log(data);
+		const serversCacheData = await this.cacheManager.get<ServerData[]>('servers_data');
+		if (!serversCacheData) {
+			await this.cacheManager.set('servers_data', [data])
+		} else {
+			const serverExist = serversCacheData.find(s => s.ip == data.ip)
+			if (serverExist) {
+				const serverIndex = serversCacheData.indexOf(serverExist)
+				serversCacheData[serverIndex] = data;
+				await this.cacheManager.set('servers_data', serversCacheData, {ttl: 5000})
+			} else {
+				await this.cacheManager.set('servers_data', [...serversCacheData, data], {ttl: 5000})
+			}
+		}
+		this.server.of('/webclient').emit('get_server_data', serversCacheData)
 	}
 }

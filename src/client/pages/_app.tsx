@@ -6,12 +6,15 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 import {NavBar} from "../components/navbar.component";
 import {withAuthServerSideProps} from "../hocs/withAuth";
 import {Breadcrumbs} from 'nextjs-breadcrumbs'
+import {useContext, useEffect, useState} from "react";
+
+import {SocketContext, socket} from '../context/socket.context';
 
 export const getServerSideProps = withAuthServerSideProps();
 
 const MyApp = ({Component, pageProps}: AppProps) => {
     const breadcrumbs = Breadcrumbs()
-
+    // @ts-ignore
     return (
         <div>
             <Head>
@@ -55,7 +58,8 @@ const MyApp = ({Component, pageProps}: AppProps) => {
               }
 
               .list-group-item {
-                background-color: #28282B;
+                //background-color: #28282B;
+                background-color: rgba(255,255,255,0.05);
               }
 
               .breadcrumb {
@@ -82,11 +86,13 @@ const MyApp = ({Component, pageProps}: AppProps) => {
               }
             `}
             </style>
-            <NavBar user={pageProps.user}/>
-            <Container style={{padding: '24px 16px 0'}}>
-                {breadcrumbs}
-                <Component {...pageProps} />
-            </Container>
+            <SocketContext.Provider value={socket}>
+                <NavBar user={pageProps.user}/>
+                <Container style={{padding: '24px 16px 0'}}>
+                    {breadcrumbs}
+                    <Component {...pageProps} />
+                </Container>
+            </SocketContext.Provider>
         </div>
     )
 }

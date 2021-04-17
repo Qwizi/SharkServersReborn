@@ -1,4 +1,4 @@
-import React, {useEffect} from 'react'
+import React, {useContext, useEffect} from 'react'
 import {withAuthServerSideProps} from "../hocs/withAuth";
 import {Badge, Card, Col, ListGroup, ProgressBar, Row} from "react-bootstrap";
 import {Servers} from "../components/index/servers.component";
@@ -7,110 +7,50 @@ import {News} from "../components/index/news.component";
 import axios from "axios";
 import api from "../uitils/api";
 import io from 'socket.io-client'
+import {SocketContext} from "../context/socket.context";
 
-export const getServerSideProps = withAuthServerSideProps(async (context) => {
+const getNews = async () => {
     try {
         const newsResponse = await api.getNews();
         const news = newsResponse.data;
-        return {news: news}
+        return news
     } catch (e) {
         console.log(e);
-        return {props: {news: null}}
+        return null
     }
-});
+}
+
+const getServers = async () => {
+    try {
+        const serversResponse = await api.getServers();
+        const servers = serversResponse.data;
+        return servers
+    } catch (e) {
+        console.log(e);
+        return null
+    }
+}
 
 const Index = ({user, data}) => {
-
+    const socket = useContext(SocketContext);
     useEffect(() => {
-        const socket = io("http://localhost:5000/webclient");
-        socket.on("connect", () => {
-            console.log('Connected');
-        })
-        socket.emit('jd', {
-            msg: 'Jebac disa'
-        })
-
+        console.log(socket);
     }, [])
+
 
     return (
         <Row>
             <Col lg={4}>
-               <Servers />
-               {/*<ShopServices/>
-                <Row>
-                    <Col>
-                        <Row>
-                            <Col>
-                                <h4>Ostatnie podania</h4>
-                            </Col>
-                        </Row>
-                        <Row>
-                            <Col>
-                                <Card>
-                                    <Card.Body>
-                                        <ListGroup>
-                                            <ListGroup.Item>Link</ListGroup.Item>
-                                        </ListGroup>
-                                    </Card.Body>
-                                </Card>
-                            </Col>
-                        </Row>
-                    </Col>
-                </Row>*/}
+               <Servers data={data.servers}/>
             </Col>
             <Col lg={{offset: 1 }}>
                 <News data={data.news}/>
-                {/*<br/>
-                <Row>
-                    <Col>
-                        <Row>
-                            <Col>
-                                <h4>Rekrutacja</h4>
-                            </Col>
-                        </Row>
-                        <Row>
-                            <Col lg={6}>
-                                <Card>
-                                    <Card.Body>
-                                        <Card.Title>
-                                            Admin Jailbreak <Badge variant={"success"}>2/4</Badge>
-                                        </Card.Title>
-                                    </Card.Body>
-                                </Card>
-                            </Col>
-                            <Col lg={6}>
-                                <Card>
-                                    <Card.Body>
-                                        <Card.Title>
-                                            Admin Jailbreak <Badge variant={"success"}>2/4</Badge>
-                                        </Card.Title>
-                                    </Card.Body>
-                                </Card>
-                            </Col>
-                            <Col lg={6}>
-                                <Card>
-                                    <Card.Body>
-                                        <Card.Title>
-                                            Admin Jailbreak <Badge variant={"success"}>2/4</Badge>
-                                        </Card.Title>
-                                    </Card.Body>
-                                </Card>
-                            </Col>
-                            <Col lg={6}>
-                                <Card>
-                                    <Card.Body>
-                                        <Card.Title>
-                                            Opiekun Jailbreak <Badge variant={"secondary"}>1/1</Badge>
-                                        </Card.Title>
-                                    </Card.Body>
-                                </Card>
-                            </Col>
-                        </Row>
-                    </Col>
-                </Row>*/}
             </Col>
         </Row>
     )
 }
-
+export const getServerSideProps = withAuthServerSideProps(async (context) => {
+    const values = await Promise.all([getNews(), getServers()])
+    return {news: values[0], servers: values[1]};
+});
 export default Index

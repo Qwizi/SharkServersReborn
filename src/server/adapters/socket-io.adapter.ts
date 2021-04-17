@@ -7,7 +7,7 @@ import {
 import { DISCONNECT_EVENT } from '@nestjs/websockets/constants';
 import { fromEvent, Observable } from 'rxjs';
 import { filter, first, map, mergeMap, share, takeUntil } from 'rxjs/operators';
-import { Server } from 'socket.io';
+import * as Server from "socket.io";
 
 export class SocketIoAdapter extends AbstractWsAdapter {
 	constructor(
@@ -36,16 +36,16 @@ export class SocketIoAdapter extends AbstractWsAdapter {
 		if (this.httpServer && port === 0) {
 			// @ts-ignore
 			const s = new Server(this.httpServer, {
-				cors: {
+				/*cors: {
 					origin: this.corsOrigins,
 					methods: ['GET', 'POST'],
 					credentials: true,
-				},
-				cookie: {
+				},*/
+				/*cookie: {
 					name: 'io',
 					httpOnly: true,
 					path: '/',
-				},
+				},*/
 				// Allow 1MB of data per request.
 				maxHttpBufferSize: 1e6,
 			});
