@@ -118,6 +118,10 @@ class Api {
         return s != undefined ? this.axios.get(`/api/recruitment/application?s=${JSON.stringify(s)}&sort=created_at,DESC`) : this.axios.get(`/api/recruitment/application`)
     }
 
+    async getServers(q?: string) {
+        return q != undefined ? this.axios.get(`/api/servers?${q}`) : this.axios.get(`/api/servers`)
+    }
+
     async getRecruitmentApplication(uuid: string) {
         return this.axios.get(`/api/recruitment/application/${uuid}`)
     }
