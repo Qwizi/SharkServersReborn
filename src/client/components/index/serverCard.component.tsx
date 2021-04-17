@@ -6,7 +6,7 @@ export const ServerCard = ({
 							   name,
 							   ip,
 							   port,
-							   players,
+							   playersCount,
 							   maxPlayers,
 							   status,
 							   map,
@@ -44,7 +44,23 @@ export const ServerCard = ({
 
 			switch (event.type) {
 				case 'player_connected':
-					console.log(event.player.username)
+					console.log(event)
+					updateServer(server.ip, server.port, server)
+					break;
+				case 'player_disconnected':
+					console.log(event)
+					updateServer(server.ip, server.port, server)
+					break;
+				case 'player_change_team':
+					console.log(event)
+					updateServer(server.ip, server.port, server)
+					break;
+				case 'player_change_class':
+					console.log(event)
+					updateServer(server.ip, server.port, server)
+					break;
+				case 'time':
+					console.log(event)
 					updateServer(server.ip, server.port, server)
 					break;
 			}
@@ -60,9 +76,9 @@ export const ServerCard = ({
 				<Card.Subtitle>{ip}:{port}</Card.Subtitle>
 				<Row>
 					<Col>
-						{players && maxPlayers ? (
-							<ProgressBar now={(players / maxPlayers) * 100}
-										 label={`${(players / maxPlayers) * 100} %`}/>
+						{playersCount && maxPlayers ? (
+							<ProgressBar now={(playersCount / maxPlayers) * 100}
+										 label={`${(playersCount / maxPlayers) * 100} %`}/>
 						) : (
 							<ProgressBar now={0} label={`0 %`}/>
 						)}
@@ -74,7 +90,7 @@ export const ServerCard = ({
 							<Badge variant={"danger"}>Offline</Badge>)}
 					</Col>
 					<Col>
-						<Badge variant={"secondary"}>{players}/{maxPlayers}</Badge>
+						<Badge variant={"secondary"}>{playersCount}/{maxPlayers}</Badge>
 					</Col>
 					<Col>
 						<Badge variant={"secondary"}>{map}</Badge>

@@ -4,6 +4,7 @@ import { ViewController } from './view.controller';
 import {WebClientGateway} from "./gateway/webClient.gateway";
 import * as redisStore from 'cache-manager-redis-store';
 import {SteamProfileModule} from "../steamprofile/steamProfile.module";
+import {ServersModule} from "../servers/servers.module";
 
 @Module({
   imports: [
@@ -12,7 +13,8 @@ import {SteamProfileModule} from "../steamprofile/steamProfile.module";
       host: process.env.REDIS_HOST,
       //port: process.env.REDIS_PORT
     }),
-      SteamProfileModule
+      SteamProfileModule,
+      ServersModule
   ],
   providers: [ViewService, WebClientGateway],
   controllers: [ViewController]
