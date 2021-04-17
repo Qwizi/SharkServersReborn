@@ -20,8 +20,9 @@ export const Servers = ({data}) => {
 		ip: "245.234.211.24",
 		port: 5000,
 		name: "Jailbreak",
-		players: 0,
+		playersCount: 0,
 		max_players: 16,
+		players: [],
 		map: 'ba_jail',
 		timeleft: 0
 	}
@@ -65,7 +66,7 @@ export const Servers = ({data}) => {
 		return updateServer(ip, port, {name: name, ...data});
 	}
 	const updateServerPlayersCount = (ip: string, port: number, players: number) => {
-		return updateServer(ip, port, {players: players, ...data});
+		return updateServer(ip, port, {playersCount: players, ...data});
 	}
 
 	const findServer = (ip: string, port: number) => {
@@ -81,9 +82,9 @@ export const Servers = ({data}) => {
 
 	const serverEvents = () => {
 
-		/*serverSocket.emit("send_server_data_to_cache", server);*/
 
-		setInterval(() => {
+
+		/*setInterval(() => {
 			serverSocket.emit("server_events", {
 					server: {
 						ip: server.ip,
@@ -95,7 +96,7 @@ export const Servers = ({data}) => {
 					}
 				}
 			)
-		}, 6000)
+		}, 6000)*/
 
 		setInterval(() => {
 			serverSocket.emit("server_events", {
@@ -105,11 +106,48 @@ export const Servers = ({data}) => {
 					},
 					event: {
 						type: 'player_connected',
-						player: {username: 'Qwizi'}
+						player: {
+							steamid64: '76561198190469450',
+							username: 'Qwizi'
+						}
 					}
 				}
 			)
-			serverSocket.emit("server_events", {
+
+			setTimeout(() => {
+				serverSocket.emit("server_events", {
+						server: {
+							ip: server.ip,
+							port: server.port,
+						},
+						event: {
+							type: 'player_change_team',
+							player: {
+								steamid64: '76561198190469450',
+								team: 'red'
+							}
+						}
+					}
+				)
+			}, 2000)
+
+			setTimeout(() => {
+				serverSocket.emit("server_events", {
+						server: {
+							ip: server.ip,
+							port: server.port,
+						},
+						event: {
+							type: 'player_change_class',
+							player: {
+								steamid64: '76561198190469450',
+								class_name: 'scout'
+							}
+						}
+					}
+				)
+			}, 4000)
+			/*serverSocket.emit("server_events", {
 					server: {
 						ip: server.ip,
 						port: server.port,
@@ -130,7 +168,7 @@ export const Servers = ({data}) => {
 						player: {username: 'Qwizi'}
 					}
 				}
-			)
+			)*/
 		}, 5000)
 
 
@@ -160,6 +198,7 @@ export const Servers = ({data}) => {
 					}
 				}
 			)
+			serverSocket.emit("send_server_data_to_cache", server);
 		}, 60000)
 
 		/*setInterval(() => {
@@ -206,7 +245,7 @@ export const Servers = ({data}) => {
 								name={server?.stats?.name ? server.stats.name : server.name}
 								ip={server?.ip ? server.ip : ''}
 								port={server?.port ? server.port : ''}
-								players={server?.stats.players ? server.stats.players : 0}
+								playersCount={server?.stats.playersCount ? server.stats.playersCount : 0}
 								maxPlayers={server?.stats?.max_players ? server.stats.max_players : 0}
 								map={server?.stats?.map ? server.stats.map : 'none'}
 								status={!!server.stats?.map}

@@ -41,7 +41,9 @@ import * as redisStore from 'cache-manager-redis-store';
 		PlayersStatsService,
 		ServersGateway
 	],
-	exports: [ServersService]
+	exports: [ServersService,
+		PlayersService,
+		PlayersStatsService]
 })
 export class ServersModule {
 }
