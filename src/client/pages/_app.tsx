@@ -1,31 +1,31 @@
-import App, {AppProps, AppContext} from 'next/app'
+import App, { AppProps, AppContext } from 'next/app'
 import Head from 'next/head'
 import '../style.css';
-import {Col, Container, Row} from "react-bootstrap";
+import { Col, Container, Row } from "react-bootstrap";
 import 'bootstrap/dist/css/bootstrap.min.css';
-import {NavBar} from "../components/navbar.component";
-import {withAuthServerSideProps} from "../hocs/withAuth";
-import {Breadcrumbs} from 'nextjs-breadcrumbs'
-import {useContext, useEffect, useState} from "react";
+import { NavBar } from "../components/navbar.component";
+import { withAuthServerSideProps } from "../hocs/withAuth";
+import { Breadcrumbs } from 'nextjs-breadcrumbs'
+import { useContext, useEffect, useState } from "react";
 
-import {SocketContext, socket} from '../context/socket.context';
+//import { SocketContext, socket } from '../context/socket.context';
 
 export const getServerSideProps = withAuthServerSideProps();
 
-const MyApp = ({Component, pageProps}: AppProps) => {
-    const breadcrumbs = Breadcrumbs()
-    // @ts-ignore
-    return (
-        <div>
-            <Head>
-                <script src="https://unpkg.com/react/umd/react.production.min.js"/>
-                <script
-                    src="https://unpkg.com/react-dom/umd/react-dom.production.min.js"/>
-                <script
-                    src="https://unpkg.com/react-bootstrap@next/dist/react-bootstrap.min.js"/>
-                <title>SharkServers - Reborn</title>
-            </Head>
-            <style jsx global>{`
+const MyApp = ({ Component, pageProps }: AppProps) => {
+  const breadcrumbs = Breadcrumbs()
+  // @ts-ignore
+  return (
+    <div>
+      <Head>
+        <script src="https://unpkg.com/react/umd/react.production.min.js" />
+        <script
+          src="https://unpkg.com/react-dom/umd/react-dom.production.min.js" />
+        <script
+          src="https://unpkg.com/react-bootstrap@next/dist/react-bootstrap.min.js" />
+        <title>SharkServers - Reborn</title>
+      </Head>
+      <style jsx global>{`
               body {
                 background-color: #002650;
                 color: rgba(255,255,255,0.8);
@@ -85,22 +85,21 @@ const MyApp = ({Component, pageProps}: AppProps) => {
                 cursor: pointer;
               }
             `}
-            </style>
-            <SocketContext.Provider value={socket}>
-                <NavBar user={pageProps.user}/>
-                <Container style={{padding: '24px 16px 0'}}>
-                    {breadcrumbs}
-                    <Component {...pageProps} />
-                </Container>
-            </SocketContext.Provider>
-        </div>
-    )
+      </style>
+
+      <NavBar user={pageProps.user} />
+      <Container style={{ padding: '24px 16px 0' }}>
+        {breadcrumbs}
+        <Component {...pageProps} />
+      </Container>
+    </div>
+  )
 }
 
 // This disables the ability to perform automatic static optimization, causing every page in your app to be server-side rendered.
 MyApp.getInitialProps = async (appContext: AppContext) => {
-    const appProps = await App.getInitialProps(appContext)
-    return {...appProps}
+  const appProps = await App.getInitialProps(appContext)
+  return { ...appProps }
 }
 
 export default MyApp

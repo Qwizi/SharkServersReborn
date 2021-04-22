@@ -23,26 +23,24 @@ import {ApplicationStatus} from "../../recruitment/recruitment.enum";
 		type: Player,
 	},
 	routes: {
-		only: ["getOneBase", "getManyBase", "createOneBase"]
+		only: ["getOneBase", "getManyBase"]
 	},
 	query: {
 		alwaysPaginate: true,
 		join: {
-			server: {},
-			steam_profile: {},
+			server: {
+				eager: true
+			},
+			steam_profile: {
+				eager: true
+			},
 			stats: {}
 		}
 	}
 })
-@Controller("api/servers/players")
+@Controller("api/servers-players")
 export class PlayersController implements CrudController<Player> {
 	constructor(
 		public service: PlayersService,
 	) {}
-
-	@Override("createOneBase")
-	@UseGuards(AuthenticatedGuard)
-	async createOne(@ParsedRequest() crudRequest: CrudRequest, @ParsedBody() dto: CreatePlayerDto) {
-		return this.service._create(dto);
-	}
 }

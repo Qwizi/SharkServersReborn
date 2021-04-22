@@ -1,19 +1,21 @@
-import {CacheModule, Module} from '@nestjs/common';
-import {TypeOrmModule} from "@nestjs/typeorm";
-import {Server} from "./entity/server.entity";
-import {RolesModule} from "../roles/roles.module";
-import {PermissionsModule} from "../permissions/permissions.module";
-import {ServersAdminController} from "./controllers/admin/servers.admin.controller";
-import {ServersController} from "./controllers/servers.controller";
-import {ServersService} from "./services/servers.service";
-import {Player} from "./entity/player.entity";
-import {PlayerStats} from "./entity/playerStats.entity";
-import {PlayersService} from "./services/players.service";
-import {SteamProfileModule} from "../steamprofile/steamProfile.module";
-import {PlayersStatsService} from "./services/playersStats.service";
-import {PlayersController} from "./controllers/players.controller";
-import {ServersGateway} from "./gateway/servers.gateway";
+import { CacheModule, Module } from '@nestjs/common';
+import { TypeOrmModule } from "@nestjs/typeorm";
+import { Server } from "./entity/server.entity";
+import { RolesModule } from "../roles/roles.module";
+import { PermissionsModule } from "../permissions/permissions.module";
+import { ServersAdminController } from "./controllers/admin/servers.admin.controller";
+import { ServersController } from "./controllers/servers.controller";
+import { ServersService } from "./services/servers.service";
+import { Player } from "./entity/player.entity";
+import { PlayerStats } from "./entity/playerStats.entity";
+import { PlayersService } from "./services/players.service";
+import { SteamProfileModule } from "../steamprofile/steamProfile.module";
+import { PlayersStatsService } from "./services/playersStats.service";
+import { PlayersController } from "./controllers/players.controller";
+import { ServersGateway } from "./gateway/servers.gateway";
 import * as redisStore from 'cache-manager-redis-store';
+import { PlayersStatsController } from './controllers/playersStats.controller';
+import { CreateServerCommand } from './commands/createServer.command';
 @Module({
 	imports: [
 		TypeOrmModule.forFeature([
@@ -32,6 +34,7 @@ import * as redisStore from 'cache-manager-redis-store';
 	],
 	controllers: [
 		PlayersController,
+		PlayersStatsController,
 		ServersAdminController,
 		ServersController,
 	],
@@ -39,11 +42,13 @@ import * as redisStore from 'cache-manager-redis-store';
 		ServersService,
 		PlayersService,
 		PlayersStatsService,
-		ServersGateway
+		ServersGateway,
+		CreateServerCommand
 	],
-	exports: [ServersService,
+	exports: [
+		ServersService,
 		PlayersService,
-		PlayersStatsService]
+		PlayersStatsService
+	]
 })
-export class ServersModule {
-}
+export class ServersModule {}

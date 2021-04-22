@@ -1,4 +1,4 @@
-import React, {useContext, useEffect} from 'react'
+import React, {useContext, useEffect, useState} from 'react'
 import {withAuthServerSideProps} from "../hocs/withAuth";
 import {Badge, Card, Col, ListGroup, ProgressBar, Row} from "react-bootstrap";
 import {Servers} from "../components/index/servers.component";
@@ -7,7 +7,7 @@ import {News} from "../components/index/news.component";
 import axios from "axios";
 import api from "../uitils/api";
 import io from 'socket.io-client'
-import {SocketContext} from "../context/socket.context";
+import {socket, SocketContext} from "../context/socket.context";
 
 const getNews = async () => {
     try {
@@ -32,16 +32,11 @@ const getServers = async () => {
 }
 
 const Index = ({user, data}) => {
-    const socket = useContext(SocketContext);
-    useEffect(() => {
-        console.log(socket);
-    }, [])
-
 
     return (
         <Row>
             <Col lg={4}>
-               <Servers data={data.servers}/>
+               <Servers data={data.servers} socket={socket}/>
             </Col>
             <Col lg={{offset: 1 }}>
                 <News data={data.news}/>

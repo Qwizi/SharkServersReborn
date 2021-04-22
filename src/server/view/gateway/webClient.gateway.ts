@@ -8,69 +8,23 @@ import {
 	OnGatewayConnection,
 	OnGatewayDisconnect, ConnectedSocket, WsException
 } from '@nestjs/websockets';
-import {Server, Socket} from 'socket.io';
-import {BadGatewayException, CACHE_MANAGER, Inject, Logger} from "@nestjs/common";
-import {SocketService} from "../../socket/socket.service";
-import {Cache} from "cache-manager";
-import {Observable} from "rxjs";
-import {ServerData} from "../../servers/dto/serverData.dto";
-import {SteamProfileService} from "../../steamprofile/steamProfile.service";
-import {ServersService} from "../../servers/services/servers.service";
-import {PlayersService} from "../../servers/services/players.service";
+import { Server, Socket } from 'socket.io';
+import { BadGatewayException, CACHE_MANAGER, Inject, Logger } from "@nestjs/common";
+import { SocketService } from "../../socket/socket.service";
+import { Cache } from "cache-manager";
+import { Observable } from "rxjs";
+import { ServerData } from "../../servers/dto/serverData.dto";
+import { SteamProfileService } from "../../steamprofile/steamProfile.service";
+import { ServersService } from "../../servers/services/servers.service";
+import { PlayersService } from "../../servers/services/players.service";
+import { IPlayer, IServerCacheData } from 'src/server/servers/servers.interfaces';
+import { ServerEvents } from 'src/server/servers/servers.enum';
+import { PlayerStats } from 'src/server/servers/entity/playerStats.entity';
+import { PlayersStatsService } from 'src/server/servers/services/playersStats.service';
+import { Raw } from 'typeorm';
 
-enum ServerEvents {
-	PLAYER_CONNECTED = 'player_connected',
-	PLAYER_DISCONNECTED = 'player_disconnected',
-	PLAYER_CHANGE_TEAM = 'player_change_team',
-	PLAYER_CHANGE_CLASS = 'player_change_class',
-	PLAYER_KILL = 'player_kill',
-	PLAYER_DEATH = 'player_death',
-	MAP_CHANGED = 'map_changed',
-	TIME = 'time',
-}
 
-enum TFTeams {
-	BLUE = 'blue',
-	RED = 'red'
-}
-
-enum TFClassName {
-	SCOUT = 'scout',
-	SNIPER = 'sniper',
-	SOLDER = 'soldier',
-	SPY = 'spy',
-	DEMOMAN = 'demoman',
-	HEAVY = 'heavy',
-	PYRO = 'pyro',
-	MEDIC = 'medic',
-	ENGINEER = 'enginner'
-}
-
-enum TFStats {
-	kills = 'kills',
-	deaths = 'deaths',
-	assists = 'assists',
-	score = 'score'
-}
-
-interface IPlayer {
-	steamid64: string;
-	username: string;
-	team?: TFTeams;
-	class_name?: TFClassName;
-	stats?: TFStats
-}
-
-interface IServerCacheData {
-	name: string;
-	playersCount: number;
-	max_players: number;
-	map: string;
-	timeleft: string;
-	players: IPlayer[] | []
-}
-
-@WebSocketGateway(5000, {namespace: 'webclient'})
+@WebSocketGateway(5000, { namespace: 'webclient' })
 export class WebClientGateway implements OnGatewayInit, OnGatewayConnection, OnGatewayDisconnect {
 	private logger: Logger = new Logger('ServersGateway');
 	@WebSocketServer()
@@ -81,6 +35,7 @@ export class WebClientGateway implements OnGatewayInit, OnGatewayConnection, OnG
 		private socketService: SocketService,
 		private steamProfileService: SteamProfileService,
 		private playersService: PlayersService,
+		private playersStatsService: PlayersStatsService,
 		private serversService: ServersService
 	) {
 	}
@@ -114,13 +69,13 @@ export class WebClientGateway implements OnGatewayInit, OnGatewayConnection, OnG
 	async setServerCacheData(ip: string, port: number, data: any, del?) {
 		try {
 			const serverCacheKey = await this.getServerCacheKey(ip, port);
-			await this.cacheManager.set<IServerCacheData>(serverCacheKey, data, {ttl: 60});
+			await this.cacheManager.set<IServerCacheData>(serverCacheKey, data, { ttl: 60 });
 		} catch (e) {
 			this.logger.error(e.message)
 		}
 	}
 
-	async sendEventData({ip, port}, event: any, cacheData: any) {
+	async sendEventData({ ip, port }, event: any, cacheData: any) {
 		this.server.to('webclient').emit('server_events', {
 			event: event,
 			server: {
@@ -153,9 +108,9 @@ export class WebClientGateway implements OnGatewayInit, OnGatewayConnection, OnG
 	@SubscribeMessage('send_server_data_to_cache')
 	async sendServerDataToCache(@MessageBody() data: any, @ConnectedSocket() client: Socket): Promise<Observable<WsResponse<any>> | any> {
 		try {
-			const {ip, port, ...result} = data;
+			const { ip, port, ...result } = data;
 			await this.setServerCacheData(ip, port, result, true);
-			this.server.to('webclient').emit('get_server_data_from_cache', {ip, port, ...result})
+			this.server.to('webclient').emit('get_server_data_from_cache', { ip, port, ...result })
 		} catch (e) {
 			this.logger.error(e.message)
 		}
@@ -164,9 +119,11 @@ export class WebClientGateway implements OnGatewayInit, OnGatewayConnection, OnG
 	@SubscribeMessage('get_server_data_from_cache')
 	async getServerDataFromCache(@MessageBody() data: any, @ConnectedSocket() client: Socket): Promise<Observable<WsResponse<any>> | any> {
 		try {
-			const {ip, port} = data;
+			const { ip, port } = data;
 			const serverCacheData = await this.getServerCacheData(ip, port);
-			this.server.to('webclient').emit('get_server_data_from_cache', {ip, port, ...serverCacheData})
+			if (serverCacheData) {
+				this.server.to('webclient').emit('get_server_data_from_cache', { ip, port, ...serverCacheData })
+			}
 		} catch (e) {
 			this.logger.error(e.message)
 		}
@@ -178,15 +135,17 @@ export class WebClientGateway implements OnGatewayInit, OnGatewayConnection, OnG
 
 		const playerConnectedEvent = async (data) => {
 			try {
-				const {server, event} = data;
-				const {ip, port} = server;
-				const {player} = event;
+				const { server, event } = data;
+				const { ip, port } = server;
 				let serverCacheData = await this.getServerCacheData(ip, port);
-				serverCacheData.playersCount++
+				if (serverCacheData.playersCount < serverCacheData.max_players) {
+					serverCacheData.playersCount++
+				}
 
-				const [playerObj, playerIndex] = await this.findPlayer(player.steamid64, serverCacheData.players);
+
+				const [playerObj, playerIndex] = await this.findPlayer(event.player.steamid64, serverCacheData.players);
 				// @ts-ignore
-				if (!playerObj && playerIndex == -1) serverCacheData.players.push(player)
+				if (!playerObj && playerIndex == -1) serverCacheData.players.push(event.player)
 				await this.setServerCacheData(ip, port, serverCacheData);
 				const serverObj = await this.serversService.findOne({
 					where: {
@@ -194,13 +153,48 @@ export class WebClientGateway implements OnGatewayInit, OnGatewayConnection, OnG
 						port: port
 					}
 				})
-				event.player = await this.playersService._create({
-					server_id: serverObj.id,
-					steamid64: player.steamid64
+
+				let playerSteamProfile = await this.steamProfileService.findOne({
+					where: {
+						steamid64: event.player.steamid64
+					}
 				})
-				console.log(data);
-				console.log(serverCacheData);
-				await this.sendEventData({ip, port}, event, serverCacheData)
+
+				if (!playerSteamProfile) playerSteamProfile = await this.steamProfileService.create({ steamid64: event.player.steamid64 })
+
+				let playerFromDb = await this.playersService.findOne({
+					where: {
+						steam_profile: playerSteamProfile,
+						server: serverObj
+					},
+					relations: ['server', 'steam_profile', 'stats']
+				})
+
+				console.log(playerFromDb)
+
+				if (!playerFromDb) {
+					playerFromDb = await this.playersService._create({
+						server: serverObj,
+						steam_profile: playerSteamProfile
+					})
+					event.player = playerFromDb
+				}
+				else {
+					event.player = playerFromDb
+					const now = new Date().toLocaleDateString();
+					let playerStats = await this.playersStatsService.findOne({
+						where: {
+							player: playerFromDb,
+							date: now
+						}
+					})
+					if (!playerStats) {
+						playerStats = await this.playersStatsService._create();
+						await this.playersService.addStats(playerFromDb, playerStats)
+					}
+					event.player.stats = playerStats
+				}
+				await this.sendEventData({ ip, port }, event, serverCacheData)
 			} catch (e) {
 				this.logger.error(e.message)
 			}
@@ -208,14 +202,14 @@ export class WebClientGateway implements OnGatewayInit, OnGatewayConnection, OnG
 
 		const playerDisconnectedEvent = async (data) => {
 			try {
-				const {server, event} = data;
-				const {ip, port} = server;
+				const { server, event } = data;
+				const { ip, port } = server;
 				let serverCacheData = await this.getServerCacheData(ip, port);
 				if (serverCacheData) {
 					serverCacheData.playersCount--;
 					serverCacheData.players = serverCacheData.players.filter((player: IPlayer) => player.steamid64 != event.player.steamid64)
 					await this.setServerCacheData(ip, port, serverCacheData);
-					await this.sendEventData({ip, port}, data.event, serverCacheData)
+					await this.sendEventData({ ip, port }, data.event, serverCacheData)
 				}
 			} catch (e) {
 				this.logger.error(e.message)
@@ -223,10 +217,10 @@ export class WebClientGateway implements OnGatewayInit, OnGatewayConnection, OnG
 
 		}
 
-		const playerChangeTeam = async (data) => {
+		const playerChangeTeamEvent = async (data) => {
 			try {
-				const {server, event} = data;
-				const {ip, port} = server;
+				const { server, event } = data;
+				const { ip, port } = server;
 				let serverCacheData = await this.getServerCacheData(ip, port);
 				if (serverCacheData) {
 					const [playerObj, playerIndex] = await this.findPlayer(event.player.steamid64, serverCacheData.players)
@@ -236,7 +230,7 @@ export class WebClientGateway implements OnGatewayInit, OnGatewayConnection, OnG
 						// @ts-ignore
 						serverCacheData.players[playerIndex] = playerObj;
 						await this.setServerCacheData(ip, port, serverCacheData);
-						await this.sendEventData({ip, port}, data.event, serverCacheData)
+						await this.sendEventData({ ip, port }, data.event, serverCacheData)
 					}
 				}
 			} catch (e) {
@@ -244,10 +238,10 @@ export class WebClientGateway implements OnGatewayInit, OnGatewayConnection, OnG
 			}
 		}
 
-		const playerChangeClass = async (data) => {
+		const playerChangeClassEvent = async (data) => {
 			try {
-				const {server, event} = data;
-				const {ip, port} = server;
+				const { server, event } = data;
+				const { ip, port } = server;
 				let serverCacheData = await this.getServerCacheData(ip, port);
 				if (serverCacheData) {
 					const [playerObj, playerIndex] = await this.findPlayer(event.player.steamid64, serverCacheData.players)
@@ -257,7 +251,49 @@ export class WebClientGateway implements OnGatewayInit, OnGatewayConnection, OnG
 						// @ts-ignore
 						serverCacheData.players[playerIndex] = playerObj;
 						await this.setServerCacheData(ip, port, serverCacheData);
-						await this.sendEventData({ip, port}, data.event, serverCacheData)
+						await this.sendEventData({ ip, port }, data.event, serverCacheData)
+					}
+				}
+			} catch (e) {
+				this.logger.error(e.message)
+			}
+		}
+
+		const playerKillEvent = async (data) => {
+			try {
+				const { server, event } = data;
+				const { ip, port } = server;
+				let serverCacheData = await this.getServerCacheData(ip, port);
+				if (serverCacheData) {
+					const [playerObj, playerIndex] = await this.findPlayer(event.player.steamid64, serverCacheData.players)
+					if (playerObj && playerIndex !== -1) {
+						//@ts-ignore
+						playerObj.stats.kills++;
+						//@ts-ignore
+						serverCacheData.players[playerIndex] = playerObj;
+						await this.setServerCacheData(ip, port, serverCacheData);
+						await this.sendEventData({ ip, port }, data.event, serverCacheData)
+					}
+				}
+			} catch (e) {
+				this.logger.error(e.message)
+			}
+		}
+
+		const playerDeadEvent = async (data) => {
+			try {
+				const { server, event } = data;
+				const { ip, port } = server;
+				let serverCacheData = await this.getServerCacheData(ip, port);
+				if (serverCacheData) {
+					const [playerObj, playerIndex] = await this.findPlayer(event.player.steamid64, serverCacheData.players)
+					if (playerObj && playerIndex !== -1) {
+						//@ts-ignore
+						playerObj.stats.kills--;
+						//@ts-ignore
+						serverCacheData.players[playerIndex] = playerObj;
+						await this.setServerCacheData(ip, port, serverCacheData);
+						await this.sendEventData({ ip, port }, data.event, serverCacheData)
 					}
 				}
 			} catch (e) {
@@ -267,12 +303,13 @@ export class WebClientGateway implements OnGatewayInit, OnGatewayConnection, OnG
 
 		const mapChangedEvent = async (data) => {
 			try {
-				const {ip, port} = data.server;
+				const { server, event } = data;
+				const { ip, port } = server;
 				let serverCacheData = await this.getServerCacheData(ip, port);
 				if (serverCacheData) {
 					serverCacheData.map = data.event.map;
 					await this.setServerCacheData(ip, port, serverCacheData);
-					await this.sendEventData({ip, port}, data.event, serverCacheData)
+					await this.sendEventData({ ip, port }, data.event, serverCacheData)
 				}
 			} catch (e) {
 				this.logger.error(e.message)
@@ -281,11 +318,13 @@ export class WebClientGateway implements OnGatewayInit, OnGatewayConnection, OnG
 
 		const timeEvent = async (data) => {
 			try {
-				const {ip, port} = data.server;
+				const { server, event } = data;
+				const { ip, port } = server;
 				let serverCacheData = await this.getServerCacheData(ip, port);
 				if (serverCacheData) {
+					serverCacheData.timeleft = event.timeleft;
 					await this.setServerCacheData(ip, port, serverCacheData);
-					await this.sendEventData({ip, port}, data.event, serverCacheData)
+					await this.sendEventData({ ip, port }, data.event, serverCacheData)
 				}
 			} catch (e) {
 				this.logger.error(e.message)
@@ -295,8 +334,10 @@ export class WebClientGateway implements OnGatewayInit, OnGatewayConnection, OnG
 		switch (data.event.type) {
 			case ServerEvents.PLAYER_CONNECTED: await playerConnectedEvent(data); break;
 			case ServerEvents.PLAYER_DISCONNECTED: await playerDisconnectedEvent(data); break;
-			case ServerEvents.PLAYER_CHANGE_TEAM: await playerChangeTeam(data); break;
-			case ServerEvents.PLAYER_CHANGE_CLASS: await playerChangeClass(data); break;
+			case ServerEvents.PLAYER_CHANGE_TEAM: await playerChangeTeamEvent(data); break;
+			case ServerEvents.PLAYER_CHANGE_CLASS: await playerChangeClassEvent(data); break;
+			case ServerEvents.PLAYER_KILL: await playerKillEvent(data); break;
+			case ServerEvents.PLAYER_DEAD: await playerDeadEvent(data); break;
 			case ServerEvents.MAP_CHANGED: await mapChangedEvent(data); break;
 			case ServerEvents.TIME: await timeEvent(data); break;
 			default: throw new WsException('Bad event type');
