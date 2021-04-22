@@ -10,7 +10,7 @@ import {withAuthServerSideProps} from "../../hocs/withAuth";
 import {SocketContext} from "../../context/socket.context";
 
 
-export const Servers = ({data}) => {
+export const Servers = ({data, socket}) => {
 	const [servers, setServers] = useState<object[] | []>([]);
 	const [events, setEvents] = useState<object[] | []>([]);
 	const [statusCount, setStatusCount] = useState<object[] | []>([])
@@ -24,10 +24,10 @@ export const Servers = ({data}) => {
 		max_players: 16,
 		players: [],
 		map: 'ba_jail',
-		timeleft: 0
+		timeleft: 0,
 	}
 
-	const socket = useContext(SocketContext);
+	//const socket = useContext(SocketContext);
 	const serverSocket = io("http://localhost:5000/webclient")
 
 	useEffect(() => {
@@ -41,13 +41,12 @@ export const Servers = ({data}) => {
 			socket.emit('join', {room: 'webclient'})
 		});
 
-		serverSocket.on("connect", () => {
+		/* serverSocket.on("connect", () => {
 			console.log(`Server ${server.name} Connected`)
 			serverSocket.emit('join', {room: 'servers'})
 		});
 
-		serverEvents();
-
+		serverEvents(); */
 	}, [])
 
 
@@ -114,7 +113,7 @@ export const Servers = ({data}) => {
 				}
 			)
 
-			setTimeout(() => {
+			/*setTimeout(() => {
 				serverSocket.emit("server_events", {
 						server: {
 							ip: server.ip,
@@ -147,7 +146,7 @@ export const Servers = ({data}) => {
 					}
 				)
 			}, 4000)
-			/*serverSocket.emit("server_events", {
+			serverSocket.emit("server_events", {
 					server: {
 						ip: server.ip,
 						port: server.port,
@@ -242,6 +241,7 @@ export const Servers = ({data}) => {
 					<Row>
 						<Col>
 							<ServerCard
+								socket={socket}
 								name={server?.stats?.name ? server.stats.name : server.name}
 								ip={server?.ip ? server.ip : ''}
 								port={server?.port ? server.port : ''}

@@ -29,13 +29,8 @@ export class PlayerStats {
 	})
 	deaths: number;
 
-	@CreateDateColumn({
-		type: "timestamp"
+	@Column({
+		type: "date"
 	})
-	public created_at: Date;
-
-	@UpdateDateColumn({
-		type: "timestamp"
-	})
-	public updated_at: Date;
+	public date: Date;
 }

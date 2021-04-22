@@ -1,11 +1,13 @@
-import {IsNotEmpty, IsNumber, IsString} from "class-validator";
+import {IsNotEmpty, ValidateNested, IsString} from "class-validator";
+import { SteamProfile } from "src/server/steamprofile/steamProfile.entity";
+import { Server } from "../entity/server.entity";
 
 export class CreatePlayerDto {
 	@IsNotEmpty()
-	@IsNumber()
-	server_id: number;
+	@ValidateNested()
+	server: Server
 
-	@IsString()
 	@IsNotEmpty()
-	steamid64: string;
+	@ValidateNested()
+	steam_profile: SteamProfile
 }

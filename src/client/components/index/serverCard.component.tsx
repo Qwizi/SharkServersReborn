@@ -3,6 +3,7 @@ import {Badge, Button, Card, Col, Fade, ListGroup, ProgressBar, Row} from "react
 import {SocketContext} from "../../context/socket.context";
 
 export const ServerCard = ({
+								socket,
 							   name,
 							   ip,
 							   port,
@@ -16,7 +17,6 @@ export const ServerCard = ({
 							   updateServerName,
 							   updateServerPlayersCount
 						   }) => {
-	const socket = useContext(SocketContext);
 
 	useEffect(() => {
 		console.log(events);
