@@ -15,7 +15,9 @@ import {ApplicationService} from "../services/application.service";
 import {CreateApplicationDto} from "../dto/createApplication.dto";
 import {ApplicationStatus} from "../recruitment.enum";
 import {Perms} from "../../auth/decorators/permissions.decorator";
+import { ApiTags } from "@nestjs/swagger";
 
+@ApiTags('applications')
 @Crud({
 	model: {
 		type: Application,

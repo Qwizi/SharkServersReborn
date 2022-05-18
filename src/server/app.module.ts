@@ -27,12 +27,11 @@ import {Comment} from "./recruitment/entity/comment.entity";
 import {Question} from "./recruitment/entity/question.entity";
 import {PositionQuestionAnswer} from "./recruitment/entity/positionQuestionAnswer.entity";
 import {Application} from "./recruitment/entity/application.entity";
-import { CommandModule } from 'nestjs-command';
-import { ServersModule } from './servers/servers.module';
 import {Server} from "./servers/entity/server.entity";
 import {Player} from "./servers/entity/player.entity";
 import {PlayerStats} from "./servers/entity/playerStats.entity";
 import { SocketModule } from './socket/socket.module';
+import { ServersModule } from './servers/servers.module';
 @Module({
   imports: [
       ConfigModule.forRoot({
@@ -77,9 +76,8 @@ import { SocketModule } from './socket/socket.module';
       SteamProfileModule,
       NewsModule,
       RecruitmentModule,
-      CommandModule,
       ServersModule,
-      SocketModule,
+      //SocketModule,
       ViewModule,
       PermissionsModule.register({
           modules: [

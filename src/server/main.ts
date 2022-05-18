@@ -33,14 +33,14 @@ async function bootstrap() {
         .setTitle('SharkServersReborn')
         .setDescription('The SharkServersReborn API description')
         .setVersion('1.0')
-        .addTag('SharkServersReborn')
+        //.addTag('SharkServersReborn')
         .build();
     // @ts-ignore
     const document = SwaggerModule.createDocument(app, config);
     SwaggerModule.setup('api/swagger', app, document);
 
-    app.useWebSocketAdapter(new RedisIoAdapter(app))
-    app.useWebSocketAdapter(new SocketIoAdapter(app))
+    //app.useWebSocketAdapter(new RedisIoAdapter(app))
+    //app.useWebSocketAdapter(new SocketIoAdapter(app))
     await app.listen(3000);
 }
 

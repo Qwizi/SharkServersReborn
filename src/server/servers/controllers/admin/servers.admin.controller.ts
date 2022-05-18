@@ -4,7 +4,9 @@ import {AuthenticatedGuard} from "../../../auth/guards/authenticated.guard";
 import {Server} from "../../entity/server.entity";
 import {ServersService} from "../../services/servers.service";
 import {CreateServerDto} from "../../dto/createServer.dto";
+import { ApiTags } from "@nestjs/swagger";
 
+@ApiTags('admin')
 @Crud({
 	model: {
 		type: Server,

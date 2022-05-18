@@ -4,7 +4,9 @@ import {CommentsService} from "../services/comment.service";
 import {Comment} from "../entity/comment.entity";
 import {AuthenticatedGuard} from "../../auth/guards/authenticated.guard";
 import {CreateCommentDto} from "../dto/createComment.dto";
+import { ApiTags } from "@nestjs/swagger";
 
+@ApiTags('applications-comments')
 @Crud({
 	model: {
 		type: Comment,

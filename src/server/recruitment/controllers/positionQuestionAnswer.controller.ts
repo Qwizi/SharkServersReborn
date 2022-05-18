@@ -6,7 +6,9 @@ import {PositionService} from "../services/position.service";
 import {PositionQuestionAnswer} from "../entity/positionQuestionAnswer.entity";
 import {PositionQuestionAnswerService} from "../services/positionQuestionAnswer.service";
 import {CreateApplicationDto} from "../dto/createApplication.dto";
+import { ApiTags } from "@nestjs/swagger";
 
+@ApiTags('applications-position-questions')
 @Crud({
 	model: {
 		type: PositionQuestionAnswer,

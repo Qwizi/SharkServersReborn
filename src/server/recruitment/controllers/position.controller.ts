@@ -1,8 +1,10 @@
 import {BadRequestException, Controller, Req, UseGuards} from "@nestjs/common";
+import { ApiTags } from "@nestjs/swagger";
 import {Crud, CrudController, CrudRequest, JoinOptions, Override, ParsedBody, ParsedRequest} from "@nestjsx/crud";
 import {Position} from "../entity/position.entity";
 import {PositionService} from "../services/position.service";
 
+@ApiTags('applications-position')
 @Crud({
 	model: {
 		type: Position,

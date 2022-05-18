@@ -12,8 +12,9 @@ import {ChangePasswordDto} from "../dto/changePassword.dto";
 import {ChangeUsernameDto} from "../dto/changeUsername.dto";
 import {SendChangeEmailEmailDto} from "../dto/sendChangeEmailEmail.dto";
 import {ChangeEmailDto} from "../dto/changeEmail.dto";
+import { ApiTags } from "@nestjs/swagger";
 
-
+@ApiTags('users-profile')
 @Crud({
 	model: {
 		type: User,
