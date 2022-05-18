@@ -23,7 +23,6 @@ import {MailConsumer} from "./mail.consumer";
                     pass: process.env.SMTP_PASS
                 }
             },
-            preview: false,
             template: {
                 dir: process.cwd() + '/templates/',
                 adapter: new PugAdapter(),
