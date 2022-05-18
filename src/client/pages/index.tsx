@@ -35,9 +35,7 @@ const Index = ({user, data}) => {
 
     return (
         <Row>
-            <Col lg={4}>
-               <Servers data={data.servers} socket={socket}/>
-            </Col>
+            
             <Col lg={{offset: 1 }}>
                 <News data={data.news}/>
             </Col>

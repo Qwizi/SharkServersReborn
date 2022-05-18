@@ -1,4 +1,5 @@
 import {Controller} from "@nestjs/common";
+import { ApiTags } from "@nestjs/swagger";
 import {
 	Crud,
 	CrudController,
@@ -6,6 +7,7 @@ import {
 import {User} from "../entity/users.entity";
 import {UsersService} from "../services/users.service";
 
+@ApiTags('users')
 @Crud({
 	model: {
 		type: User,

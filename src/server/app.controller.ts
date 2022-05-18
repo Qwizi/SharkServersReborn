@@ -14,7 +14,9 @@ import {ResendActivateAccountEmailDto} from "./authenticator/dto/resendActivateA
 import {ResetPasswordDto} from "./authenticator/dto/resetPassword.dto";
 import {ResetPasswordPostDto} from "./authenticator/dto/resetPasswordPost.dto";
 import {CheckResetPasswordDto} from "./authenticator/dto/checkResetPassword.dto";
+import { ApiTags } from '@nestjs/swagger';
 
+@ApiTags('api')
 @Controller('api')
 export class AppController {
   private logger = new Logger(AppController.name);

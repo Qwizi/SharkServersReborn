@@ -14,9 +14,9 @@ import {ServersModule} from "../servers/servers.module";
       //port: process.env.REDIS_PORT
     }),
       SteamProfileModule,
-      ServersModule
+      //ServersModule
   ],
-  providers: [ViewService, WebClientGateway],
+  providers: [ViewService],
   controllers: [ViewController]
 })
 export class ViewModule {}

@@ -15,7 +15,6 @@ import { PlayersController } from "./controllers/players.controller";
 import { ServersGateway } from "./gateway/servers.gateway";
 import * as redisStore from 'cache-manager-redis-store';
 import { PlayersStatsController } from './controllers/playersStats.controller';
-import { CreateServerCommand } from './commands/createServer.command';
 @Module({
 	imports: [
 		TypeOrmModule.forFeature([
@@ -42,8 +41,7 @@ import { CreateServerCommand } from './commands/createServer.command';
 		ServersService,
 		PlayersService,
 		PlayersStatsService,
-		ServersGateway,
-		CreateServerCommand
+		//ServersGateway,
 	],
 	exports: [
 		ServersService,

@@ -13,7 +13,9 @@ import {Position} from "../../entity/position.entity";
 import {PositionService} from "../../services/position.service";
 import {CreatePositionDto} from "../../dto/createPosition.dto";
 import {Perms} from "../../../auth/decorators/permissions.decorator";
+import { ApiTags } from "@nestjs/swagger";
 
+@ApiTags('admin')
 @Crud({
 	model: {
 		type: Position,

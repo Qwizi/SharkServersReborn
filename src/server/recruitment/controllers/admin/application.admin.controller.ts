@@ -15,7 +15,9 @@ import {ApplicationService} from "../../services/application.service";
 import {AuthenticatedGuard} from "../../../auth/guards/authenticated.guard";
 import {SteamGuard} from "../../../auth/guards/steam.guard";
 import {CreateApplicationDto} from "../../dto/createApplication.dto";
+import { ApiTags } from "@nestjs/swagger";
 
+@ApiTags('admin')
 @Crud({
 	model: {
 		type: Application,

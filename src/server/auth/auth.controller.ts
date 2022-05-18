@@ -5,7 +5,9 @@ import {AuthService} from "./auth.service";
 import {AuthenticatedGuard} from "./guards/authenticated.guard";
 import { AuthGuard } from '@nestjs/passport';
 import {DisconnectAccountDto} from "./dto/disconnectAccount.dto";
+import { ApiTags } from '@nestjs/swagger';
 
+@ApiTags('auth')
 @Controller('api/auth')
 export class AuthController {
 

@@ -17,7 +17,9 @@ import {CreateServerDto} from "../dto/createServer.dto";
 import {CreatePlayerDto} from "../dto/createPlayer.dto";
 import {Perms} from "../../auth/decorators/permissions.decorator";
 import {ApplicationStatus} from "../../recruitment/recruitment.enum";
+import { ApiTags } from "@nestjs/swagger";
 
+@ApiTags('servers-players')
 @Crud({
 	model: {
 		type: Player,

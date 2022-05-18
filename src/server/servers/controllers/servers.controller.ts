@@ -2,7 +2,9 @@ import {Crud, CrudController, CrudRequest, Override, ParsedBody, ParsedRequest} 
 import {Controller, UseGuards} from "@nestjs/common";
 import {Server} from "../entity/server.entity";
 import {ServersService} from "../services/servers.service";
+import { ApiTags } from "@nestjs/swagger";
 
+@ApiTags('servers')
 @Crud({
 	model: {
 		type: Server,

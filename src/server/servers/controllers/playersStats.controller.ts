@@ -3,6 +3,7 @@ import { Crud, CrudController } from "@nestjsx/crud";
 import { PlayerStats } from "../entity/playerStats.entity";
 import { PlayersStatsService } from "../services/playersStats.service";
 
+@ApiTags('admin')
 @Crud({
 	model: {
 		type: PlayerStats,
