@@ -1,9 +1,10 @@
 import { Controller } from "@nestjs/common";
+import { ApiTags } from "@nestjs/swagger";
 import { Crud, CrudController } from "@nestjsx/crud";
 import { PlayerStats } from "../entity/playerStats.entity";
 import { PlayersStatsService } from "../services/playersStats.service";
 
-@ApiTags('admin')
+@ApiTags('servers-players-stats')
 @Crud({
 	model: {
 		type: PlayerStats,
