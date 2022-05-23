@@ -16,7 +16,7 @@ import {QuestionService} from "../services/question.service";
 		alwaysPaginate: true,
 	}
 })
-@Controller("api/recruitment/questions")
+@Controller("recruitment/questions")
 export class QuestionController implements CrudController<Question> {
 	constructor(
 		public service: QuestionService,

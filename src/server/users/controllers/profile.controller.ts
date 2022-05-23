@@ -52,7 +52,7 @@ import { ApiTags } from "@nestjs/swagger";
 	}),
 })
 @UseGuards(AuthenticatedGuard)
-@Controller("api/users/profile")
+@Controller("users/profile")
 export class ProfileController implements CrudController<User> {
 	constructor(
 		public service: UsersService) {

@@ -1,11 +1,11 @@
 import {CACHE_MANAGER, Inject, Injectable, Logger, OnModuleInit} from '@nestjs/common';
 import {Cache} from 'cache-manager';
 import {OperationsService} from "./operations.service";
-import {CreateCodeDto} from "./dto/createCode.dto";
-import {Operation} from "./operation.entity";
+import {CreateCodeDto} from "../dto/createCode.dto";
+import {Operation} from "../operation.entity";
 import * as crypto from 'crypto';
-import {User} from "../users/entity/users.entity";
-import {Operations} from "./operations.enums";
+import {User} from "../../users/entity/users.entity";
+import {Operations} from "../operations.enums";
 
 @Injectable()
 export class AuthenticatorService implements OnModuleInit {

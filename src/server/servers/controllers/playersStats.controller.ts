@@ -19,7 +19,7 @@ import { PlayersStatsService } from "../services/playersStats.service";
 		}
 	}
 })
-@Controller("api/servers-players-stats")
+@Controller("servers-players-stats")
 export class PlayersStatsController implements CrudController<PlayerStats> {
 	constructor(
 		public service: PlayersStatsService,

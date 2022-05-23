@@ -27,7 +27,7 @@ import { ApiTags } from "@nestjs/swagger";
 		alwaysPaginate: true,
 	}
 })
-@Controller("api/recruitment/application")
+@Controller("recruitment/application")
 export class PositionQuestionAnswerController implements CrudController<PositionQuestionAnswer> {
 	constructor(
 		public service: PositionQuestionAnswerService

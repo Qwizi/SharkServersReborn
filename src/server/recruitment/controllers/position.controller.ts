@@ -25,7 +25,7 @@ import {PositionService} from "../services/position.service";
 		}*/
 	}
 })
-@Controller("api/recruitment/position")
+@Controller("recruitment/position")
 export class PositionController implements CrudController<Position> {
 	constructor(
 		public service: PositionService) {

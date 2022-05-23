@@ -4,7 +4,7 @@ import {Server} from "../entity/server.entity";
 import {InjectRepository} from "@nestjs/typeorm";
 import {RolesService} from "../../roles/roles.service";
 import {CreateServerDto} from "../dto/createServer.dto";
-import {PermissionsService} from "../../permissions/permissions.service";
+import {PermissionsService} from "../../permissions/services/permissions.service";
 
 @Injectable()
 export class ServersService extends TypeOrmCrudService<Server> {

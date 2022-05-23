@@ -12,17 +12,17 @@ import {PositionService} from "./position.service";
 import {QuestionService} from "./question.service";
 import {PositionQuestionAnswerService} from "./positionQuestionAnswer.service";
 import {ApplicationStatus} from "../recruitment.enum";
-import {RolesService} from "../../roles/roles.service";
-import {UsersService} from "../../users/users.service";
+import {RolesService} from "../../roles/roles.service"; 
+import { UsersService } from '../../users/services/users.service';
 
 @Injectable()
 export class ApplicationService extends TypeOrmCrudService<Application> implements OnModuleInit {
 	constructor(
 		@InjectRepository(Application) repo,
-		private positionsService: PositionService,
-		private questionsService: QuestionService,
-		public positionQuestionAnswerService: PositionQuestionAnswerService,
-		private usersService: UsersService,
+		private readonly usersService: UsersService,
+		private readonly positionsService: PositionService,
+		private readonly questionsService: QuestionService,
+		private readonly positionQuestionAnswerService: PositionQuestionAnswerService,
 	) {
 		super(repo);
 	}
@@ -51,6 +51,7 @@ export class ApplicationService extends TypeOrmCrudService<Application> implemen
 		const questionsFromDb = await this.questionsService.find({
 			where: {
 				id: In(questionsId),
+				//@ts-ignore
 				position: positionId
 			}
 		})

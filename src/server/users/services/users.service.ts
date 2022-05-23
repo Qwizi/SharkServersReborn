@@ -10,9 +10,10 @@ import {ChangeUsernameDto} from "../dto/changeUsername.dto";
 import {Request} from "express";
 import {SendChangeEmailEmailDto} from "../dto/sendChangeEmailEmail.dto";
 import {Operations} from "../../authenticator/operations.enums";
-import {AuthenticatorService} from "../../authenticator/authenticator.service";
+import {AuthenticatorService} from "../../authenticator/services/authenticator.service";
 import {MailService} from "../../mail/mail.service";
 import {ChangeEmailDto} from "../dto/changeEmail.dto";
+import { UpdateUserDto } from '../dto/updateUser.dto';
 
 @Injectable()
 export class UsersService extends TypeOrmCrudService<User> {
@@ -26,6 +27,19 @@ export class UsersService extends TypeOrmCrudService<User> {
 	) {
 		super(repo);
 	}
+
+	async update(user: User, updateUserDto: UpdateUserDto): Promise<User> {
+        user.username = updateUserDto.username || user.username;
+        user.display_name = updateUserDto.display_name || user.display_name;
+        user.avatar = updateUserDto.avatar || user.avatar;
+        user.password = updateUserDto.password || user.password;
+        user.email = updateUserDto.email || user.email;
+        user.roles = updateUserDto.roles || user.roles;
+        user.steam_profile = updateUserDto.steam_profile !== undefined ? updateUserDto.steam_profile : user.steam_profile;
+        user.is_active = updateUserDto.is_active !== undefined ? updateUserDto.is_active : user.is_active;
+        await this.repo.save(user);
+        return user;
+    }
 
 	async activate(user: User) {
 		return this.repo.update(user.id, {is_active: true});

@@ -12,7 +12,6 @@ import { PlayersService } from "./services/players.service";
 import { SteamProfileModule } from "../steamprofile/steamProfile.module";
 import { PlayersStatsService } from "./services/playersStats.service";
 import { PlayersController } from "./controllers/players.controller";
-import { ServersGateway } from "./gateway/servers.gateway";
 import * as redisStore from 'cache-manager-redis-store';
 import { PlayersStatsController } from './controllers/playersStats.controller';
 @Module({
