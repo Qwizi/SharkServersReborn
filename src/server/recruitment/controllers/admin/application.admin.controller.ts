@@ -54,7 +54,7 @@ import { ApiTags } from "@nestjs/swagger";
 		}
 	}
 })
-@Controller("api/admin/recruitment/application")
+@Controller("admin/recruitment/application")
 export class ApplicationAdminController implements CrudController<Application> {
 	constructor(
 		public service: ApplicationService) {}

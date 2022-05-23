@@ -1,22 +1,13 @@
 import {Injectable, OnModuleInit} from '@nestjs/common';
 import {InjectRepository} from "@nestjs/typeorm";
-import {News} from "./news.entity";
+import {News} from "../news.entity";
 import {Repository} from "typeorm";
-import {FindManyOptions} from "typeorm/find-options/FindManyOptions";
-import {FindOneOptions} from "typeorm/find-options/FindOneOptions";
-import {CreateNewsDto} from "./dto/createNews.dto";
-import slugify from "slugify";
-import {User} from "../users/entity/users.entity";
-import {UsersService} from "../users/users.service";
-import {RemoveOptions} from "typeorm/browser";
-import {UpdateNewsDto} from "./dto/updateNews.dto";
 import {TypeOrmCrudService} from "@nestjsx/crud-typeorm";
 
 @Injectable()
 export class NewsService extends TypeOrmCrudService<News> implements OnModuleInit {
     constructor(
         @InjectRepository(News) private newsRepository: Repository<News>,
-        private usersService: UsersService
     ) {
         super(newsRepository);
     }

@@ -1,11 +1,11 @@
 import {BadRequestException, Injectable, Logger, NotFoundException, UseGuards} from '@nestjs/common';
-import {AuthenticatorService} from "./authenticator/authenticator.service";
-import {UsersService} from "./users/users.service";
+import {AuthenticatorService} from "./authenticator/services/authenticator.service";
+import {UsersService} from "./users/services/users.service";
 import {Operations} from "./authenticator/operations.enums";
 import {ActivateAccountCodeDto} from "./authenticator/dto/activeteAccountCode.dto";
 import {ResendActivateAccountEmailDto} from "./authenticator/dto/resendActivateAccountEmail.dto";
 import {MailService} from "./mail/mail.service";
-import {AuthService} from "./auth/auth.service";
+import {AuthService} from "./auth/services/auth.service";
 import {Request} from "express";
 import {ResetPasswordDto} from "./authenticator/dto/resetPassword.dto";
 import {ResetPasswordPostDto} from "./authenticator/dto/resetPasswordPost.dto";

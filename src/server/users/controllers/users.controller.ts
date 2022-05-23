@@ -24,7 +24,7 @@ import {UsersService} from "../services/users.service";
 		}
 	}
 })
-@Controller("api/users")
+@Controller("users")
 export class UsersController implements CrudController<User> {
 	constructor(
 		public service: UsersService) {

@@ -1,5 +1,5 @@
 import {Injectable, Logger, OnModuleInit} from '@nestjs/common';
-import {MailerService} from "@nestjs-modules/mailer";
+import { MailerService } from '@derech1e/mailer';
 import {User} from "../users/entity/users.entity";
 import {Job, Queue} from "bull";
 import {InjectQueue} from "@nestjs/bull";

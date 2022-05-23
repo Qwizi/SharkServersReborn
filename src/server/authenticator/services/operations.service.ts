@@ -1,12 +1,12 @@
 import {Injectable, Logger, OnModuleInit} from "@nestjs/common";
 import {InjectRepository} from "@nestjs/typeorm";
-import {Operation} from "./operation.entity";
+import {Operation} from "../operation.entity";
 import {Repository} from "typeorm";
-import {CreateOperationDto} from "./dto/createOperation.dto";
+import {CreateOperationDto} from "../dto/createOperation.dto";
 import {FindManyOptions} from "typeorm/find-options/FindManyOptions";
 import {FindOneOptions} from "typeorm/find-options/FindOneOptions";
 import {RemoveOptions} from "typeorm/browser";
-import {UpdateOperationDto} from "./dto/updateOperation.dto";
+import {UpdateOperationDto} from "../dto/updateOperation.dto";
 
 @Injectable()
 export class OperationsService implements OnModuleInit {

@@ -1,9 +1,9 @@
 import {Module} from '@nestjs/common';
-import {AuthService} from './auth.service';
+import {AuthService} from './services/auth.service';
 import {PassportModule} from "@nestjs/passport";
 import {LocalStrategy} from "./strategies/local.strategy";
 import {UsersModule} from "../users/users.module";
-import {AuthController} from './auth.controller';
+import {AuthController, AuthControllerV2} from './controllers/auth.controller';
 import {SessionSerializer} from "./sessions.serializer";
 import {MailModule} from "../mail/mail.module";
 import {AuthenticatorModule} from "../authenticator/authenticator.module";
@@ -30,7 +30,7 @@ import {SteamStrategy} from "./strategies/steam.strategy";
             useClass: PermissionsGuard
         }
     ],
-    controllers: [AuthController],
+    controllers: [AuthController, AuthControllerV2],
     exports: [AuthService]
 })
 export class AuthModule {

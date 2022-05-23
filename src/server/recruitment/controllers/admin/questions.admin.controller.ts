@@ -13,7 +13,7 @@ import {QuestionService} from "../../services/question.service";
 		alwaysPaginate: true,
 	}
 })
-@Controller("api/admin/recruitment/questions")
+@Controller("admin/recruitment/questions")
 export class QuestionAdminController implements CrudController<Question> {
 	constructor(
 		public service: QuestionService,

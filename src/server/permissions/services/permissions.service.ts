@@ -1,15 +1,15 @@
 import {Inject, Injectable, Logger, OnModuleInit} from '@nestjs/common';
-import {CreatePermissionDto} from "./dto/createPermission.dto";
+import {CreatePermissionDto} from "../dto/createPermission.dto";
 import {InjectRepository} from "@nestjs/typeorm";
-import {Permission} from "./permissions.entity";
+import {Permission} from "../permissions.entity";
 import {Repository} from "typeorm";
 import {FindManyOptions} from "typeorm/find-options/FindManyOptions";
 import {ObjectID} from "typeorm/driver/mongodb/typings";
 import {FindOneOptions} from "typeorm/find-options/FindOneOptions";
 import {RemoveOptions} from "typeorm/repository/RemoveOptions";
-import {UpdatePermissionDto} from "./dto/updatePermission.dto";
-import {PermissionModuleOptions} from "./permissions.types";
-import {PERMISSIONS_OPTIONS} from "./permissions.constansts";
+import {UpdatePermissionDto} from "../dto/updatePermission.dto";
+import {PermissionModuleOptions} from "../permissions.types";
+import {PERMISSIONS_OPTIONS} from "../permissions.constansts";
 
 @Injectable()
 export class PermissionsService implements OnModuleInit {
@@ -40,8 +40,8 @@ export class PermissionsService implements OnModuleInit {
         return this.permissionRepository.findOne(options);
     }
 
-    async findOneById(id?: string | number | Date | ObjectID): Promise<Permission | undefined> {
-        return this.permissionRepository.findOne(id);
+    async findOneById(id?: number): Promise<Permission | undefined> {
+        return this.permissionRepository.findOne({where: {id: id}});
     }
 
     async findOneByPermModule(permModule: string): Promise<Permission | undefined> {

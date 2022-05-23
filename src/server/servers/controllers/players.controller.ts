@@ -40,7 +40,7 @@ import { ApiTags } from "@nestjs/swagger";
 		}
 	}
 })
-@Controller("api/servers-players")
+@Controller("servers-players")
 export class PlayersController implements CrudController<Player> {
 	constructor(
 		public service: PlayersService,

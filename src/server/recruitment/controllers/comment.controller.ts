@@ -22,7 +22,7 @@ import { ApiTags } from "@nestjs/swagger";
 		}
 	}
 })
-@Controller("api/recruitment/comment")
+@Controller("recruitment/comment")
 export class CommentController implements CrudController<Comment> {
 	constructor(
 		public service: CommentsService,

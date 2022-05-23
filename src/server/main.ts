@@ -1,19 +1,21 @@
 import {NestFactory} from '@nestjs/core';
 import {AppModule} from './app.module';
-import {ValidationPipe} from "@nestjs/common";
+import {ValidationPipe, VersioningType, VERSION_NEUTRAL} from "@nestjs/common";
 import {NestExpressApplication} from "@nestjs/platform-express";
 import * as session from "express-session";
 import * as passport from "passport";
 import {DocumentBuilder, SwaggerModule} from "@nestjs/swagger";
-import {SocketIoAdapter} from "./adapters/socket-io.adapter";
-import {RedisIoAdapter} from "./adapters/redis-io.adapter";
 const redis = require('redis')
 
 async function bootstrap() {
     const app = await NestFactory.create<NestExpressApplication>(AppModule);
-
+    
     app.useGlobalPipes(new ValidationPipe())
-    //app.setGlobalPrefix('api')
+    app.setGlobalPrefix('api')
+    app.enableVersioning({
+        type: VersioningType.URI,
+        defaultVersion: '1'
+    });
     let RedisStore = require('connect-redis')(session)
     let redisClient = redis.createClient()
 
@@ -32,15 +34,11 @@ async function bootstrap() {
     const config = new DocumentBuilder()
         .setTitle('SharkServersReborn')
         .setDescription('The SharkServersReborn API description')
-        .setVersion('1.0')
-        //.addTag('SharkServersReborn')
+        .setVersion('0.0.2')
         .build();
-    // @ts-ignore
     const document = SwaggerModule.createDocument(app, config);
     SwaggerModule.setup('api/swagger', app, document);
-
-    //app.useWebSocketAdapter(new RedisIoAdapter(app))
-    //app.useWebSocketAdapter(new SocketIoAdapter(app))
+   
     await app.listen(3000);
 }
 

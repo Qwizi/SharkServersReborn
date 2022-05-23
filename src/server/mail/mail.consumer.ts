@@ -1,6 +1,5 @@
 import { Processor, Process } from '@nestjs/bull';
 import { Job } from 'bull';
-import {MailerService} from "@nestjs-modules/mailer";
 import {MailService} from "./mail.service";
 import {Logger} from "@nestjs/common";
 

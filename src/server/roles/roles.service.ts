@@ -3,7 +3,7 @@ import {InjectRepository} from "@nestjs/typeorm";
 import {Role} from "./roles.entity";
 import {In, Repository} from "typeorm";
 import {CreateRoleDto} from "./dto/createRole.dto";
-import {PermissionsService} from "../permissions/permissions.service";
+import {PermissionsService} from "../permissions/services/permissions.service";
 import {FindManyOptions} from "typeorm/find-options/FindManyOptions";
 import {FindOneOptions} from "typeorm/find-options/FindOneOptions";
 import {RemoveOptions} from "typeorm/browser";

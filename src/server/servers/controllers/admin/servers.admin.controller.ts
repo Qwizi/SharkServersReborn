@@ -19,7 +19,7 @@ import { ApiTags } from "@nestjs/swagger";
 		}
 	}
 })
-@Controller("api/admin/servers")
+@Controller("admin/servers")
 export class ServersAdminController implements CrudController<Server> {
 	constructor(
 		public service: ServersService,
