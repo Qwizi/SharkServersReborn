@@ -4,7 +4,7 @@ import {InjectRepository} from "@nestjs/typeorm";
 import {User} from "../entity/users.entity";
 import {RegisterUserDto} from "../dto/registerUser.dto";
 import * as bcrypt from 'bcrypt';
-import {RolesService} from "../../roles/roles.service";
+import {RolesService} from "../../roles/services/roles.service";
 import {ChangePasswordDto} from "../dto/changePassword.dto";
 import {ChangeUsernameDto} from "../dto/changeUsername.dto";
 import {Request} from "express";

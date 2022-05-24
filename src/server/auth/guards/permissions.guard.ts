@@ -2,7 +2,7 @@ import {CanActivate, ExecutionContext, Injectable} from "@nestjs/common";
 import {Reflector} from "@nestjs/core";
 import {Permission} from "../../permissions/permissions.entity";
 import {Role} from "../../roles/roles.entity";
-import {RolesService} from "../../roles/roles.service";
+import {RolesService} from "../../roles/services/roles.service";
 
 @Injectable()
 export class PermissionsGuard implements CanActivate {

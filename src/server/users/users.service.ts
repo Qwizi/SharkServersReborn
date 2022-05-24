@@ -9,7 +9,7 @@ import {RemoveOptions} from "typeorm/browser";
 import {UpdateUserDto} from "./dto/updateUser.dto";
 import * as bcrypt from 'bcrypt';
 import {RegisterUserDto} from "./dto/registerUser.dto";
-import {RolesService} from "../roles/roles.service";
+import {RolesService} from "../roles/services/roles.service";
 import {AuthenticatorService} from "../authenticator/services/authenticator.service";
 import {Operations} from "../authenticator/operations.enums";
 import {MailService} from "../mail/mail.service";
