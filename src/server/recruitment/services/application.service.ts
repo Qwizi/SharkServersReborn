@@ -12,7 +12,7 @@ import {PositionService} from "./position.service";
 import {QuestionService} from "./question.service";
 import {PositionQuestionAnswerService} from "./positionQuestionAnswer.service";
 import {ApplicationStatus} from "../recruitment.enum";
-import {RolesService} from "../../roles/roles.service"; 
+import {RolesService} from "../../roles/services/roles.service"; 
 import { UsersService } from '../../users/services/users.service';
 
 @Injectable()

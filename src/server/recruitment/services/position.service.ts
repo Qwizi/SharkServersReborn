@@ -5,7 +5,7 @@ import {Position} from "../entity/position.entity";
 import {CreatePositionDto} from "../dto/createPosition.dto";
 import {QuestionService} from "./question.service";
 import {In} from "typeorm";
-import {RolesService} from "../../roles/roles.service";
+import {RolesService} from "../../roles/services/roles.service";
 import {CrudRequest} from "@nestjsx/crud";
 
 @Injectable()

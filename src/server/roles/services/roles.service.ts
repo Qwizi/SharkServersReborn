@@ -1,15 +1,15 @@
 import {Injectable, Logger, OnModuleInit} from '@nestjs/common';
 import {InjectRepository} from "@nestjs/typeorm";
-import {Role} from "./roles.entity";
+import {Role} from "../roles.entity";
 import {In, Repository} from "typeorm";
-import {CreateRoleDto} from "./dto/createRole.dto";
-import {PermissionsService} from "../permissions/services/permissions.service";
+import {CreateRoleDto} from "../dto/createRole.dto";
+import {PermissionsService} from "../../permissions/services/permissions.service";
 import {FindManyOptions} from "typeorm/find-options/FindManyOptions";
 import {FindOneOptions} from "typeorm/find-options/FindOneOptions";
 import {RemoveOptions} from "typeorm/browser";
-import {UpdateRoleDto} from "./dto/updateRole.dto";
-import {DefaultRoles} from "./roles.enums";
-import {Perms} from "../permissions/permissions.enum";
+import {UpdateRoleDto} from "../dto/updateRole.dto";
+import {DefaultRoles} from "../roles.enums";
+import {Perms} from "../../permissions/permissions.enum";
 
 @Injectable()
 export class RolesService implements OnModuleInit {

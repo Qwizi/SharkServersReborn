@@ -2,7 +2,7 @@ import {Injectable, Logger} from "@nestjs/common";
 import {TypeOrmCrudService} from "@nestjsx/crud-typeorm";
 import {Server} from "../entity/server.entity";
 import {InjectRepository} from "@nestjs/typeorm";
-import {RolesService} from "../../roles/roles.service";
+import {RolesService} from "../../roles/services/roles.service";
 import {CreateServerDto} from "../dto/createServer.dto";
 import {PermissionsService} from "../../permissions/services/permissions.service";
 
