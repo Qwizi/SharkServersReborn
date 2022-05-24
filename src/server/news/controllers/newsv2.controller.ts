@@ -12,6 +12,9 @@ import { NewsV2Service } from '../services/newsv2.service';
     routes: {
         only: ["getOneBase", "getManyBase"]
     },
+    query: {
+		alwaysPaginate: true,
+    },
     params: {
         slug: {
             field: 'slug',
