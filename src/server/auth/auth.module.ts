@@ -11,6 +11,8 @@ import {APP_GUARD} from "@nestjs/core";
 import {PermissionsGuard} from "./guards/permissions.guard";
 import {SteamProfileModule} from "../steamprofile/steamProfile.module";
 import {SteamStrategy} from "./strategies/steam.strategy";
+import { JwtModule } from '@nestjs/jwt';
+import { JwtStrategy } from './strategies/jwt.strategy';
 
 @Module({
     imports: [
@@ -18,7 +20,11 @@ import {SteamStrategy} from "./strategies/steam.strategy";
         PassportModule.register({session: true}),
         AuthenticatorModule,
         MailModule,
-        SteamProfileModule
+        SteamProfileModule,
+        JwtModule.register({
+            secret: 'dupa',
+            signOptions: { expiresIn: '60s' },
+          }),
     ],
     providers: [
         AuthService,
@@ -28,7 +34,8 @@ import {SteamStrategy} from "./strategies/steam.strategy";
         {
             provide: APP_GUARD,
             useClass: PermissionsGuard
-        }
+        },
+        JwtStrategy
     ],
     controllers: [AuthController, AuthControllerV2],
     exports: [AuthService]

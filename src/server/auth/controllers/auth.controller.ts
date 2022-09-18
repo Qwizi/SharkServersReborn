@@ -6,6 +6,8 @@ import {AuthenticatedGuard} from "../guards/authenticated.guard";
 import { AuthGuard } from '@nestjs/passport';
 import {DisconnectAccountDto} from "../dto/disconnectAccount.dto";
 import { ApiTags } from '@nestjs/swagger';
+import { LocalAuthGuard } from '../guards/local-auth.guard';
+import { JwtAuthGuard } from '../guards/jwt.guard';
 
 @ApiTags('auth')
 @Controller({
@@ -82,19 +84,13 @@ export class AuthControllerV2 {
     }
 
 
-    @UseGuards(LoginGuard)
+    @UseGuards(LocalAuthGuard)
     @Post('login')
     async login(@Req() req) {
-        return req.user;
+        return this.authService.login(req.user);
     }
 
-    @UseGuards(AuthenticatedGuard)
-    @Post('logout')
-    async logout(@Req() req) {
-        req.logout();
-    }
-
-    @UseGuards(AuthenticatedGuard, AuthGuard('steam'))
+    @UseGuards(JwtAuthGuard, AuthGuard('steam'))
     @Get('connect-account/steam')
     async connectSteamAccount(
         @Req() req,
@@ -103,7 +99,7 @@ export class AuthControllerV2 {
         res.redirect('/profile/connectedAccounts')
     }
 
-    @UseGuards(AuthenticatedGuard)
+    @UseGuards(JwtAuthGuard)
     @HttpCode(200)
     @Post('disconnect-account')
     async disconnectAccount(

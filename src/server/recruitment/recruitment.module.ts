@@ -15,9 +15,9 @@ import { QuestionAdminController } from "./controllers/admin/questions.admin.con
 import { Application } from "./entity/application.entity";
 import { ApplicationService } from "./services/application.service";
 import { ApplicationAdminController } from "./controllers/admin/application.admin.controller";
-import { CommentController } from "./controllers/comment.controller";
+import { CommentController, CommentControllerV2 } from "./controllers/comment.controller";
 import { CommentsService } from "./services/comment.service";
-import { ApplicationController } from "./controllers/application.controller";
+import { ApplicationController, ApplicationControllerV2 } from "./controllers/application.controller";
 import { UsersModule } from "../users/users.module";
 
 @Module({
@@ -46,7 +46,9 @@ import { UsersModule } from "../users/users.module";
 		QuestionAdminController,
 		ApplicationController,
 		ApplicationAdminController,
-		CommentController
+		CommentController,
+		ApplicationControllerV2,
+		CommentControllerV2,
 	]
 })
 export class RecruitmentModule {

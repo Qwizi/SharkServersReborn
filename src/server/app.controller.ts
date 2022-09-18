@@ -30,6 +30,7 @@ export class AppController {
   async activateAccountGet(
       @Query('code') encryptedCode,
       @Res() res,
+      
   ) {
     if (encryptedCode) {
       try {

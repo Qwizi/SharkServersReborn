@@ -11,13 +11,14 @@ async function bootstrap() {
     const app = await NestFactory.create<NestExpressApplication>(AppModule);
     
     app.useGlobalPipes(new ValidationPipe())
-    app.setGlobalPrefix('api')
     app.enableVersioning({
         type: VersioningType.URI,
         defaultVersion: '1'
     });
     let RedisStore = require('connect-redis')(session)
     let redisClient = redis.createClient()
+
+    await redisClient.connect()
 
     app.use(
         session({

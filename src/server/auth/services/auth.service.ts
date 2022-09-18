@@ -8,6 +8,7 @@ import {Request} from "express";
 import {SteamProfileService} from "../../steamprofile/steamProfile.service";
 import {User} from "../../users/entity/users.entity";
 import {DisconnectAccountDto} from "../dto/disconnectAccount.dto";
+import { JwtService } from '@nestjs/jwt';
 @Injectable()
 export class AuthService {
     constructor(
@@ -15,6 +16,7 @@ export class AuthService {
         private mailService: MailService,
         private authenticatorService: AuthenticatorService,
         private steamProfileService: SteamProfileService,
+        private jwtService: JwtService
     ) {
     }
 
@@ -71,4 +73,11 @@ export class AuthService {
                 break;
         }
     }
+
+    async login(user: any) {
+        const payload = { username: user.username, sub: user.id };
+        return {
+          access_token: this.jwtService.sign(payload),
+        };
+      }
 }

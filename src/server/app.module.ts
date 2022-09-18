@@ -16,7 +16,6 @@ import {MailModule} from "./mail/mail.module";
 import { AuthModule } from './auth/auth.module';
 import {BullModule} from "@nestjs/bull";
 import {Perms} from "./permissions/permissions.enum";
-import { ViewModule } from './view/view.module';
 import { SteamProfileModule } from './steamprofile/steamProfile.module';
 import {SteamProfile} from "./steamprofile/steamProfile.entity";
 import { NewsModule } from './news/news.module';
@@ -78,7 +77,7 @@ import { ServersModule } from './servers/servers.module';
       RecruitmentModule,
       ServersModule,
       //SocketModule,
-      ViewModule,
+      //ViewModule,
       PermissionsModule.register({
           modules: [
               {

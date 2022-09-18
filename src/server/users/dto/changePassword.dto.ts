@@ -1,5 +1,5 @@
 import {IsNotEmpty, IsString, Length, ValidateNested} from "class-validator";
-
+import { ApiProperty } from '@nestjs/swagger';
 export class ChangePasswordDto {
     @Length(8, 40)
     @IsString()

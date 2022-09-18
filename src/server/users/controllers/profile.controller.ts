@@ -1,7 +1,7 @@
 import {Body, Controller, Get, Param, Post, Put, Query, Req, UseGuards, UseInterceptors} from "@nestjs/common";
 import {
 	Crud, CrudAuth,
-	CrudController, CrudRequest, CrudRequestInterceptor, ParsedRequest,
+	CrudController, CrudRequest, CrudRequestInterceptor, Override, ParsedRequest,
 } from "@nestjsx/crud";
 import {User} from "../entity/users.entity";
 import {UsersService} from "../services/users.service";
@@ -12,9 +12,12 @@ import {ChangePasswordDto} from "../dto/changePassword.dto";
 import {ChangeUsernameDto} from "../dto/changeUsername.dto";
 import {SendChangeEmailEmailDto} from "../dto/sendChangeEmailEmail.dto";
 import {ChangeEmailDto} from "../dto/changeEmail.dto";
-import { ApiTags } from "@nestjs/swagger";
+import { ApiTags, ApiBody } from "@nestjs/swagger";
+import { JwtAuthGuard } from "src/server/auth/guards/jwt.guard";
+import { request } from "http";
 
-@ApiTags('users-profile')
+@ApiTags('profile')
+
 @Crud({
 	model: {
 		type: User,
@@ -29,6 +32,9 @@ import { ApiTags } from "@nestjs/swagger";
 		},
 	},
 	query: {
+		exclude: [
+			"password",
+		],
 		join: {
 			roles: {
 				eager: true
@@ -45,14 +51,18 @@ import { ApiTags } from "@nestjs/swagger";
 		}
 	}
 })
+@UseGuards(JwtAuthGuard)
+@UseInterceptors(CrudRequestInterceptor)
 @CrudAuth({
 	property: "user",
 	filter: (user: User) => ({
 		id: user.id,
 	}),
 })
-@UseGuards(AuthenticatedGuard)
-@Controller("users/profile")
+@Controller({
+    version: '2',
+    path: 'profile'
+})
 export class ProfileController implements CrudController<User> {
 	constructor(
 		public service: UsersService) {

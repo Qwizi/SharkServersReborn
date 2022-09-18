@@ -16,7 +16,7 @@ import {UsersService} from "../services/users.service";
 		only: ["getOneBase", "getManyBase"]
 	},
 	query: {
-		exclude: ["password"],
+		exclude: ["password", "email"],
 		alwaysPaginate: true,
 		join: {
 			steam_profile: {},
