@@ -35,10 +35,10 @@ async function bootstrap() {
     const config = new DocumentBuilder()
         .setTitle('SharkServersReborn')
         .setDescription('The SharkServersReborn API description')
-        .setVersion('0.0.2')
+        .setVersion('0.0.3')
         .build();
     const document = SwaggerModule.createDocument(app, config);
-    SwaggerModule.setup('api/swagger', app, document);
+    SwaggerModule.setup('api/docs', app, document);
    
     await app.listen(3000);
 }

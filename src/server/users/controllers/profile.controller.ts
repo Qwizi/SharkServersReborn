@@ -13,7 +13,7 @@ import {ChangeUsernameDto} from "../dto/changeUsername.dto";
 import {SendChangeEmailEmailDto} from "../dto/sendChangeEmailEmail.dto";
 import {ChangeEmailDto} from "../dto/changeEmail.dto";
 import { ApiTags, ApiBody } from "@nestjs/swagger";
-import { JwtAuthGuard } from "src/server/auth/guards/jwt.guard";
+import { JwtAuthGuard } from "auth/guards/jwt.guard";
 import { request } from "http";
 
 @ApiTags('profile')

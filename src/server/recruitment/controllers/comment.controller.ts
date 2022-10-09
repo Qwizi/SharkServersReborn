@@ -5,7 +5,7 @@ import {Comment} from "../entity/comment.entity";
 import {AuthenticatedGuard} from "../../auth/guards/authenticated.guard";
 import {CreateCommentDto} from "../dto/createComment.dto";
 import { ApiTags } from "@nestjs/swagger";
-import { JwtAuthGuard } from "src/server/auth/guards/jwt.guard";
+import { JwtAuthGuard } from "auth/guards/jwt.guard";
 
 @ApiTags('applications-comments')
 @Crud({

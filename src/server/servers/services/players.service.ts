@@ -1,13 +1,10 @@
-import { BadRequestException, Injectable, Logger, OnModuleInit } from "@nestjs/common";
+import { Injectable, Logger, OnModuleInit } from "@nestjs/common";
 import { TypeOrmCrudService } from "@nestjsx/crud-typeorm";
 import { InjectRepository } from "@nestjs/typeorm";
 import { Player } from "../entity/player.entity";
 import { ServersService } from "./servers.service";
 import { SteamProfileService } from "../../steamprofile/steamProfile.service";
 import { CreatePlayerDto } from "../dto/createPlayer.dto";
-import { SteamProfile } from "src/server/steamprofile/steamProfile.entity";
-import { Server } from "../entity/server.entity";
-import { Raw } from "typeorm";
 import { PlayersStatsService } from "./playersStats.service";
 import { PlayerStats } from "../entity/playerStats.entity";
 

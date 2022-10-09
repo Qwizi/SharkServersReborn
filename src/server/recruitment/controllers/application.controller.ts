@@ -16,7 +16,7 @@ import {CreateApplicationDto} from "../dto/createApplication.dto";
 import {ApplicationStatus} from "../recruitment.enum";
 import {Perms} from "../../auth/decorators/permissions.decorator";
 import { ApiTags } from "@nestjs/swagger";
-import { JwtAuthGuard } from "src/server/auth/guards/jwt.guard";
+import { JwtAuthGuard } from "auth/guards/jwt.guard";
 
 @ApiTags('applications')
 @Crud({

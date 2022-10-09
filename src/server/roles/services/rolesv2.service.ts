@@ -1,8 +1,8 @@
 import { Injectable, Logger, OnModuleInit } from "@nestjs/common";
 import { InjectRepository } from "@nestjs/typeorm";
 import { TypeOrmCrudService } from "@nestjsx/crud-typeorm";
-import { Perms } from "src/server/permissions/permissions.enum";
-import { PermissionsService } from "src/server/permissions/services/permissions.service";
+import { Perms } from "permissions/permissions.enum";
+import { PermissionsService } from "permissions/services/permissions.service";
 import { In, Repository } from "typeorm";
 import { Role } from "../roles.entity";
 import { DefaultRoles } from "../roles.enums";
