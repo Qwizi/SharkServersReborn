@@ -1,15 +1,15 @@
-import {IsNotEmpty, IsNumber, IsString} from "class-validator";
+import { IsNotEmpty, IsNumber, IsString } from 'class-validator';
 
 export class CreateServerDto {
-	@IsNotEmpty()
-	@IsString()
-	name: string;
+  @IsNotEmpty()
+  @IsString()
+  name: string;
 
-	@IsNotEmpty()
-	@IsString()
-	ip: string;
+  @IsNotEmpty()
+  @IsString()
+  ip: string;
 
-	@IsNotEmpty()
-	@IsNumber()
-	port: number;
+  @IsNotEmpty()
+  @IsNumber()
+  port: number;
 }

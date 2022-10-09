@@ -1,8 +1,8 @@
-import {IsIn, IsNotEmpty, IsString} from "class-validator";
+import { IsIn, IsNotEmpty, IsString } from 'class-validator';
 
 export class DisconnectAccountDto {
-    @IsString()
-    @IsNotEmpty()
-    @IsIn(['steam'])
-    account: string;
+  @IsString()
+  @IsNotEmpty()
+  @IsIn(['steam'])
+  account: string;
 }

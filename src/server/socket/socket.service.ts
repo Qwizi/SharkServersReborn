@@ -1,7 +1,7 @@
 import { Injectable } from '@nestjs/common';
-import {Server} from "socket.io";
+import { Server } from 'socket.io';
 
 @Injectable()
 export class SocketService {
-	public socket: Server = null;
+  public socket: Server = null;
 }

@@ -1,13 +1,13 @@
-import {Operations} from "../operations.enums";
-import {IsEnum, IsNotEmpty, ValidateNested} from "class-validator";
-import {User} from "../../users/entity/users.entity";
+import { Operations } from '../operations.enums';
+import { IsEnum, IsNotEmpty, ValidateNested } from 'class-validator';
+import { User } from '../../users/entity/users.entity';
 
 export class CreateCodeDto {
-    @IsEnum(Operations)
-    @IsNotEmpty()
-    type: Operations
+  @IsEnum(Operations)
+  @IsNotEmpty()
+  type: Operations;
 
-    @ValidateNested()
-    @IsNotEmpty()
-    user: User
+  @ValidateNested()
+  @IsNotEmpty()
+  user: User;
 }

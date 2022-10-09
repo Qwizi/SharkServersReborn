@@ -1,14 +1,14 @@
-import {IsArray, IsNotEmpty, IsNumber} from "class-validator";
+import { IsArray, IsNotEmpty, IsNumber } from 'class-validator';
 
 export class CreatePositionDto {
-	@IsNotEmpty()
-	@IsNumber()
-	roleId: number;
+  @IsNotEmpty()
+  @IsNumber()
+  roleId: number;
 
-	@IsNotEmpty()
-	@IsArray()
-	questions: number[]
+  @IsNotEmpty()
+  @IsArray()
+  questions: number[];
 
-	@IsNumber()
-	free_space: number;
+  @IsNumber()
+  free_space: number;
 }

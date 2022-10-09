@@ -1,6 +1,6 @@
-import {IsEmail} from "class-validator";
+import { IsEmail } from 'class-validator';
 
 export class ResendActivateAccountEmailDto {
-    @IsEmail()
-    email: string;
+  @IsEmail()
+  email: string;
 }

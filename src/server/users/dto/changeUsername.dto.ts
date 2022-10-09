@@ -1,7 +1,7 @@
-import {IsAlphanumeric, Length} from "class-validator";
+import { IsAlphanumeric, Length } from 'class-validator';
 
 export class ChangeUsernameDto {
-    @Length(5, 30)
-    @IsAlphanumeric()
-    username: string;
+  @Length(5, 30)
+  @IsAlphanumeric()
+  username: string;
 }

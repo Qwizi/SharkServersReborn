@@ -1,24 +1,22 @@
-import { Controller } from "@nestjs/common";
-import { ApiTags } from "@nestjs/swagger";
-import { Crud, CrudController } from "@nestjsx/crud";
-import {Permission } from "../permissions.entity"
-import { PermissionsV2Service } from "../services/permissionsv2.service";
+import { Controller } from '@nestjs/common';
+import { ApiTags } from '@nestjs/swagger';
+import { Crud, CrudController } from '@nestjsx/crud';
+import { Permission } from '../permissions.entity';
+import { PermissionsV2Service } from '../services/permissionsv2.service';
 
-@ApiTags("permissions")
+@ApiTags('permissions')
 @Crud({
-    model: {
-        type: Permission,
-    },
-    routes: {
-        only: ["getOneBase", "getManyBase",]
-    }
+  model: {
+    type: Permission,
+  },
+  routes: {
+    only: ['getOneBase', 'getManyBase'],
+  },
 })
 @Controller({
-    version: "2",
-    path: "permissions"
+  version: '2',
+  path: 'permissions',
 })
 export class PermissionsController implements CrudController<Permission> {
-    constructor(
-        public service: PermissionsV2Service
-    ) {}
+  constructor(public service: PermissionsV2Service) {}
 }

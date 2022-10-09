@@ -1,46 +1,50 @@
-import {NestFactory} from '@nestjs/core';
-import {AppModule} from './app.module';
-import {ValidationPipe, VersioningType, VERSION_NEUTRAL} from "@nestjs/common";
-import {NestExpressApplication} from "@nestjs/platform-express";
-import * as session from "express-session";
-import * as passport from "passport";
-import {DocumentBuilder, SwaggerModule} from "@nestjs/swagger";
-const redis = require('redis')
+import { NestFactory } from '@nestjs/core';
+import { AppModule } from './app.module';
+import {
+  ValidationPipe,
+  VersioningType,
+  VERSION_NEUTRAL,
+} from '@nestjs/common';
+import { NestExpressApplication } from '@nestjs/platform-express';
+import * as session from 'express-session';
+import * as passport from 'passport';
+import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
+const redis = require('redis');
 
 async function bootstrap() {
-    const app = await NestFactory.create<NestExpressApplication>(AppModule);
-    
-    app.useGlobalPipes(new ValidationPipe())
-    app.enableVersioning({
-        type: VersioningType.URI,
-        defaultVersion: '1'
-    });
-    let RedisStore = require('connect-redis')(session)
-    let redisClient = redis.createClient()
+  const app = await NestFactory.create<NestExpressApplication>(AppModule);
 
-    await redisClient.connect()
+  app.useGlobalPipes(new ValidationPipe());
+  app.enableVersioning({
+    type: VersioningType.URI,
+    defaultVersion: '1',
+  });
+  let RedisStore = require('connect-redis')(session);
+  let redisClient = redis.createClient();
 
-    app.use(
-        session({
-            store: new RedisStore({client: redisClient}),
-            secret: 'nest cats',
-            resave: false,
-            saveUninitialized: false,
-        }),
-    );
+  await redisClient.connect();
 
-    app.use(passport.initialize());
-    app.use(passport.session());
+  app.use(
+    session({
+      store: new RedisStore({ client: redisClient }),
+      secret: 'nest cats',
+      resave: false,
+      saveUninitialized: false,
+    }),
+  );
 
-    const config = new DocumentBuilder()
-        .setTitle('SharkServersReborn')
-        .setDescription('The SharkServersReborn API description')
-        .setVersion('0.0.3')
-        .build();
-    const document = SwaggerModule.createDocument(app, config);
-    SwaggerModule.setup('api/docs', app, document);
-   
-    await app.listen(3000);
+  app.use(passport.initialize());
+  app.use(passport.session());
+
+  const config = new DocumentBuilder()
+    .setTitle('SharkServersReborn')
+    .setDescription('The SharkServersReborn API description')
+    .setVersion('0.0.3')
+    .build();
+  const document = SwaggerModule.createDocument(app, config);
+  SwaggerModule.setup('api/docs', app, document);
+
+  await app.listen(3000);
 }
 
 bootstrap();

@@ -1,14 +1,13 @@
-import {Column, Entity, PrimaryGeneratedColumn} from "typeorm";
+import { Column, Entity, PrimaryGeneratedColumn } from 'typeorm';
 
 @Entity()
-export class Permission
-{
-    @PrimaryGeneratedColumn()
-    id: number;
+export class Permission {
+  @PrimaryGeneratedColumn()
+  id: number;
 
-    @Column()
-    module: string;
+  @Column()
+  module: string;
 
-    @Column()
-    value: string;
+  @Column()
+  value: string;
 }
