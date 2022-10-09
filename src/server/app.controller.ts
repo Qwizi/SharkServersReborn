@@ -26,6 +26,11 @@ export class AppController {
 
   }
 
+  @Get()
+  async getHello() {
+    return "Hello World"
+  }
+
   @Get('activate-account')
   async activateAccountGet(
       @Query('code') encryptedCode,
