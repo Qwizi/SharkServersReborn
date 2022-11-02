@@ -12,7 +12,7 @@ import { UsersModule } from './users/users.module';
 import { User } from './users/entity/users.entity';
 import { AuthenticatorModule } from './authenticator/authenticator.module';
 import { Operation } from './authenticator/operation.entity';
-import { MailModule } from './mail/mail.module';
+//import { MailModule } from './mail/mail.module';
 import { AuthModule } from './auth/auth.module';
 import { BullModule } from '@nestjs/bull';
 import { Perms } from './permissions/permissions.enum';
@@ -30,14 +30,13 @@ import { Server } from './servers/entity/server.entity';
 import { Player } from './servers/entity/player.entity';
 import { PlayerStats } from './servers/entity/playerStats.entity';
 import { ServersModule } from './servers/servers.module';
-import { CommandModule } from 'nestjs-command';
 @Module({
   imports: [
     ConfigModule.forRoot({
       isGlobal: true,
     }),
     TypeOrmModule.forRoot({
-      type: 'mysql',
+      type: 'postgres',
       host: process.env.DB_HOST,
       port: 3306,
       username: process.env.DB_USER,
@@ -68,7 +67,7 @@ import { CommandModule } from 'nestjs-command';
       },
     }),
     RolesModule,
-    MailModule,
+    //MailModule,
     AuthenticatorModule,
     UsersModule,
     AuthModule,
@@ -113,7 +112,6 @@ import { CommandModule } from 'nestjs-command';
         },
       ],
     }),
-    CommandModule,
   ],
   controllers: [AppController],
   providers: [AppService],

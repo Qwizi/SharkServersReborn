@@ -17,7 +17,6 @@ import { RegisterUserDto } from './dto/registerUser.dto';
 import { RolesService } from '../roles/services/roles.service';
 import { AuthenticatorService } from '../authenticator/services/authenticator.service';
 import { Operations } from '../authenticator/operations.enums';
-import { MailService } from '../mail/mail.service';
 
 @Injectable()
 export class UsersService implements OnModuleInit {
@@ -27,7 +26,6 @@ export class UsersService implements OnModuleInit {
     @InjectRepository(User) private usersRepository: Repository<User>,
     private rolesService: RolesService,
     private authenticatorService: AuthenticatorService,
-    private mailService: MailService,
   ) {}
 
   async onModuleInit() {

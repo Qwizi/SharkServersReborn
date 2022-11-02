@@ -11,7 +11,6 @@ import { Request } from 'express';
 import { SendChangeEmailEmailDto } from '../dto/sendChangeEmailEmail.dto';
 import { Operations } from '../../authenticator/operations.enums';
 import { AuthenticatorService } from '../../authenticator/services/authenticator.service';
-import { MailService } from '../../mail/mail.service';
 import { ChangeEmailDto } from '../dto/changeEmail.dto';
 import { UpdateUserDto } from '../dto/updateUser.dto';
 
@@ -23,7 +22,6 @@ export class UsersService extends TypeOrmCrudService<User> {
     @InjectRepository(User) repo,
     private rolesService: RolesService,
     private authenticatorService: AuthenticatorService,
-    private mailService: MailService,
   ) {
     super(repo);
   }
@@ -151,7 +149,7 @@ export class UsersService extends TypeOrmCrudService<User> {
       user,
       Operations.CONFIRM_CHANGE_EMAIL,
     );
-    const url = await this.mailService.getChangeEmailUrl(
+    /*const url = await this.mailService.getChangeEmailUrl(
       req,
       encryptedCode,
       email,
@@ -160,7 +158,7 @@ export class UsersService extends TypeOrmCrudService<User> {
     return {
       user: user,
       job: job,
-    };
+    };*/
   }
 
   async changeEmail(user: User, dto: ChangeEmailDto) {

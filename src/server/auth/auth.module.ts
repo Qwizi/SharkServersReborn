@@ -8,7 +8,6 @@ import {
   AuthControllerV2,
 } from './controllers/auth.controller';
 import { SessionSerializer } from './sessions.serializer';
-import { MailModule } from '../mail/mail.module';
 import { AuthenticatorModule } from '../authenticator/authenticator.module';
 import { APP_GUARD } from '@nestjs/core';
 import { PermissionsGuard } from './guards/permissions.guard';
@@ -22,7 +21,6 @@ import { JwtStrategy } from './strategies/jwt.strategy';
     UsersModule,
     PassportModule.register({ session: true }),
     AuthenticatorModule,
-    MailModule,
     SteamProfileModule,
     JwtModule.register({
       secret: 'dupa',

@@ -10,7 +10,6 @@ import { UsersService } from './users/services/users.service';
 import { Operations } from './authenticator/operations.enums';
 import { ActivateAccountCodeDto } from './authenticator/dto/activeteAccountCode.dto';
 import { ResendActivateAccountEmailDto } from './authenticator/dto/resendActivateAccountEmail.dto';
-import { MailService } from './mail/mail.service';
 import { AuthService } from './auth/services/auth.service';
 import { Request } from 'express';
 import { ResetPasswordDto } from './authenticator/dto/resetPassword.dto';
@@ -24,7 +23,6 @@ export class AppService {
   constructor(
     private readonly authenticatorService: AuthenticatorService,
     private readonly usersService: UsersService,
-    private readonly mailService: MailService,
     private readonly authService: AuthService,
   ) {}
 
@@ -82,7 +80,7 @@ export class AppService {
     const [code, encryptedCode] = await this.authenticatorService.createCode(
       user,
     );
-    const url = await this.mailService.getAccountActivateUrl(
+    /*const url = await this.mailService.getAccountActivateUrl(
       req,
       encryptedCode,
     );
@@ -91,7 +89,7 @@ export class AppService {
       user,
       code,
       url,
-    );
+    );*/
   }
 
   async sendResetPasswordEmail(
@@ -111,8 +109,8 @@ export class AppService {
       user,
       Operations.CONFIRM_RESET_PASSWORD,
     );
-    const url = await this.mailService.getResetPasswordUrl(req, encryptedCode);
-    const job = await this.mailService.sendResetPasswordEmail(user, code, url);
+    /*const url = await this.mailService.getResetPasswordUrl(req, encryptedCode);
+    const job = await this.mailService.sendResetPasswordEmail(user, code, url);*/
   }
 
   async checkCode(

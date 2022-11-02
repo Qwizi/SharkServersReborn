@@ -1,15 +1,46 @@
 version: "3"
 
 services:
+  db:
+    image: postgres
+    restart: always
+    environment: 
+      - POSTGRES_USER=sharkservers
+      - POSTGRES_PASSWORD=sharkservers
+      - POSTGRES_DB=sharkservers
+    container_name: postgres-db
+    volumes:
+      - ./pgdata:/var/lib/postgresql/data
   redis:
     image: "redis:alpine"
     hostname: redis
     ports:
       - "6379:6379"
-  mysql:
-    image: mariadb
+  api:
+    build:
+      dockerfile: Dockerfile
+      context: ./src/server
+      target: development
+    volumes:
+      - ./src/server/:/usr/src/app
+    command: npm run start:dev
+    depends_on:
+      - db
+      - redis
     environment:
-      MYSQL_ALLOW_EMPTY_PASSWORD: "yes"
-      MYSQL_DATABASE: sharkservers_reborn
+      - DB_HOST=db
+      - DB_USER=sharkservers
+      - DB_PASS=sharkservers
+      - DB_DATABASE=sharkservers
+      - REDIS_HOST=redis
+      - REDIS_PORT=6379
+      - SMTP_HOST=
+      - SMTP_PORT=
+      - SMTP_USER=
+      - SMTP_PASS=
+      - STEAM_API_KEY=
     ports:
-      - "3306:3306"
+      - 8080:3000 
+
+volumes:
+  pgdata:

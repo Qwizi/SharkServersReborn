@@ -2,7 +2,7 @@ import { BadRequestException, Injectable } from '@nestjs/common';
 import { UsersService } from '../../users/services/users.service';
 import * as bcrypt from 'bcrypt';
 import { RegisterUserDto } from '../../users/dto/registerUser.dto';
-import { MailService } from '../../mail/mail.service';
+//import { MailService } from '../../mail/mail.service';
 import { AuthenticatorService } from '../../authenticator/services/authenticator.service';
 import { Request } from 'express';
 import { SteamProfileService } from '../../steamprofile/steamProfile.service';
@@ -13,7 +13,6 @@ import { JwtService } from '@nestjs/jwt';
 export class AuthService {
   constructor(
     private usersService: UsersService,
-    private mailService: MailService,
     private authenticatorService: AuthenticatorService,
     private steamProfileService: SteamProfileService,
     private jwtService: JwtService,
@@ -45,6 +44,7 @@ export class AuthService {
     const [code, encryptedCode] = await this.authenticatorService.createCode(
       newUser,
     );
+    /*
     const url = await this.mailService.getAccountActivateUrl(
       req,
       encryptedCode,
@@ -53,7 +53,7 @@ export class AuthService {
       newUser,
       code,
       url,
-    );
+    );*/
     const { password, ...result } = newUser;
     return result;
   }
